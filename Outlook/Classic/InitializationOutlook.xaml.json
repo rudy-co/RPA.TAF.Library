@@ -1,0 +1,81 @@
+{
+  "DisplayName": "InitializationOutlook",
+  "Tooltip": "Initialization of outlook application used for unread the old OTP mail messages.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "OutlookAppPath",
+      "DisplayName": "OutlookAppPath",
+      "Category": null,
+      "Tooltip": "Path location of outlook application.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "TimeoutReadMailOTP",
+      "DisplayName": "TimeoutReadMailOTP",
+      "Category": "Optional",
+      "Tooltip": "The amount of time in seconds to wait for activity read all OTP mail messages before an error is thrown. The default value is 180 seconds.",
+      "Placeholder": "180",
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "TopMailOTP",
+      "DisplayName": "TopMailOTP",
+      "Category": "Optional",
+      "Tooltip": "The number of mail messages OTP to be retrieved. The default value is 30.",
+      "Placeholder": "30",
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "OTP_MailAccount",
+      "DisplayName": "OTP_MailAccount",
+      "Category": "Optional",
+      "Tooltip": "Account outlook for unread the OTP message. If empty/null then used the default account in outlook.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "OTP_FolderMail",
+      "DisplayName": "OTP_FolderMail",
+      "Category": "Optional",
+      "Tooltip": "Folder in outlook for unread the OTP message.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "OTP_SubjectMail",
+      "DisplayName": "OTP_SubjectMail",
+      "Category": "Optional",
+      "Tooltip": "List of subject email for unread the OTP message.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

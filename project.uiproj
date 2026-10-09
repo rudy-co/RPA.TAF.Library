@@ -1,0 +1,6 @@
+{
+  "Name": "TAF.Library",
+  "ProjectType": "Library",
+  "Description": "Library of process automation for TAF",
+  "MainFile": "NewActivity.xaml"
+}

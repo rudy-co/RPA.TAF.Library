@@ -1,0 +1,8 @@
+{
+  "DisplayName": "LogoutConfins",
+  "Tooltip": "Process for logout from confins.\n\nPre condition: Logged in confins.\nPost action: Successfully to logout from confins.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": []
+}

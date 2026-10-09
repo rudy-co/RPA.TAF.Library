@@ -1,0 +1,521 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="LoginKintocore" this:LoginKintocore.EnableUIFallback="True" this:LoginKintocore.IsDevelopment="False" this:LoginKintocore.TimeoutCheckPageOTP="30" this:LoginKintocore.OTP_Folder="Inbox" this:LoginKintocore.MaxIterationGetOTP="180" this:LoginKintocore.MaxRetryLogin="2" this:LoginKintocore.IntervalRetryLogin="5" this:LoginKintocore.TimeoutCheckStatusMessage="20" this:LoginKintocore.OTP_TopMail="30" this:LoginKintocore.OTP_RegexPattern="password:\s*\r?\n\s*(\w{6})" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ss="clr-namespace:System.Security;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Optional. Specifies the file system path to the Microsoft Outlook application executable used for UI automation when the UI fallback is enabled." Name="OutlookAppPath" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Enables get OTP code with Outlook UI automation as a fallback when the Outlook 365 API method is fails." Name="EnableUIFallback" Type="InArgument(x:Boolean)" />
+    <x:Property sap2010:Annotation.AnnotationText="Flag to differentiation between process in production and development environment. If it's true then process login will skip process get otp code from email." Name="IsDevelopment" Type="InArgument(x:Boolean)" />
+    <x:Property sap2010:Annotation.AnnotationText="Timeout of check element exists field input in page OTP confins R3. The default value is 30 seconds." Name="TimeoutCheckPageOTP" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Folder in outlook for get the OTP message. The default value is 'Inbox'." Name="OTP_Folder" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Subject mail outlook for filter OTP mail." Name="OTP_Subject" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Maximum iteration do while to get the OTP mail messages before thrown an exception. The default value is 180 seconds." Name="MaxIterationGetOTP" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Maximum number of retries process login into confins R3. The default value is 2." Name="MaxRetryLogin" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Interval in seconds to retries process login into confins R3. The default value is 5 seconds." Name="IntervalRetryLogin" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Account outlook used for get the OTP message. If empty/null then used the default account in outlook." Name="OTP_MailAccount" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Url to login into confins R3." Name="UrlConfinsR3" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Password for login into confins R3." Name="Password" Type="InArgument(ss:SecureString)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Username for login into confins R3." Name="Username" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Timeout in seconds of check app state status message to get error status message in confins R3. The default value is 20 seconds." Name="TimeoutCheckStatusMessage" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="The number of mail messages OTP to be retrieved. The default value is 30." Name="OTP_TopMail" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="The regex pattern to get OTP number." Name="OTP_RegexPattern" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Specifies the name of the orchestrator credential asset used to retrieve authentication credential for microsoft 365. The asset must exist in the specified orchestrator folder." Name="ClientSecretAssetName" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Specifies the full orchestrator folder path where should access assets orchestrator resources for get the client secret used in microsoft outlook 365. Leave empty to used the current folder." Name="OrchestratorFolderPath" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="The Microsoft Entra Tenant ID for the Microsoft 365 application. Used together with the Client ID to authenticate and authorize access to Microsoft 365 resources." Name="TenantID" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Microsoft Entra Application Client ID required for Outlook 365 authentication. This value is obtained from the App Registration in Microsoft Entra ID and is used to establish a secure connection to Microsoft 365." Name="ClientID" Type="InArgument(x:String)" />
+  </x:Members>
+  <this:LoginKintocore.OutlookAppPath>
+    <InArgument x:TypeArguments="x:String" />
+  </this:LoginKintocore.OutlookAppPath>
+  <this:LoginKintocore.ClientSecretAssetName>
+    <InArgument x:TypeArguments="x:String" />
+  </this:LoginKintocore.ClientSecretAssetName>
+  <this:LoginKintocore.OrchestratorFolderPath>
+    <InArgument x:TypeArguments="x:String" />
+  </this:LoginKintocore.OrchestratorFolderPath>
+  <this:LoginKintocore.TenantID>
+    <InArgument x:TypeArguments="x:String" />
+  </this:LoginKintocore.TenantID>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:Annotation.AnnotationText>UPTF00000200eyI8SGVscExpbms+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8SW5pdGlhbFRvb2x0aXA+a19fQmFja2luZ0ZpZWxkIjoiUHJvY2VzcyBvZiBsb2dpbiBwcm9jZWR1cmUgdG8gY29uZmlucyBSMyB1c2luZyB0aGUgY3JlZGVudGlhbCBwcm92aWRlZC4gVGhlIHByb2Nlc3Mgb3BlbnMgdGhlIGNvbmZpbnMgUjMgbG9naW4gcGFnZSwgZW50ZXJzIHRoZSByZXF1aXJlZCB1c2VybmFtZSBhbmQgcGFzc3dvcmQsIHRoZW4gY2xpY2sgYnV0dG9uIHN1Ym1pdCwgaW5wdXQgb3RwIGNvZGUgZnJvbSBtaWNyb3NvZnQgb3V0bG9vayAzNjUsIGFuZCB2ZXJpZmllcyB0aGF0IHRoZSB1c2VyIGhhcyBzdWNjZXNzZnVsbHkgbG9nZ2VkIGluLiIsIjxWZXJzaW9uPmtfX0JhY2tpbmdGaWVsZCI6MX0=</sap2010:Annotation.AnnotationText>
+  <sap2010:WorkflowViewState.IdRef>LoginKintocore_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Activities.Runtime.Collections</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationNext.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models.CV</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Services.RuntimeAnalyze</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Platform.SyncObjects</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>UiPath.UIAutomationNext.Models</x:String>
+      <x:String>System.Numerics</x:String>
+      <x:String>UiPath.UIAutomationNext.Triggers</x:String>
+      <x:String>UiPath.Platform.Triggers</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Triggers</x:String>
+      <x:String>UiPath.Platform.Triggers.Scope</x:String>
+      <x:String>System.Net</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>System.CodeDom</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Forms</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Core</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Testing.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
+      <AssemblyReference>NPOI.Core</AssemblyReference>
+      <AssemblyReference>System.Net.WebClient</AssemblyReference>
+      <AssemblyReference>System.Net.Primitives</AssemblyReference>
+      <AssemblyReference>System.Net.HttpListener</AssemblyReference>
+      <AssemblyReference>System.Net.WebProxy</AssemblyReference>
+      <AssemblyReference>System.Net.NameResolution</AssemblyReference>
+      <AssemblyReference>System.Net.WebHeaderCollection</AssemblyReference>
+      <AssemblyReference>System.Net.Requests</AssemblyReference>
+      <AssemblyReference>System.Net.ServicePoint</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <sap:WorkflowViewStateService.ViewState>
+    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+      <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
+    </scg:Dictionary>
+  </sap:WorkflowViewStateService.ViewState>
+  <Sequence sap2010:Annotation.AnnotationText="Process of login procedure to confins R3 using the credential provided. The process opens the confins R3 login page, enters the required username and password, then click button submit, input otp code from microsoft outlook 365, and verifies that the user has successfully logged in." DisplayName="LoginConfinsR3" sap:VirtualizedContainerService.HintSize="1202,5963" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Check if login into confins R3 is success or not." Name="IsSuccessLogin" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Status message of login into confins R3 is occurred." Name="StatusMessageLogin" />
+      <Variable x:TypeArguments="s:DateTime" sap2010:Annotation.AnnotationText="Start date time used for calculation duration of process login into confins R3." Name="StartProcess" />
+      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="Timeout of check element exists invalid input OTP code." Default="5" Name="TimeoutCheckInvalidOTP" />
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Check if already login into confins R3 or not." Default="False" Name="IsAlreadyLogin" />
+      <Variable x:TypeArguments="ui:Browser" sap2010:Annotation.AnnotationText="The browser UI of confins R3." Name="UI_ConfinsR3" />
+      <Variable x:TypeArguments="s:DateTime" sap2010:Annotation.AnnotationText="Reference date and time used to validate the OTP email received timestamp. Only emails received within the configured validation criteria relative to this timestamp should be considered for OTP extraction." Name="OtpRequestDateTime" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message - Started - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="628,175" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started process login confins R3&quot;]" />
+    <ui:RetryScope LogRetriedExceptions="{x:Null}" RetriedExceptionsLogLevel="{x:Null}" DisplayName="Retry Scope LoginConfinsR3" sap:VirtualizedContainerService.HintSize="628,5379" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="[MaxRetryLogin]" RetryInterval="[TimeSpan.FromSeconds(IntervalRetryLogin)]">
+      <ui:RetryScope.ActivityBody>
+        <ActivityAction>
+          <Sequence DisplayName="Action Retry Scope LoginConfinsR3" sap:VirtualizedContainerService.HintSize="626,5091" sap2010:WorkflowViewState.IdRef="Sequence_6">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <TryCatch DisplayName="Try Catch LoginConfinsR3" sap:VirtualizedContainerService.HintSize="592,5031" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <TryCatch.Try>
+                <Sequence DisplayName="Try LoginConfinsR3" sap:VirtualizedContainerService.HintSize="590,4058" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Assign StartProcess - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="556,175" sap2010:WorkflowViewState.IdRef="Assign_3">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="s:DateTime">[StartProcess]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="s:DateTime">[DateTime.Now]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Assign DisplayName="Assign IsSuccessLogin False - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="556,175" sap2010:WorkflowViewState.IdRef="Assign_5">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Boolean">[IsSuccessLogin]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke CheckAlreadyLoginConfinsR3 Workflow - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="556,177" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Confins.R3\Utils\CheckAlreadyLoginConfinsR3.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <OutArgument x:TypeArguments="x:Boolean" x:Key="out_IsAlreadyLogin">[IsAlreadyLogin]</OutArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_UrlConfinsR3">[UrlConfinsR3]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_TimeoutCheckLogin">5</InArgument>
+                      <OutArgument x:TypeArguments="ui:Browser" x:Key="out_UI_ConfinsR3">[UI_ConfinsR3]</OutArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                  <Switch x:TypeArguments="x:Boolean" DisplayName="Switch IsAlreadyLogin - LoginConfinsR3" Expression="[IsAlreadyLogin]" sap:VirtualizedContainerService.HintSize="556,3471" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+                    <Switch.Default>
+                      <Sequence DisplayName="Default LoginConfinsR3" sap:VirtualizedContainerService.HintSize="554,90" sap2010:WorkflowViewState.IdRef="Sequence_19">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </Sequence>
+                    </Switch.Default>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Sequence x:Key="True" DisplayName="Case True IsAlreadyLogin - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="554,401" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <Assign DisplayName="Assign IsSuccessLogin - Case True IsAlreadyLogin - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="520,175" sap2010:WorkflowViewState.IdRef="Assign_8">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Boolean">[IsSuccessLogin]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                      <ui:LogMessage DisplayName="Log Message - Case True IsAlreadyLogin - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="520,166" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[&quot;Skip process login into confins R3 because a valid session already exists.&quot;]" />
+                    </Sequence>
+                    <Sequence x:Key="False" DisplayName="Case False IsAlreadyLogin - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="554,2798" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" Browser="[UI_ConfinsR3]" BrowserType="Edge" DisplayName="Attach Login Screen - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="520,2738" sap2010:WorkflowViewState.IdRef="BrowserScope_1">
+                        <ui:BrowserScope.Body>
+                          <ActivityAction x:TypeArguments="x:Object">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Do Attach Login Screen - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="486,2606" sap2010:WorkflowViewState.IdRef="Sequence_20">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke HandleRestorePages Workflow - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,177" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Utils\HandleRestorePages.xaml">
+                                <ui:InvokeWorkflowFile.Arguments>
+                                  <InArgument x:TypeArguments="x:Int32" x:Key="in_TimeoutExistsRestore">1</InArgument>
+                                </ui:InvokeWorkflowFile.Arguments>
+                              </ui:InvokeWorkflowFile>
+                              <Assign DisplayName="Assign OtpRequestDateTime - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,175" sap2010:WorkflowViewState.IdRef="Assign_9">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="s:DateTime">[OtpRequestDateTime]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="s:DateTime">[Datetime.Now]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <ui:LogMessage DisplayName="Log Message - OtpRequestDateTime - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,175" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Info" Message="[&quot;OTP request date time : &quot; + OtpRequestDateTime.ToString(&quot;dd/MM/yyyy HH:mm:ss&quot;)]" />
+                              <ui:TypeInto AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateType="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Private: Type Into Username - LoginConfinsR3" EmptyField="True" sap:VirtualizedContainerService.HintSize="452,188" sap2010:WorkflowViewState.IdRef="TypeInto_4" Text="[Username]">
+                                <ui:TypeInto.Target>
+                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="4013de03-5ea8-44bd-8bb8-0b187af664cf" InformativeScreenshot="4120171fbab9ed57bd9d6fbfc99e656a" Selector="&lt;html app='msedge.exe' title='CONFINS*' /&gt;&lt;webctrl id='inputUser' tag='INPUT' /&gt;">
+                                    <ui:Target.TimeoutMS>
+                                      <InArgument x:TypeArguments="x:Int32" />
+                                    </ui:Target.TimeoutMS>
+                                    <ui:Target.WaitForReady>
+                                      <InArgument x:TypeArguments="ui:WaitForReady" />
+                                    </ui:Target.WaitForReady>
+                                  </ui:Target>
+                                </ui:TypeInto.Target>
+                              </ui:TypeInto>
+                              <ui:TypeSecureText AlterIfDisabled="{x:Null}" ClickBeforeTyping="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" EmptyField="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" DisplayName="Private: Type Into Password - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,139" sap2010:WorkflowViewState.IdRef="TypeSecureText_1" SecureText="[Password]" SimulateType="True">
+                                <ui:TypeSecureText.Target>
+                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="ef92d25c-38ec-49ca-a719-d230e0e73429" InformativeScreenshot="810a1ab7a291e7e302bdb7e0b28a25d1" Selector="&lt;html app='msedge.exe' title='CONFINS*' /&gt;&lt;webctrl id='inputPass' tag='INPUT' type='password' /&gt;">
+                                    <ui:Target.TimeoutMS>
+                                      <InArgument x:TypeArguments="x:Int32" />
+                                    </ui:Target.TimeoutMS>
+                                    <ui:Target.WaitForReady>
+                                      <InArgument x:TypeArguments="ui:WaitForReady" />
+                                    </ui:Target.WaitForReady>
+                                  </ui:Target>
+                                </ui:TypeSecureText.Target>
+                              </ui:TypeSecureText>
+                              <ui:LogMessage DisplayName="Log Message - Input Username and Password - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,175" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Input username and password&quot;]" />
+                              <ui:Click AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Button Login - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,139" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="True">
+                                <ui:Click.CursorPosition>
+                                  <ui:CursorPosition Position="Center">
+                                    <ui:CursorPosition.OffsetX>
+                                      <InArgument x:TypeArguments="x:Int32" />
+                                    </ui:CursorPosition.OffsetX>
+                                    <ui:CursorPosition.OffsetY>
+                                      <InArgument x:TypeArguments="x:Int32" />
+                                    </ui:CursorPosition.OffsetY>
+                                  </ui:CursorPosition>
+                                </ui:Click.CursorPosition>
+                                <ui:Click.Target>
+                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="8df81a6d-c0ed-49ee-b279-a34332c4b614" InformativeScreenshot="62591e423f9c64b66f3635cb22c9ea66" Selector="&lt;html app='msedge.exe' title='CONFINS*' /&gt;&lt;webctrl tag='BUTTON' aaname='LOGIN' type='submit' /&gt;">
+                                    <ui:Target.TimeoutMS>
+                                      <InArgument x:TypeArguments="x:Int32" />
+                                    </ui:Target.TimeoutMS>
+                                    <ui:Target.WaitForReady>
+                                      <InArgument x:TypeArguments="ui:WaitForReady" />
+                                    </ui:Target.WaitForReady>
+                                  </ui:Target>
+                                </ui:Click.Target>
+                              </ui:Click>
+                              <ui:LogMessage DisplayName="Log Message - Click Button Login - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,175" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[&quot;Click button login&quot;]" />
+                              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke GetAlertMessageConfinsR3 Workflow - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,177" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Confins.R3\Utils\GetAlertMessageConfinsR3.xaml">
+                                <ui:InvokeWorkflowFile.Arguments>
+                                  <InArgument x:TypeArguments="x:Int32" x:Key="TimeoutCheckStatusMessage">[TimeoutCheckStatusMessage]</InArgument>
+                                  <InArgument x:TypeArguments="x:String" x:Key="GetStatusMessage">[StatusMessageLogin]</InArgument>
+                                </ui:InvokeWorkflowFile.Arguments>
+                              </ui:InvokeWorkflowFile>
+                              <If Condition="[IsDevelopment.Equals(False)]" DisplayName="If InputOTP in Production - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,457" sap2010:WorkflowViewState.IdRef="If_2">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <If.Then>
+                                  <Sequence DisplayName="Then InputOTP in Production - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="450,228" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke InputOtpConfinsR3 Workflow - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="416,168" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Confins.R3\Login_Logout_And_SelectRole\InputOtpConfinsR3.xaml">
+                                      <ui:InvokeWorkflowFile.Arguments>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_OutlookAppPath">[OutlookAppPath]</InArgument>
+                                        <InArgument x:TypeArguments="x:Boolean" x:Key="in_EnableUIFallback">[EnableUIFallback]</InArgument>
+                                        <InArgument x:TypeArguments="s:DateTime" x:Key="in_OTP_RequestDateTime">[OtpRequestDateTime]</InArgument>
+                                        <InArgument x:TypeArguments="x:Int32" x:Key="in_TimeoutCheckPageOTP">[TimeoutCheckPageOTP]</InArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_OTP_Subject">[OTP_Subject]</InArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_OTP_Folder">[OTP_Folder]</InArgument>
+                                        <InArgument x:TypeArguments="x:Int32" x:Key="in_MaxIterationGetOTP">[MaxIterationGetOTP]</InArgument>
+                                        <InArgument x:TypeArguments="x:Int32" x:Key="in_TimeoutCheckInvalidOTP">[TimeoutCheckInvalidOTP]</InArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_OTP_MailAccount">[OTP_MailAccount]</InArgument>
+                                        <InArgument x:TypeArguments="x:Int32" x:Key="in_TopMailOTP">[OTP_TopMail]</InArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_OTP_RegexPattern">[OTP_RegexPattern]</InArgument>
+                                        <InArgument x:TypeArguments="ui:Browser" x:Key="in_UI_ConfinsR3">[UI_ConfinsR3]</InArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_ClientSecretAssetName">[ClientSecretAssetName]</InArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorFolderPath">[OrchestratorFolderPath]</InArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_TenantID">[TenantID]</InArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_ClientID">[ClientID]</InArgument>
+                                      </ui:InvokeWorkflowFile.Arguments>
+                                    </ui:InvokeWorkflowFile>
+                                  </Sequence>
+                                </If.Then>
+                                <If.Else>
+                                  <Sequence DisplayName="Else InputOTP in Production - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="450,90" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                  </Sequence>
+                                </If.Else>
+                              </If>
+                              <If Condition="[Not String.IsNullOrWhiteSpace(StatusMessageLogin) AndAlso Not StatusMessageLogin.ToLower.Contains(&quot;kode otp telah dikirimkan&quot;)]" DisplayName="If Error Ocurred - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,403" sap2010:WorkflowViewState.IdRef="If_4">
+                                <If.Then>
+                                  <Sequence DisplayName="Then Error Ocurred - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="450,174" sap2010:WorkflowViewState.IdRef="Sequence_23">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <Throw DisplayName="Throw Error Occurred - LoginConfinsR3" Exception="[New SystemException(StatusMessageLogin)]" sap:VirtualizedContainerService.HintSize="416,114" sap2010:WorkflowViewState.IdRef="Throw_1" />
+                                  </Sequence>
+                                </If.Then>
+                                <If.Else>
+                                  <Sequence DisplayName="Else Error Ocurred - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="450,90" sap2010:WorkflowViewState.IdRef="Sequence_24">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                  </Sequence>
+                                </If.Else>
+                              </If>
+                              <Assign DisplayName="Assign IsSuccessLogin True - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="452,166" sap2010:WorkflowViewState.IdRef="Assign_4">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Boolean">[IsSuccessLogin]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                </Assign.Value>
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                              </Assign>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:BrowserScope.Body>
+                      </ui:BrowserScope>
+                    </Sequence>
+                  </Switch>
+                </Sequence>
+              </TryCatch.Try>
+              <TryCatch.Catches>
+                <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="630,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ActivityAction x:TypeArguments="s:Exception">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Catches Exception LoginConfinsR3" sap:VirtualizedContainerService.HintSize="590,751" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:LogMessage DisplayName="Log Message - Exception - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="556,175" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Error" Message="[&quot;Error occurred in process login confins R3 : &quot; + exception.Message]" />
+                      <Assign DisplayName="Assign IsSuccessLogin False Catches Exception - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="556,175" sap2010:WorkflowViewState.IdRef="Assign_1">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Boolean">[IsSuccessLogin]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                      <Assign DisplayName="Assign ErrorMessageLogin - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="556,175" sap2010:WorkflowViewState.IdRef="Assign_2">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:String">[StatusMessageLogin]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:String">["Error occurred in process login confins R3 : " + exception.Message]</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                      <ui:KillProcess AppliesTo="{x:Null}" Process="{x:Null}" ContinueOnError="True" DisplayName="Kill Process Microsoft Edge Catches Exception - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="556,166" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="msedge" />
+                    </Sequence>
+                  </ActivityAction>
+                </Catch>
+              </TryCatch.Catches>
+              <TryCatch.Finally>
+                <Sequence DisplayName="Finally LoginConfinsR3" sap:VirtualizedContainerService.HintSize="590,90" sap2010:WorkflowViewState.IdRef="Sequence_25">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </Sequence>
+              </TryCatch.Finally>
+            </TryCatch>
+          </Sequence>
+        </ActivityAction>
+      </ui:RetryScope.ActivityBody>
+      <ui:RetryScope.Condition>
+        <ActivityFunc x:TypeArguments="x:Boolean">
+          <ui:CheckTrue DisplayName="Check Condition Retry Scope LoginConfinsR3" ErrorMessage="[StatusMessageLogin]" Expression="[IsSuccessLogin.Equals(True)]" sap:VirtualizedContainerService.HintSize="602,131" sap2010:WorkflowViewState.IdRef="CheckTrue_1" />
+        </ActivityFunc>
+      </ui:RetryScope.Condition>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:RetryScope>
+    <ui:LogMessage DisplayName="Log Message - Duration - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="628,175" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Duration of process login confins R3 : &quot; + Split((DateTime.Now-StartProcess).ToString,&quot;.&quot;)(0)]" />
+    <ui:LogMessage DisplayName="Log Message - Finished - LoginConfinsR3" sap:VirtualizedContainerService.HintSize="628,166" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Finished process login confins R3&quot;]" />
+  </Sequence>
+</Activity>

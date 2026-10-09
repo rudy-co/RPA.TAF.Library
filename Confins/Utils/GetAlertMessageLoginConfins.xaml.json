@@ -1,0 +1,33 @@
+{
+  "DisplayName": "GetAlertMessageLoginConfins",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "TimeoutCheckStatusMessage",
+      "DisplayName": "TimeoutCheckStatusMessage",
+      "Category": null,
+      "Tooltip": "Timeout in seconds of check status message to get the error status message in confins. The default value is 5 seconds.",
+      "Placeholder": "5",
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "GetStatusMessage",
+      "DisplayName": "GetStatusMessage",
+      "Category": null,
+      "Tooltip": "Attribute to get the status message dialog in confins after login.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

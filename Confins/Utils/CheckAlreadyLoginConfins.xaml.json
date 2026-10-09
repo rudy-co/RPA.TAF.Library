@@ -1,0 +1,57 @@
+{
+  "DisplayName": "AlreadyLoginNewConfins",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_TimeoutCheckAlreadyLogin",
+      "DisplayName": "in_TimeoutCheckAlreadyLogin",
+      "Category": null,
+      "Tooltip": "The number in seconds  of timeout to check the state of already login or not in confins system. The default value is 10 seconds",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "out_UI_Confins",
+      "DisplayName": "out_UI_Confins",
+      "Category": null,
+      "Tooltip": "The browser UI of confins.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "out_IsAlreadyLogin",
+      "DisplayName": "out_IsAlreadyLogin",
+      "Category": null,
+      "Tooltip": "Check if already login into confins or not.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_UrlConfins",
+      "DisplayName": "in_UrlConfins",
+      "Category": null,
+      "Tooltip": "The url of confins.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

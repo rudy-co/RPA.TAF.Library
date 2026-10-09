@@ -1,0 +1,9 @@
+# Copy to .github/CODEOWNERS in every consumer process repository.
+# Combined with the branch ruleset "Require review from Code Owners"
+# on UAT and Production, a TAF.Library bump PR cannot be merged
+# there without approval from these owners.
+#
+# Replace the team handle with your RPA lead / CoE team.
+
+*                   @rudy-co/rpa-leads
+project.json        @rudy-co/rpa-leads

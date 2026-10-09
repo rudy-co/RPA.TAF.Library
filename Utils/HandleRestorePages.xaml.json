@@ -1,0 +1,21 @@
+{
+  "DisplayName": "HandleRestorePages",
+  "Tooltip": "Process for handle of alert restore pages in browser microsoft edge if it's showed.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_TimeoutExistsRestore",
+      "DisplayName": "TimeoutExistsRestore",
+      "Category": "Options",
+      "Tooltip": "Timeout in seconds to check element exists of alert restore pages.",
+      "Placeholder": "1",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

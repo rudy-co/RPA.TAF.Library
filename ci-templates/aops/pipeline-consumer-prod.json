@@ -1,0 +1,15 @@
+{
+  "name": "<PROCESS_NAME>-prod",
+  "runMode": "ForEachCommit",
+  "description": "Builds <PROCESS_NAME> from branch Production and updates the Orchestrator process on every merged commit (incl. TAF.Library bumps).",
+  "connectionIdentifier": "<CONNECTION_ID>",
+  "repositoryId": "<REPOSITORY_REMOTE_ID>",
+  "repositoryUrl": "<REPOSITORY_CLONE_URL>",
+  "repositoryName": "<REPOSITORY_NAME>",
+  "repositoryType": "git",
+  "branch": "Production",
+  "projectName": "",
+  "projectPath": "<PROJECT_PATH>",
+  "processIdentifier": "<PROCESS_ID_IN_PROD_FOLDER>",
+  "arguments": null
+}

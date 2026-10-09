@@ -1,0 +1,57 @@
+{
+  "DisplayName": "CheckAlreadyLoginConfinsR3",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_TimeoutCheckLogin",
+      "DisplayName": "in_TimeoutCheckLogin",
+      "Category": null,
+      "Tooltip": "The number in seconds before timeout of check state already login in confins R3 or not. The default values is 3 seconds.",
+      "Placeholder": "5",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_UrlConfinsR3",
+      "DisplayName": "in_UrlConfinsR3",
+      "Category": null,
+      "Tooltip": "The url of confins R3.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "out_UI_ConfinsR3",
+      "DisplayName": "out_UI_ConfinsR3",
+      "Category": null,
+      "Tooltip": "The browser UI of confins R3.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "out_IsAlreadyLogin",
+      "DisplayName": "out_IsAlreadyLogin",
+      "Category": null,
+      "Tooltip": "Check if already login into confins R3 or not.",
+      "Placeholder": null,
+      "Widget": "Toggle",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

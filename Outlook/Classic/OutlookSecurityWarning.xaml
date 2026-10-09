@@ -1,0 +1,303 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="OutlookSecurityWarning" this:OutlookSecurityWarning.TimeoutCheckWarning="5" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Timeout of check outlook alert security warning is exists or not. The default value is 5 seconds." Name="TimeoutCheckWarning" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Path location of outlook application." Name="OutlookAppPath" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+  </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:Annotation.AnnotationText>UPTF000001A0eyI8SGVscExpbms+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8SW5pdGlhbFRvb2x0aXA+a19fQmFja2luZ0ZpZWxkIjoiUHJvY2VzcyB0byBoYW5kbGUgYWxlcnQgd2luZG93IG9mIGludGVybmV0IHNlY3VyaXR5IHdhcm5pbmcgaW4gb3V0bG9vayBhcHBsaWNhdGlvbi5cclxuXG5QcmUgY29uZGl0aW9uOiBuXC9hLlxuUG9zdCBhY3Rpb246IFN1Y2Nlc3NmdWxseSB0byBoYW5kbGUgYWxlcnQgd2luZG93IG9mIGludGVybmV0IHNlY3VyaXR5IHdhcm5pbmcgaW4gb3V0bG9vayBhcHBsaWNhdGlvbi4iLCI8VmVyc2lvbj5rX19CYWNraW5nRmllbGQiOjF9</sap2010:Annotation.AnnotationText>
+  <sap2010:WorkflowViewState.IdRef>OutlookSecurityWarning_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Platform.SyncObjects</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>UiPath.UIAutomationNext.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models.CV</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Services.RuntimeAnalyze</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Numerics</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Testing.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Process to handle alert window of internet security warning in outlook application.&#xA;&#xA;Pre condition: n/a.&#xA;Post action: Successfully to handle alert window of internet security warning in outlook application." DisplayName="OutlookSecurityWarning" sap:VirtualizedContainerService.HintSize="550,3532" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Check of outlook alert internet security warning is exists or not." Name="IsExistsSecurityWarning" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="MainScreen" HealingAgentBehavior="Job" sap:VirtualizedContainerService.HintSize="550,3432" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" ScopeGuid="4efbb8a7-80ed-48e0-942c-6eabcdd9de25" Version="V2" WindowResize="Maximize">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <ui:InterruptibleDoWhile CurrentIndex="{x:Null}" Condition="[IsExistsSecurityWarning.Equals(True)]" DisplayName="Do While OutlookSecurityWarning" sap:VirtualizedContainerService.HintSize="524,3114.6666666666665" sap2010:WorkflowViewState.IdRef="InterruptibleDoWhile_1">
+            <ui:InterruptibleDoWhile.Body>
+              <Sequence DisplayName="Body Do While OutlookSecurityWarning" sap:VirtualizedContainerService.HintSize="522,3014.6666666666665" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <uix:NClick ActivateBefore="True" ClickType="Single" ContinueOnError="True" DisplayName="Click Tab Send/Receive - OutlookSecurityWarning" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="488,315.3333333333333" sap2010:WorkflowViewState.IdRef="NClick_1" InteractionMode="WindowMessages" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="4efbb8a7-80ed-48e0-942c-6eabcdd9de25" Version="V4">
+                  <uix:NClick.Target>
+                    <uix:TargetAnchorable ContentHash="MAnpVapz8kKJl--uqvuKsA" DesignTimeRectangle="170, 56, 106, 30" DesignTimeScaleFactor="1" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;uia cls='MsoCommandBar' helpText='Ribbon toolbar' /&gt;&lt;uia cls='NetUIPanViewer' name='Ribbon Tabs' /&gt;&lt;uia automationid='TabSendReceive' cls='NetUIRibbonTab' name='Send / Receive' /&gt;" FuzzyAccuracy="1" FuzzySelectorArgument="&lt;uia cls='MsoCommandBar' helpText='Ribbon toolbar' /&gt;&lt;uia cls='NetUIPanViewer' name='Ribbon Tabs' /&gt;&lt;uia automationid='TabSendReceive' cls='NetUIRibbonTab' name='Send / Receive' role='Tab Item' check:fulltext='Send / Receive' /&gt;" Guid="ff0b7cd5-ba32-42a6-a1f7-9e542be3ee5a" ImageAccuracyArgument="1" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAG4AAAAiCAYAAAC+wezsAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIjSURBVGhD7ZbRjQIxDEQphjaogzYogy6ogjbogz86yOl9jOSznGyyoBPWeaUnNus4mWS8YQ+v16sV+SjjklLGJaWMS0oZl5QyLillXFLKuKSUcUkp45JSxiWljEvKVxt3PB7b4/EIY98GOtF7v9/D+KfZZZxEivP5HPZ7l1njev2sRpGlELZYNi6qrOv1+qvPp5jZ6Nvt1i6XSxjz+fTlme2TlWXjMOx0OoUxwRvIBnmDaWvzdN/Loxj43TKOnN7xFOX7Zz2tQEEoZotztD7GJm7X5vdsNOcsu45KRDB5FGOxegNYhBWMUOX56ifHjjljHIvu6QCfz5i2/0ir7ysjttbHM/r6eWbyV9j9caKN9RvnN4u42j5m2z7We2axGxJBvsW+NYrb8UdaxWwO9+qDOb1xbf4Ku40TbJ5EIoB7j44D7q1I2+Zez6N4RJRjsfkYbKt7Rqv6ruRoPgxhTnsqbOWv8LZxIJHcI0TiPT5m2z6mRfbGYj4dOT18vj2morilF5vNkT7Q3vg+77Dr48QKAcSoajCxt6FetG2Tp8oExhgtkr5blRrlz2rludWjNY9y/Hy84f4/bJS/wu6PE0QKb6SN28XT7hkHNo8xfVyw8XbcHlG+/pvV7mkF2orZNc6uD4Mik0ZzzvKRo/KvYTN8sfw30hlHRVOpUew/kfKNK8q4tJRxSSnjklLGJaWMS0oZl5TD8/lsRT4Ora6UVxmX8mrtB/LIwbJQoyFAAAAAAElFTkSuQmCC" InformativeScreenshot="586dc020d7e7bcf98e67e4cd9ca125eb.png" Reference="MjFDm_QtPECNZE8YAIPNTA/sQtragZ6CECwWQbn1U9xfg" ScopeSelectorArgument="&lt;wnd app='outlook.exe' cls='rctrl_renwnd32' title='*Outlook' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                  </uix:NClick.Target>
+                  <uix:NClick.VerifyOptions>
+                    <uix:VerifyExecutionOptions Mode="Appears">
+                      <uix:VerifyExecutionOptions.Retry>
+                        <InArgument x:TypeArguments="x:Boolean" />
+                      </uix:VerifyExecutionOptions.Retry>
+                      <uix:VerifyExecutionOptions.Timeout>
+                        <InArgument x:TypeArguments="x:Double" />
+                      </uix:VerifyExecutionOptions.Timeout>
+                    </uix:VerifyExecutionOptions>
+                  </uix:NClick.VerifyOptions>
+                </uix:NClick>
+                <ui:LogMessage DisplayName="Log Message - Click Button Send/Receive - OutlookSecurityWarning" sap:VirtualizedContainerService.HintSize="488,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Click button Send/Receive&quot;]" />
+                <uix:NClick ActivateBefore="True" ClickType="Single" ContinueOnError="True" DisplayName="Click Button Send/Receive All Folders - OutlookSecurityWarning" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="488,315.3333333333333" sap2010:WorkflowViewState.IdRef="NClick_2" InteractionMode="WindowMessages" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="4efbb8a7-80ed-48e0-942c-6eabcdd9de25" Version="V4">
+                  <uix:NClick.Target>
+                    <uix:TargetAnchorable ContentHash="npCKQB6XY0m-F_P0WN65_Q" DesignTimeRectangle="72, 90, 188, 41" DesignTimeScaleFactor="1" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;uia cls='MsoCommandBar' helpText='Ribbon toolbar' /&gt;&lt;uia cls='NetUIChunk' name='Send &amp;amp; Receive' /&gt;&lt;uia automationid='SendReceiveAll' cls='NetUIRibbonButton' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;uia cls='MsoCommandBar' helpText='Ribbon toolbar' /&gt;&lt;uia cls='NetUIChunk' name='Send &amp;amp; Receive' /&gt;&lt;uia automationid='SendReceiveAll' cls='NetUIRibbonButton' role='Button' check:fulltext='Send/Receive All Folders' /&gt;" Guid="ca28f1f1-0933-4364-bdcf-9d7f65c0038e" ImageAccuracyArgument="1" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAMAAAAAtCAYAAAD4BmRbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAQ7SURBVHhe7ZuxalRBFIZ9mDyAtU1aK8FSUqYWK9NaWEu0EAQbC5GAjdgJIsFCrKy0CXYitr7BlW/ZIz+HO7Nz792YXef/YMjMnDkzZ86df3I3rtcGYzrGAjBdYwGYrrEATNdYAKZrLADTNRaA6RoLwHSNBWC6xgIwXWMBmK6xAEzXWACma7YigC8/vw7PPr8cHr5/sirU6TNm11kkgDff3g13Xt0dbjy9Pdx7++CvAKjTh40xxuwqswXw6OPz1SHnti+BjTGMNWYXmSUADvStF8fDj9+/1j1lGMPYEMH1xzdXP43ZBSYL4MP3T6tbveXwB4zFB99dFMDBwcFwcXGxbl0txEE85+fn657LR/d/GbnYNOdV5n+yAHivr732lMAH3ykCiMMQ5ejoaG3ZLqUHEP0aQ5SremBLIH9jOdT91Pam+6ecnp6uLXVqc8Im+2UySQD8ZYebfC74tgqAhJAYvQlbEz6VsQdwdnY2nJycrOrZjo2+fYL4Dw8PVyXvVfc3lougZquxyW/uvNtgkgC4xY9f31+32uDA59ICB5+HVYPbjORRVCi045BGXVE/RMXP/AAYE3OO2XNfKRZASGFTEdfiZ27sGnvOSW3NDOtqUWK9XM/UbLrH/Nyyn8ZNLDV7zgttfsYa0Y4ylVkfgv8VbJJkjEHC44YmeZp0EhF++bbGR+ccewAkVcdkOz5qr8WSx8aB3hQ/fYzN67T4j4Gdcewtj9X95b0qJRtx5DhL+cu2nP/avhg3FvsSdloAEAnSpIEmDbBHO9u0nW2Q+3gAevNi10JMSvavxRK0+lAP4hBDzT+TBc089AV5vdI82LTEHFoH/OkLqNfmr9lzXnQdGOubwiQBzH2dCXh9mvMBGjiUbBZICPVc9IFoErVNPTM2XlE7wtBbqCWWTItPrMcBYE1scYg3+WfInYqWurbxjfW0ninZxvpLc1LPhJ1CPZfScw1inF5arUwWwNIPwUu+IhGHAUrJgGzTdrZR1z7mj1/BQfbBrmOyXSnZWn0iHoo+4Jp/hrG55FeLmEvrmZKN/iw++oLa/NRrdqVmA+ylS6DEZAEs/TNoK2wkK1o3iBjyQQ1yorSNX9ykwBzZPvYwc+JbY6Ff14s91XzyehxWPbBQ81dYT9cP6Iv4db2xvQYlW94jbY1N/RiXx2Z7aV+12ED31MpkASz9h7Ap8NDZdJQsCLVrUmlronJb/Zgz7CRP5wmyP8Rnk6AUC9AOm+6hNf58oILamgH9OW9A/OGj6+W1lZpN95hjyX6l/AeteaEe4yj6WtfKZAHAkq9C7DIcsrHDYv5fJglA4UBzq9deh7AxZh8Of9wmpi9mCwD069D8hcdfhzb7xiIBBP4PMWZf2YoAjNlXLADTNRaA6RoLwHSNBWC6xgIwXWMBmK6xAEzXWACmaywA0zUWgOkaC8B0jQVgusYCMB0zDH8A81YsAhNFPzsAAAAASUVORK5CYII=" InformativeScreenshot="036e304e237c8bcc0c46df7cb88cacfd.png" Reference="MjFDm_QtPECNZE8YAIPNTA/4w1TG46YP0iht3X9hGwTrw" ScopeSelectorArgument="&lt;wnd app='outlook.exe' cls='rctrl_renwnd32' title='*Outlook' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                  </uix:NClick.Target>
+                  <uix:NClick.VerifyOptions>
+                    <uix:VerifyExecutionOptions Mode="Appears">
+                      <uix:VerifyExecutionOptions.Retry>
+                        <InArgument x:TypeArguments="x:Boolean" />
+                      </uix:VerifyExecutionOptions.Retry>
+                      <uix:VerifyExecutionOptions.Timeout>
+                        <InArgument x:TypeArguments="x:Double" />
+                      </uix:VerifyExecutionOptions.Timeout>
+                    </uix:VerifyExecutionOptions>
+                  </uix:NClick.VerifyOptions>
+                </uix:NClick>
+                <ui:LogMessage DisplayName="Log Message - Click Button Send/Receive All Folders - OutlookSecurityWarning" sap:VirtualizedContainerService.HintSize="488,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Click button Send/Receive All Folders&quot;]" />
+                <uix:NCheckState DisplayName="Check App State Alert Security Warning - OutlookSecurityWarning" EnableIfNotExists="False" Exists="[IsExistsSecurityWarning]" HealingAgentBehavior="Disabled" sap:VirtualizedContainerService.HintSize="488,1970.6666666666667" sap2010:WorkflowViewState.IdRef="NCheckState_1" IsLoose="True" Timeout="[TimeoutCheckWarning]" Version="V4">
+                  <uix:NCheckState.IfExists>
+                    <Sequence DisplayName="Target Appears State Alert Security Warning - OutlookSecurityWarning" sap:VirtualizedContainerService.HintSize="486,1638.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <uix:NApplicationCard AttachMode="ByInstance" DisplayName="SecurityWarning" HealingAgentBehavior="Job" sap:VirtualizedContainerService.HintSize="452,1578.6666666666667" sap2010:WorkflowViewState.IdRef="NApplicationCard_3" InteractionMode="WindowMessages" ScopeGuid="979645e6-9441-4d0c-862e-f82f4aaeac7b" Version="V2">
+                        <uix:NApplicationCard.Body>
+                          <ActivityAction x:TypeArguments="x:Object">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Do SecurityWarning - OutlookSecurityWarning" sap:VirtualizedContainerService.HintSize="450,1331.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click Button Yes - OutlookSecurityWarning" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,368" sap2010:WorkflowViewState.IdRef="NClick_5" InteractionMode="WindowMessages" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="979645e6-9441-4d0c-862e-f82f4aaeac7b" Version="V4">
+                                <uix:NClick.Target>
+                                  <uix:TargetAnchorable ContentHash="ukOdFcK8RkC9qoyF21ulGA" DesignTimeRectangle="120, 169, 75, 23" DesignTimeScaleFactor="1" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;wnd aaname='Yes' cls='Button' /&gt;" FuzzyAccuracy="1" FuzzySelectorArgument="&lt;wnd aaname='Yes' cls='Button' check:text='&amp;amp;Yes' /&gt;" Guid="37c99af7-17af-4871-aa52-e18c9dd64660" ImageAccuracyArgument="0.9" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAE8AAAAbCAYAAAA9K9JnAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEPSURBVGhD7dXbDYMwDIVh75RtvIxXyQIMkVHYgA1ch6I0kF7UWipGOg+/RA19+ZQLLcui6LeA5wh4jnZ40zShD/VeA948z+hFwHMEPEfAcwQ8R0HwimZhlXKYZ1GWrKWfBSrOyiuiiVhzm2VlSiNooOLgWUWSEmd7LiqJNEkZvolUKLyGxsmqiNvcViXbnMhKj+29YteZrVA+AToYnjVs3wrabd/6Pomdg3Vbb98N//lPMfFWnO73urr6KuZ9lZLBrpfKCWfjRfDerKqSVWybE1aedcTbzsF2prX3/W182Np/6gJ4dWZQTy8Mblv6jJs5Ht6FAp4j4DkCniPgOfqIh97Xe+3w0HcBzxHwfm7RGxpR0NSrIi0wAAAAAElFTkSuQmCC" InformativeScreenshot="ce2ddc0f4bedc242f55845e7bdc61326.png" Reference="MjFDm_QtPECNZE8YAIPNTA/zT_Aquw6U0my-56MsR_pOA" ScopeSelectorArgument="&lt;wnd app='outlook.exe' cls='#32770' title='Internet Security Warning' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                                </uix:NClick.Target>
+                                <uix:NClick.VerifyOptions>
+                                  <uix:VerifyExecutionOptions Mode="Appears">
+                                    <uix:VerifyExecutionOptions.Retry>
+                                      <InArgument x:TypeArguments="x:Boolean" />
+                                    </uix:VerifyExecutionOptions.Retry>
+                                    <uix:VerifyExecutionOptions.Timeout>
+                                      <InArgument x:TypeArguments="x:Double" />
+                                    </uix:VerifyExecutionOptions.Timeout>
+                                  </uix:VerifyExecutionOptions>
+                                </uix:NClick.VerifyOptions>
+                              </uix:NClick>
+                              <ui:LogMessage DisplayName="Log Message - Click Button Yes - OutlookSecurityWarning" sap:VirtualizedContainerService.HintSize="416,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Click button yes in alert internet security warning&quot;]" />
+                              <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click Tab Send/Receive Second Time - OutlookSecurityWarning" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,368" sap2010:WorkflowViewState.IdRef="NClick_4" InteractionMode="WindowMessages" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="4efbb8a7-80ed-48e0-942c-6eabcdd9de25" Version="V4">
+                                <uix:NClick.Target>
+                                  <uix:TargetAnchorable ContentHash="MAnpVapz8kKJl--uqvuKsA" DesignTimeRectangle="170, 56, 106, 30" DesignTimeScaleFactor="1" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;uia cls='MsoCommandBar' helpText='Ribbon toolbar' /&gt;&lt;uia cls='NetUIPanViewer' name='Ribbon Tabs' /&gt;&lt;uia automationid='TabSendReceive' cls='NetUIRibbonTab' name='Send / Receive' /&gt;" FuzzyAccuracy="1" FuzzySelectorArgument="&lt;uia cls='MsoCommandBar' helpText='Ribbon toolbar' /&gt;&lt;uia cls='NetUIPanViewer' name='Ribbon Tabs' /&gt;&lt;uia automationid='TabSendReceive' cls='NetUIRibbonTab' name='Send / Receive' role='Tab Item' check:fulltext='Send / Receive' /&gt;" Guid="ff0b7cd5-ba32-42a6-a1f7-9e542be3ee5a" ImageAccuracyArgument="1" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAG4AAAAiCAYAAAC+wezsAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIjSURBVGhD7ZbRjQIxDEQphjaogzYogy6ogjbogz86yOl9jOSznGyyoBPWeaUnNus4mWS8YQ+v16sV+SjjklLGJaWMS0oZl5QyLillXFLKuKSUcUkp45JSxiWljEvKVxt3PB7b4/EIY98GOtF7v9/D+KfZZZxEivP5HPZ7l1njev2sRpGlELZYNi6qrOv1+qvPp5jZ6Nvt1i6XSxjz+fTlme2TlWXjMOx0OoUxwRvIBnmDaWvzdN/Loxj43TKOnN7xFOX7Zz2tQEEoZotztD7GJm7X5vdsNOcsu45KRDB5FGOxegNYhBWMUOX56ifHjjljHIvu6QCfz5i2/0ir7ysjttbHM/r6eWbyV9j9caKN9RvnN4u42j5m2z7We2axGxJBvsW+NYrb8UdaxWwO9+qDOb1xbf4Ku40TbJ5EIoB7j44D7q1I2+Zez6N4RJRjsfkYbKt7Rqv6ruRoPgxhTnsqbOWv8LZxIJHcI0TiPT5m2z6mRfbGYj4dOT18vj2morilF5vNkT7Q3vg+77Dr48QKAcSoajCxt6FetG2Tp8oExhgtkr5blRrlz2rludWjNY9y/Hy84f4/bJS/wu6PE0QKb6SN28XT7hkHNo8xfVyw8XbcHlG+/pvV7mkF2orZNc6uD4Mik0ZzzvKRo/KvYTN8sfw30hlHRVOpUew/kfKNK8q4tJRxSSnjklLGJaWMS0oZl5TD8/lsRT4Ora6UVxmX8mrtB/LIwbJQoyFAAAAAAElFTkSuQmCC" InformativeScreenshot="586dc020d7e7bcf98e67e4cd9ca125eb.png" Reference="MjFDm_QtPECNZE8YAIPNTA/sQtragZ6CECwWQbn1U9xfg" ScopeSelectorArgument="&lt;wnd app='outlook.exe' cls='rctrl_renwnd32' title='*Outlook' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                                </uix:NClick.Target>
+                                <uix:NClick.VerifyOptions>
+                                  <uix:VerifyExecutionOptions Mode="Appears">
+                                    <uix:VerifyExecutionOptions.Retry>
+                                      <InArgument x:TypeArguments="x:Boolean" />
+                                    </uix:VerifyExecutionOptions.Retry>
+                                    <uix:VerifyExecutionOptions.Timeout>
+                                      <InArgument x:TypeArguments="x:Double" />
+                                    </uix:VerifyExecutionOptions.Timeout>
+                                  </uix:VerifyExecutionOptions>
+                                </uix:NClick.VerifyOptions>
+                              </uix:NClick>
+                              <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click Button Send/Receive All Folders Second Time - OutlookSecurityWarning" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,358.6666666666667" sap2010:WorkflowViewState.IdRef="NClick_3" InteractionMode="WindowMessages" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="979645e6-9441-4d0c-862e-f82f4aaeac7b" Version="V4">
+                                <uix:NClick.Target>
+                                  <uix:TargetAnchorable ContentHash="npCKQB6XY0m-F_P0WN65_Q" DesignTimeRectangle="72, 90, 188, 41" DesignTimeScaleFactor="1" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;uia cls='MsoCommandBar' helpText='Ribbon toolbar' /&gt;&lt;uia cls='NetUIChunk' name='Send &amp;amp; Receive' /&gt;&lt;uia automationid='SendReceiveAll' cls='NetUIRibbonButton' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;uia cls='MsoCommandBar' helpText='Ribbon toolbar' /&gt;&lt;uia cls='NetUIChunk' name='Send &amp;amp; Receive' /&gt;&lt;uia automationid='SendReceiveAll' cls='NetUIRibbonButton' role='Button' check:fulltext='Send/Receive All Folders' /&gt;" Guid="ca28f1f1-0933-4364-bdcf-9d7f65c0038e" ImageAccuracyArgument="1" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAMAAAAAtCAYAAAD4BmRbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAQ7SURBVHhe7ZuxalRBFIZ9mDyAtU1aK8FSUqYWK9NaWEu0EAQbC5GAjdgJIsFCrKy0CXYitr7BlW/ZIz+HO7Nz792YXef/YMjMnDkzZ86df3I3rtcGYzrGAjBdYwGYrrEATNdYAKZrLADTNRaA6RoLwHSNBWC6xgIwXWMBmK6xAEzXWACma7YigC8/vw7PPr8cHr5/sirU6TNm11kkgDff3g13Xt0dbjy9Pdx7++CvAKjTh40xxuwqswXw6OPz1SHnti+BjTGMNWYXmSUADvStF8fDj9+/1j1lGMPYEMH1xzdXP43ZBSYL4MP3T6tbveXwB4zFB99dFMDBwcFwcXGxbl0txEE85+fn657LR/d/GbnYNOdV5n+yAHivr732lMAH3ykCiMMQ5ejoaG3ZLqUHEP0aQ5SremBLIH9jOdT91Pam+6ecnp6uLXVqc8Im+2UySQD8ZYebfC74tgqAhJAYvQlbEz6VsQdwdnY2nJycrOrZjo2+fYL4Dw8PVyXvVfc3lougZquxyW/uvNtgkgC4xY9f31+32uDA59ICB5+HVYPbjORRVCi045BGXVE/RMXP/AAYE3OO2XNfKRZASGFTEdfiZ27sGnvOSW3NDOtqUWK9XM/UbLrH/Nyyn8ZNLDV7zgttfsYa0Y4ylVkfgv8VbJJkjEHC44YmeZp0EhF++bbGR+ccewAkVcdkOz5qr8WSx8aB3hQ/fYzN67T4j4Gdcewtj9X95b0qJRtx5DhL+cu2nP/avhg3FvsSdloAEAnSpIEmDbBHO9u0nW2Q+3gAevNi10JMSvavxRK0+lAP4hBDzT+TBc089AV5vdI82LTEHFoH/OkLqNfmr9lzXnQdGOubwiQBzH2dCXh9mvMBGjiUbBZICPVc9IFoErVNPTM2XlE7wtBbqCWWTItPrMcBYE1scYg3+WfInYqWurbxjfW0ninZxvpLc1LPhJ1CPZfScw1inF5arUwWwNIPwUu+IhGHAUrJgGzTdrZR1z7mj1/BQfbBrmOyXSnZWn0iHoo+4Jp/hrG55FeLmEvrmZKN/iw++oLa/NRrdqVmA+ylS6DEZAEs/TNoK2wkK1o3iBjyQQ1yorSNX9ykwBzZPvYwc+JbY6Ff14s91XzyehxWPbBQ81dYT9cP6Iv4db2xvQYlW94jbY1N/RiXx2Z7aV+12ED31MpkASz9h7Ap8NDZdJQsCLVrUmlronJb/Zgz7CRP5wmyP8Rnk6AUC9AOm+6hNf58oILamgH9OW9A/OGj6+W1lZpN95hjyX6l/AeteaEe4yj6WtfKZAHAkq9C7DIcsrHDYv5fJglA4UBzq9deh7AxZh8Of9wmpi9mCwD069D8hcdfhzb7xiIBBP4PMWZf2YoAjNlXLADTNRaA6RoLwHSNBWC6xgIwXWMBmK6xAEzXWACmaywA0zUWgOkaC8B0jQVgusYCMB0zDH8A81YsAhNFPzsAAAAASUVORK5CYII=" InformativeScreenshot="036e304e237c8bcc0c46df7cb88cacfd.png" Reference="MjFDm_QtPECNZE8YAIPNTA/4w1TG46YP0iht3X9hGwTrw" ScopeSelectorArgument="&lt;wnd app='outlook.exe' cls='rctrl_renwnd32' title='*Outlook' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                                </uix:NClick.Target>
+                                <uix:NClick.VerifyOptions>
+                                  <uix:VerifyExecutionOptions Mode="Appears">
+                                    <uix:VerifyExecutionOptions.Retry>
+                                      <InArgument x:TypeArguments="x:Boolean" />
+                                    </uix:VerifyExecutionOptions.Retry>
+                                    <uix:VerifyExecutionOptions.Timeout>
+                                      <InArgument x:TypeArguments="x:Double" />
+                                    </uix:VerifyExecutionOptions.Timeout>
+                                  </uix:VerifyExecutionOptions>
+                                </uix:NClick.VerifyOptions>
+                              </uix:NClick>
+                            </Sequence>
+                          </ActivityAction>
+                        </uix:NApplicationCard.Body>
+                        <uix:NApplicationCard.OCREngine>
+                          <ActivityFunc x:TypeArguments="sd:Image, scg:IEnumerable(scg:KeyValuePair(sd1:Rectangle, x:String))">
+                            <ActivityFunc.Argument>
+                              <DelegateInArgument x:TypeArguments="sd:Image" Name="Image" />
+                            </ActivityFunc.Argument>
+                          </ActivityFunc>
+                        </uix:NApplicationCard.OCREngine>
+                        <uix:NApplicationCard.TargetApp>
+                          <uix:TargetApp Area="495, 247, 359, 207" ContentHash="iju8ry9ZPU-F-s5_CIygSw" FilePath="[OutlookAppPath]" IconBase64="iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALRSURBVFhH7ZfdSxRRGMY3p21Ji3Z3JCMwcjGsLvoPgm4iCAkTyojCNiqRwvZSw0orVqvtAysEofTCJSUyKIqi0CyLFGEoV7aNSohQ6KIggqCbp/OOZ7azs+fY7Ic30QM/mH3n7Ps8M+fMnF3XfzmVduChwUCeMHhb55I0yQne1rlkTXKBt81AjTGoWNv3RUlVAlJ41wwkMbaQGVvIzAneNQMdGYSKNV1xqTkhMyd4V6bGmGG/Isc0PIersg3lnW+k5oTMnODuTLLGmbD52PwF2NQ1ZSI7lyTfAbwtcXSPf4NdVKNz9vEFGxtm14KtbiELRXB3JtsXjOmf3BLmsf2zPUReA+y79ZlbwTy26jQNlkL3ZpJ1Iq8Bhj78ME3uTH5PaUJY00JjxHq2AQor6kJpAazb3fKEJRTqBNVINEas5xCAYJuSMHjq6y/TZD4DVPROo6x9FEUbjsJbf5dNhTDYmgK63WKdUE2Btn47tN1R6YZDiGML6ofgru5BUd0D6Gffovgye8TFAbTALKkWoVgnnARY0PASC2tuYnHtAHxnJkxji5QAhP2xs3+2j9fWVakDHHwEbc8APDVRLGseSzFWBsj0RbSofCvclVeg7b//x5gdu3f0wlPZiaWhQamxRVoAESev4uV7T8FX2w3Plg64d/Wb0PGS4G3o599JTUXmDOCEkmDY3AsC1xLwBvtRuPMGvE3PoJ+bRPHF91JTEQqQ9XashZ4mA1iPWVkXM20dgf/kC+htr9ldiKP40kepOTH7MppD/m2HoUKvDmHFoYh0NyztiMF/Yhj+1lfQ2yegRxLMMD0It1GrtKkPf0P1i6giOoOVEQO+5iH4T4+xZ59Ny4XUdcFt1Fodfoy5CERGpOYi5T2fUBIehe/4MPSwkbI+uI1asobZErjOrtpcHyPJ9cFt1JI1ypVVV+PJ9cFt1GJfMOwN8gFfH5n/RfvH5HL9BgIsf5Fb3KeZAAAAAElFTkSuQmCC" InformativeScreenshot="35f618b4c51c61ea514f1fbce2dd0052.png" Reference="MjFDm_QtPECNZE8YAIPNTA/bDfxT0NZx0-Zy6Hu9u0AIQ" Selector="&lt;wnd app='outlook.exe' cls='#32770' title='Internet Security Warning' /&gt;" Version="V1">
+                            <uix:TargetApp.Arguments>
+                              <InArgument x:TypeArguments="x:String" />
+                            </uix:TargetApp.Arguments>
+                          </uix:TargetApp>
+                        </uix:NApplicationCard.TargetApp>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </uix:NApplicationCard>
+                    </Sequence>
+                  </uix:NCheckState.IfExists>
+                  <uix:NCheckState.Target>
+                    <uix:TargetAnchorable ContentHash="xkvsFqPQRUCATwODf8wPiQ" DesignTimeRectangle="0, 0, 359, 207" DesignTimeScaleFactor="1" ElementVisibilityArgument="Interactive" FuzzyAccuracy="1" Guid="7b263e6f-ea2c-4249-9ee9-235b9be82a40" ImageAccuracyArgument="1" ImageBase64="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" InformativeScreenshot="ea492ced380885944d31bba69dc04dea.png" Reference="MjFDm_QtPECNZE8YAIPNTA/ULtg5bnhVECrWELL0nMwWw" ScopeSelectorArgument="&lt;wnd app='outlook.exe' cls='#32770' title='Internet Security Warning' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4">
+                      <uix:TargetAnchorable.FuzzySelectorArgument>
+                        <InArgument x:TypeArguments="x:String">
+                          <Literal x:TypeArguments="x:String" Value="" />
+                        </InArgument>
+                      </uix:TargetAnchorable.FuzzySelectorArgument>
+                    </uix:TargetAnchorable>
+                  </uix:NCheckState.Target>
+                </uix:NCheckState>
+              </Sequence>
+            </ui:InterruptibleDoWhile.Body>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:InterruptibleDoWhile>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.OCREngine>
+        <ActivityFunc x:TypeArguments="sd:Image, scg:IEnumerable(scg:KeyValuePair(sd1:Rectangle, x:String))">
+          <ActivityFunc.Argument>
+            <DelegateInArgument x:TypeArguments="sd:Image" Name="Image" />
+          </ActivityFunc.Argument>
+        </ActivityFunc>
+      </uix:NApplicationCard.OCREngine>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="-8, -8, 1382, 744" ContentHash="6DztgtKbo0uBlfhpB0uBeA" FilePath="[OutlookAppPath]" IconBase64="iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALRSURBVFhH7ZfdSxRRGMY3p21Ji3Z3JCMwcjGsLvoPgm4iCAkTyojCNiqRwvZSw0orVqvtAysEofTCJSUyKIqi0CyLFGEoV7aNSohQ6KIggqCbp/OOZ7azs+fY7Ic30QM/mH3n7Ps8M+fMnF3XfzmVduChwUCeMHhb55I0yQne1rlkTXKBt81AjTGoWNv3RUlVAlJ41wwkMbaQGVvIzAneNQMdGYSKNV1xqTkhMyd4V6bGmGG/Isc0PIersg3lnW+k5oTMnODuTLLGmbD52PwF2NQ1ZSI7lyTfAbwtcXSPf4NdVKNz9vEFGxtm14KtbiELRXB3JtsXjOmf3BLmsf2zPUReA+y79ZlbwTy26jQNlkL3ZpJ1Iq8Bhj78ME3uTH5PaUJY00JjxHq2AQor6kJpAazb3fKEJRTqBNVINEas5xCAYJuSMHjq6y/TZD4DVPROo6x9FEUbjsJbf5dNhTDYmgK63WKdUE2Btn47tN1R6YZDiGML6ofgru5BUd0D6Gffovgye8TFAbTALKkWoVgnnARY0PASC2tuYnHtAHxnJkxji5QAhP2xs3+2j9fWVakDHHwEbc8APDVRLGseSzFWBsj0RbSofCvclVeg7b//x5gdu3f0wlPZiaWhQamxRVoAESev4uV7T8FX2w3Plg64d/Wb0PGS4G3o599JTUXmDOCEkmDY3AsC1xLwBvtRuPMGvE3PoJ+bRPHF91JTEQqQ9XashZ4mA1iPWVkXM20dgf/kC+htr9ldiKP40kepOTH7MppD/m2HoUKvDmHFoYh0NyztiMF/Yhj+1lfQ2yegRxLMMD0It1GrtKkPf0P1i6giOoOVEQO+5iH4T4+xZ59Ny4XUdcFt1Fodfoy5CERGpOYi5T2fUBIehe/4MPSwkbI+uI1asobZErjOrtpcHyPJ9cFt1JI1ypVVV+PJ9cFt1GJfMOwN8gFfH5n/RfvH5HL9BgIsf5Fb3KeZAAAAAElFTkSuQmCC" InformativeScreenshot="d5c2dfa419c81d1e8d28ec9f32d863ac.png" Reference="MjFDm_QtPECNZE8YAIPNTA/H08KXZnCn0uoBwcph06K_A" Selector="&lt;wnd app='outlook.exe' cls='rctrl_renwnd32' title='*Outlook' /&gt;" Version="V1">
+          <uix:TargetApp.Arguments>
+            <InArgument x:TypeArguments="x:String" />
+          </uix:TargetApp.Arguments>
+          <uix:TargetApp.WorkingDirectory>
+            <InArgument x:TypeArguments="x:String" />
+          </uix:TargetApp.WorkingDirectory>
+        </uix:TargetApp>
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+  </Sequence>
+</Activity>

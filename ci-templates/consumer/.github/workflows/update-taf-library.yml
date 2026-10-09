@@ -1,0 +1,232 @@
+name: Update TAF.Library dependency
+
+# ============================================================
+# PURPOSE
+# ============================================================
+# Copy this file into every consumer process repository.
+#
+# Triggered by the TAF.Library CI (repository_dispatch
+# "taf-library-published") after a new library version is
+# published. It:
+#   1. Checks out the branch that matches the library branch
+#   2. Bumps "TAF.Library" in project.json to the new version
+#   3. Restores + packs the process (compile check only,
+#      nothing is published)
+#   4. Opens / updates a PR  deps/taf-library-<branch>
+#   5. Enables auto-merge on Development; UAT and Production
+#      wait for a CODEOWNERS approval
+#
+# After the PR is merged, the Automation Ops pipeline
+# (runMode ForEachCommit) builds, publishes and updates the
+# Orchestrator process.
+# ============================================================
+
+on:
+  repository_dispatch:
+    types: [taf-library-published]
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "TAF.Library version to apply (example: 1.1.120)"
+        required: true
+        type: string
+      branch:
+        description: "Target branch (Development / UAT / Production)"
+        required: true
+        type: choice
+        options: [Development, UAT, Production]
+
+concurrency:
+  group: update-taf-library-${{ github.event.client_payload.branch || inputs.branch }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CLI_VERSION: "1.202.1"
+  NODE_VERSION: "22"
+  LIBRARY_NAME: "TAF.Library"
+
+  # Branches where the bump PR is merged automatically once the
+  # required checks pass. Others need a human approval.
+  AUTO_MERGE_BRANCHES: "Development"
+
+jobs:
+  bump:
+    name: Bump TAF.Library to ${{ github.event.client_payload.version || inputs.version }}
+    runs-on: windows-latest
+    environment: >-
+      ${{
+        (github.event.client_payload.branch || inputs.branch) == 'Production'
+          && 'uipath-prod'
+          || (github.event.client_payload.branch || inputs.branch) == 'UAT'
+          && 'uipath-uat'
+          || 'uipath-dev'
+      }}
+
+    env:
+      VERSION: ${{ github.event.client_payload.version || inputs.version }}
+      TARGET_BRANCH: ${{ github.event.client_payload.branch || inputs.branch }}
+      PROJECT_FILE: ${{ github.event.client_payload.projectPath || 'project.json' }}
+      SOURCE_RUN_URL: ${{ github.event.client_payload.runUrl || '' }}
+
+    steps:
+
+      - name: Validate input
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if ! echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "ERROR: '$VERSION' is not a valid SemVer version"
+            exit 1
+          fi
+
+          case "$TARGET_BRANCH" in
+            Development|UAT|Production) ;;
+            *) echo "ERROR: unsupported branch '$TARGET_BRANCH'"; exit 1 ;;
+          esac
+
+          # Production must never receive a pre-release library.
+          if [ "$TARGET_BRANCH" = "Production" ] && echo "$VERSION" | grep -q -- '-'; then
+            echo "ERROR: pre-release version '$VERSION' cannot be applied to Production"
+            exit 1
+          fi
+
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Checkout ${{ env.TARGET_BRANCH }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Bump dependency in project.json
+        id: bump
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          CURRENT=$(jq -r --arg n "$LIBRARY_NAME" '.dependencies[$n] // empty' "$PROJECT_FILE")
+
+          if [ -z "$CURRENT" ]; then
+            echo "ERROR: $LIBRARY_NAME is not a dependency in $PROJECT_FILE"
+            exit 1
+          fi
+
+          NEW="[$VERSION]"
+          echo "Current: $CURRENT"
+          echo "New    : $NEW"
+
+          if [ "$CURRENT" = "$NEW" ]; then
+            echo "Already on $NEW - nothing to do."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Keep the file's original line endings so the PR diff
+          # only shows the version change.
+          TMP=$(mktemp)
+          jq --indent 2 --arg n "$LIBRARY_NAME" --arg v "$NEW" \
+            '.dependencies[$n] = $v' "$PROJECT_FILE" | tr -d '\r' > "$TMP"
+          if grep -q $'\r' "$PROJECT_FILE"; then
+            sed -i 's/$/\r/' "$TMP"
+          fi
+          mv "$TMP" "$PROJECT_FILE"
+
+          git --no-pager diff -- "$PROJECT_FILE"
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "previous=$CURRENT" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js
+        if: steps.bump.outputs.changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install UiPath CLI
+        if: steps.bump.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.npm-global"
+          npm config set prefix "$HOME/.npm-global"
+          echo "$HOME/.npm-global/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.npm-global/bin:$PATH"
+          npm install -g "@uipath/cli@${CLI_VERSION}"
+          uip --version
+
+      # Login is needed so restore can read the Orchestrator
+      # library feed where TAF.Library is published.
+      - name: Authenticate to UiPath
+        if: steps.bump.outputs.changed == 'true'
+        shell: bash
+        env:
+          UIPATH_CLIENT_ID: ${{ secrets.UIPATH_CLIENT_ID }}
+          UIPATH_CLIENT_SECRET: ${{ secrets.UIPATH_CLIENT_SECRET }}
+          UIPATH_TENANT: ${{ vars.UIPATH_TENANT }}
+          UIPATH_URL: ${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}
+        run: |
+          set -euo pipefail
+          uip login \
+            --authority "$UIPATH_URL" \
+            --client-id env.UIPATH_CLIENT_ID \
+            --client-secret env.UIPATH_CLIENT_SECRET \
+            --tenant "$UIPATH_TENANT"
+
+      - name: Compile check (restore + pack, not published)
+        if: steps.bump.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROJECT_DIR=$(dirname "$PROJECT_FILE")
+          OUT="$RUNNER_TEMP/compile-check"
+          mkdir -p "$OUT"
+          uip rpa restore "$PROJECT_DIR"
+          uip rpa pack "$PROJECT_DIR" "$OUT" --skip-analyze
+          echo "✓ Process compiles against $LIBRARY_NAME $VERSION"
+
+      - name: Create or update pull request
+        id: cpr
+        if: steps.bump.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          base: ${{ env.TARGET_BRANCH }}
+          branch: deps/taf-library-${{ env.TARGET_BRANCH }}
+          delete-branch: true
+          add-paths: ${{ env.PROJECT_FILE }}
+          commit-message: "chore(deps): bump ${{ env.LIBRARY_NAME }} to ${{ env.VERSION }}"
+          title: "chore(deps): bump ${{ env.LIBRARY_NAME }} to ${{ env.VERSION }} (${{ env.TARGET_BRANCH }})"
+          labels: dependencies, taf-library
+          body: |
+            Automated dependency update created by the TAF.Library CI.
+
+            | | |
+            |---|---|
+            | Library | `${{ env.LIBRARY_NAME }}` |
+            | From | `${{ steps.bump.outputs.previous }}` |
+            | To | `[${{ env.VERSION }}]` |
+            | Target branch | `${{ env.TARGET_BRANCH }}` |
+            | Library build | ${{ env.SOURCE_RUN_URL }} |
+
+            The process was restored and packed against the new version in CI (compile check passed).
+            After merge, the Automation Ops pipeline for this branch publishes the process and updates it in Orchestrator.
+
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-number && contains(env.AUTO_MERGE_BRANCHES, env.TARGET_BRANCH)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PR: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --auto --squash
+          echo "Auto-merge enabled for PR #$PR"

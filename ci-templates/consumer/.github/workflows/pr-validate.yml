@@ -1,0 +1,99 @@
+name: PR Validate
+
+# ============================================================
+# PURPOSE
+# ============================================================
+# Copy this file into every consumer process repository and
+# mark the "pr-validate" check as REQUIRED in the branch
+# ruleset for Development / UAT / Production.
+#
+# Every PR (including the bot's TAF.Library bump PRs) must
+# restore and pack successfully before it can be merged.
+# Publishing and updating the Orchestrator process is done by
+# the Automation Ops pipeline after merge, not here.
+# ============================================================
+
+on:
+  pull_request:
+    branches: [Development, UAT, Production]
+
+permissions:
+  contents: read
+
+env:
+  CLI_VERSION: "1.202.1"
+  NODE_VERSION: "22"
+  PROJECT_FILE: "project.json"
+
+jobs:
+  pr-validate:
+    name: pr-validate
+    runs-on: windows-latest
+    environment: >-
+      ${{
+        github.base_ref == 'Production'
+          && 'uipath-prod'
+          || github.base_ref == 'UAT'
+          && 'uipath-uat'
+          || 'uipath-dev'
+      }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Validate project.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          jq empty "$PROJECT_FILE"
+
+          # Production must only reference stable TAF.Library versions.
+          if [ "${{ github.base_ref }}" = "Production" ]; then
+            LIB=$(jq -r '.dependencies["TAF.Library"] // empty' "$PROJECT_FILE")
+            if echo "$LIB" | grep -q -- '-'; then
+              echo "ERROR: Production cannot depend on pre-release TAF.Library $LIB"
+              exit 1
+            fi
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install UiPath CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.npm-global"
+          npm config set prefix "$HOME/.npm-global"
+          echo "$HOME/.npm-global/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.npm-global/bin:$PATH"
+          npm install -g "@uipath/cli@${CLI_VERSION}"
+          uip --version
+
+      - name: Authenticate to UiPath
+        shell: bash
+        env:
+          UIPATH_CLIENT_ID: ${{ secrets.UIPATH_CLIENT_ID }}
+          UIPATH_CLIENT_SECRET: ${{ secrets.UIPATH_CLIENT_SECRET }}
+          UIPATH_TENANT: ${{ vars.UIPATH_TENANT }}
+          UIPATH_URL: ${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}
+        run: |
+          set -euo pipefail
+          uip login \
+            --authority "$UIPATH_URL" \
+            --client-id env.UIPATH_CLIENT_ID \
+            --client-secret env.UIPATH_CLIENT_SECRET \
+            --tenant "$UIPATH_TENANT"
+
+      - name: Restore and pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/pr-validate"
+          mkdir -p "$OUT"
+          uip rpa restore .
+          uip rpa pack . "$OUT" --skip-analyze
+          echo "✓ Process restores and compiles"

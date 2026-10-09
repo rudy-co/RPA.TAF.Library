@@ -1,0 +1,57 @@
+{
+  "DisplayName": "CheckAlreadyLoginDataMining_Classic",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "out_IsAlreadyLogin",
+      "DisplayName": "out_IsAlreadyLogin",
+      "Category": null,
+      "Tooltip": "Check if already login into data mining or not.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_TimeoutCheckLogin",
+      "DisplayName": "in_TimeoutCheckLogin",
+      "Category": null,
+      "Tooltip": "The number in seconds before timeout of check state already login in data mining or not. The default values is 3 seconds.",
+      "Placeholder": "3",
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "out_UI_DataMining",
+      "DisplayName": "out_UI_DataMining",
+      "Category": null,
+      "Tooltip": "The browser UI of data mining.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_UrlDataMining",
+      "DisplayName": "in_UrlDataMining",
+      "Category": null,
+      "Tooltip": "The url of data mining.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

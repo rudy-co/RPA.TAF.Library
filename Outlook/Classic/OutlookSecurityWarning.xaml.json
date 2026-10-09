@@ -1,0 +1,33 @@
+{
+  "DisplayName": "OutlookSecurityWarning",
+  "Tooltip": "Process to handle alert window of internet security warning in outlook application.\r\n\nPre condition: n/a.\nPost action: Successfully to handle alert window of internet security warning in outlook application.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "TimeoutCheckWarning",
+      "DisplayName": "TimeoutCheckWarning",
+      "Category": null,
+      "Tooltip": "Timeout of check outlook alert security warning is exists or not. The default value is 5 seconds.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "OutlookAppPath",
+      "DisplayName": "OutlookAppPath",
+      "Category": null,
+      "Tooltip": "Path location of outlook application.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

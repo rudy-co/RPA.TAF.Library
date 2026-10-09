@@ -1,0 +1,57 @@
+{
+  "DisplayName": "SelectRoleConfinsR3",
+  "Tooltip": "Process of selects the specified user office and role in the confins R3 system. The activity fails when the specified role or office is unavailable or the expected post-selection state cannot be confirmed.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "MaxRetrySelectRole",
+      "DisplayName": "MaxRetrySelectRole",
+      "Category": "Options",
+      "Tooltip": "Maximum number of retries process select role in confins R3. The default value is 3.",
+      "Placeholder": "3",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "IntervalRetrySelectRole",
+      "DisplayName": "IntervalRetrySelectRole",
+      "Category": "Options",
+      "Tooltip": "Interval in seconds to retries process select role in confins R3. The default value is 5 seconds.",
+      "Placeholder": "5",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "Office",
+      "DisplayName": "Office",
+      "Category": "Input",
+      "Tooltip": "Office in select role confins R3.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "Role",
+      "DisplayName": "Role",
+      "Category": "Input",
+      "Tooltip": "Job title in select role confins R3.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

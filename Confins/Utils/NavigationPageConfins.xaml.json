@@ -1,0 +1,93 @@
+{
+  "DisplayName": "NavigationPageConfins",
+  "Tooltip": "Navigate to Confins Process Navigation to access the required business process",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "TimeoutNavigationPage",
+      "DisplayName": "TimeoutNavigationPage",
+      "Category": "Optionals",
+      "Tooltip": "Timeout in seconds to check element success navigation page in confins. The default value is 30.",
+      "Placeholder": "30",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "MaxRetryNavigationPage",
+      "DisplayName": "MaxRetryNavigationPage",
+      "Category": "Optionals",
+      "Tooltip": "Maximum number of retries process navigation page in confins. The default value is 3.",
+      "Placeholder": "3",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "IntervalRetryNavigationPage",
+      "DisplayName": "IntervalRetryNavigationPage",
+      "Category": "Optionals",
+      "Tooltip": "Interval in seconds to retries process navigation page in  confins. The default value is 10 seconds.",
+      "Placeholder": "10",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "MainMenuName",
+      "DisplayName": "MainMenuName",
+      "Category": "Input",
+      "Tooltip": "Main menu name to click in menu confins.",
+      "Placeholder": "Cashier Transactions",
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "SubMenuName",
+      "DisplayName": "SubMenuName",
+      "Category": "Input",
+      "Tooltip": "Sub of the menu name to click  after main menu in confins.",
+      "Placeholder": "Cashier Transactions",
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "DropdownMenuName",
+      "DisplayName": "DropdownMenuName",
+      "Category": "Input",
+      "Tooltip": "Menu name to select in dropdown menu in confins.",
+      "Placeholder": "ACCOUNT MAINTENANCE",
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "PageHeaderName",
+      "DisplayName": "PageHeaderName",
+      "Category": "Input",
+      "Tooltip": "The header name in page to identify is successfully to navigate or not.",
+      "Placeholder": "CASHIER TRANSACTIONS",
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

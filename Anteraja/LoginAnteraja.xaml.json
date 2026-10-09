@@ -1,0 +1,105 @@
+{
+  "DisplayName": "LoginAnteraja",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "UrlAnteraja",
+      "DisplayName": "UrlAnteraja",
+      "Category": "Input",
+      "Tooltip": "Url to login into bisnis anteraja.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "Username",
+      "DisplayName": "Username",
+      "Category": "Input",
+      "Tooltip": "Username for login into bisnis anteraja.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "Password",
+      "DisplayName": "Password",
+      "Category": "Input",
+      "Tooltip": "Password for login into bisnis anteraja.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "MaxRetryLogin",
+      "DisplayName": "MaxRetryLogin",
+      "Category": "Options",
+      "Tooltip": "Maximum number of retries process login into bisnis anteraja. The default value is 2.",
+      "Placeholder": null,
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "IntervalRetryLogin",
+      "DisplayName": "IntervalRetryLogin",
+      "Category": "Options",
+      "Tooltip": "Interval in seconds to retries process login into bisnis anteraja. The default value is 5 seconds.",
+      "Placeholder": null,
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "BrowserTitle",
+      "DisplayName": "BrowserTitle",
+      "Category": "Options",
+      "Tooltip": "Title of the browser for login proxy. It can be emptied if not using proxy for browsing.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "ProxyUsername",
+      "DisplayName": "ProxyUsername",
+      "Category": "Options",
+      "Tooltip": "Username for login proxy. It can be emptied if not using proxy for browsing.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "ProxyPassword",
+      "DisplayName": "ProxyPassword",
+      "Category": "Options",
+      "Tooltip": "Password for login proxy. It can be emptied if not using proxy for browsing.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

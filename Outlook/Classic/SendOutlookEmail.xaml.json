@@ -1,0 +1,129 @@
+{
+  "DisplayName": "SendOutlookEmail",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "EmailName",
+      "DisplayName": "EmailName",
+      "Category": null,
+      "Tooltip": "The email name used just for logging purposed. Given it with meaning purposed of the email.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "OutlookAppPath",
+      "DisplayName": "OutlookAppPath",
+      "Category": null,
+      "Tooltip": "Path location of outlook application to send email.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "EmailTO",
+      "DisplayName": "EmailTO",
+      "Category": null,
+      "Tooltip": "The email TO received. If there want  multiple TO received then make sure used ';'.\n\nFor example: abc@gmail.com; xyz@gmail.com;",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "EmailSubject",
+      "DisplayName": "EmailSubject",
+      "Category": null,
+      "Tooltip": "Subject of the email.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "EmailBodyMessage",
+      "DisplayName": "EmailBodyMessage",
+      "Category": null,
+      "Tooltip": "Body message of the email that want to be sended.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "EmailCC",
+      "DisplayName": "EmailCC",
+      "Category": "Optional",
+      "Tooltip": "The email CC. If there is no CC in email just leave it with the default value '-'. If there want  multiple to CC then make sure used ';'.\n\nFor example: abc@gmail.com; xyz@gmail.com;",
+      "Placeholder": "-",
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "EmailAttachmentCollection",
+      "DisplayName": "EmailAttachmentCollection",
+      "Category": "Optional",
+      "Tooltip": "List collection of files that want to be attached in send email.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "MailAccount",
+      "DisplayName": "MailAccount",
+      "Category": "Optional",
+      "Tooltip": "The outlook mail account used for sended an email.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "TimeoutSendEmail",
+      "DisplayName": "TimeoutSendEmail",
+      "Category": "Optional",
+      "Tooltip": "The timeout in seconds of process send email. The default value is 30 seconds",
+      "Placeholder": "30",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "ExceptionMessageSendEmail",
+      "DisplayName": "ExceptionMessageSendEmail",
+      "Category": "Outputs",
+      "Tooltip": "Exception message if send email is failed and thrown an exception.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

@@ -1,0 +1,489 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="LoginAnteraja" this:LoginAnteraja.IntervalRetryLogin="5" this:LoginAnteraja.MaxRetryLogin="2" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:ss="clr-namespace:System.Security;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Interval in seconds to retries process login into bisnis anteraja. The default value is 5 seconds." Name="IntervalRetryLogin" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Url to login into bisnis anteraja." Name="UrlAnteraja" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Maximum number of retries process login into bisnis anteraja. The default value is 2." Name="MaxRetryLogin" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Username for login into bisnis anteraja." Name="Username" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Password for login into bisnis anteraja." Name="Password" Type="InArgument(ss:SecureString)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Title of the browser for login proxy. It can be emptied if not using proxy for browsing." Name="BrowserTitle" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Username for login proxy. It can be emptied if not using proxy for browsing." Name="ProxyUsername" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Password for login proxy. It can be emptied if not using proxy for browsing." Name="ProxyPassword" Type="InArgument(ss:SecureString)" />
+  </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:Annotation.AnnotationText>UPTF00000088eyI8SGVscExpbms+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8SW5pdGlhbFRvb2x0aXA+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8VmVyc2lvbj5rX19CYWNraW5nRmllbGQiOjF9</sap2010:Annotation.AnnotationText>
+  <sap2010:WorkflowViewState.IdRef>LoginAnteraja_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Activities.Runtime.Collections</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Platform.SyncObjects</x:String>
+      <x:String>UiPath.UIAutomationNext.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models.CV</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Services.RuntimeAnalyze</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Models</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Process for login into bisnis anteraja.&#xA;&#xA;Pre condition: n/a .&#xA;Post action: Successfully to login into bisnis anteraja." DisplayName="LoginAnteraja" sap:VirtualizedContainerService.HintSize="1116,7261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="s:DateTime" sap2010:Annotation.AnnotationText="Start date time used for calculation duration of process login into bisnis anteraja." Name="StartProcess" />
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Check if login into bisnis anteraja is success or not." Name="IsSuccessLogin" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Error message of login into bisnis anteraja is occurred." Name="ErrorMessageLogin" />
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Check if already login into bisnis anteraja or not." Default="False" Name="IsAlreadyLogin" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Get text of username for validation type username is already correct or not. If not correct then will retry the process type username." Name="GetUsername" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message - Started - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1116,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started process login bisnis anteraja&quot;]" />
+    <ui:RetryScope LogRetriedExceptions="{x:Null}" RetriedExceptionsLogLevel="{x:Null}" DisplayName="Retry Scope LoginAnteraja" sap:VirtualizedContainerService.HintSize="1116,6590" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="[MaxRetryLogin]" RetryInterval="[TimeSpan.FromSeconds(IntervalRetryLogin)]">
+      <ui:RetryScope.ActivityBody>
+        <ActivityAction>
+          <Sequence DisplayName="Action Retry Scope LoginAnteraja" sap:VirtualizedContainerService.HintSize="1114,6303.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <TryCatch DisplayName="Try Catch LoginAnteraja" sap:VirtualizedContainerService.HintSize="1080,6243.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+              <TryCatch.Try>
+                <Sequence DisplayName="Try LoginAnteraja" sap:VirtualizedContainerService.HintSize="1078,5334" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Assign StartProcess - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1044,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_3">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="s:DateTime">[StartProcess]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="s:DateTime">[DateTime.Now]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Assign DisplayName="Assign IsSuccessLogin False - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1044,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_4">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Boolean">[IsSuccessLogin]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <uix:NCheckState DisplayName="Check App State Already Login? - LoginAnterAja" EnableIfNotExists="False" HealingAgentBehavior="Disabled" sap:VirtualizedContainerService.HintSize="1044,516" sap2010:WorkflowViewState.IdRef="NCheckState_1" Version="V4">
+                    <uix:NCheckState.IfExists>
+                      <Sequence DisplayName="Target Appears State Already Login? - LoginAnteraja" sap:VirtualizedContainerService.HintSize="450,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <Assign DisplayName="Assign IsAlreadyLogin - LoginAnteraja" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_5">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:Boolean">[IsAlreadyLogin]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                      </Sequence>
+                    </uix:NCheckState.IfExists>
+                    <uix:NCheckState.Target>
+                      <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/dashboard" CVScreenId="c0fa95b0-c6a7-46c1-b42f-97129a12fdea" ContentHash="TOEC9Id3G0eOE7YPm_gFXQ" DesignTimeRectangle="222, 175, 1140, 30" DesignTimeScaleFactor="1" ElementType="Text" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl tag='DIV' visibleinnertext='Dashboard' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;webctrl tag='DIV' visibleinnertext='Dashboard' type='' class='bold-20' /&gt;" Guid="75ada92e-df7d-4055-8885-e47b70639ab0" ImageAccuracyArgument="1" ImageBase64="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" InformativeScreenshot="6c2475d662784a5690b345f80772a4a2.png" Reference="MjFDm_QtPECNZE8YAIPNTA/MZwQrN7pGUCKGhqNOWbveQ" ScopeSelectorArgument="&lt;html app='msedge.exe' title='bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                    </uix:NCheckState.Target>
+                  </uix:NCheckState>
+                  <Switch x:TypeArguments="x:Boolean" DisplayName="Switch IsAlreadyLogin - LoginAnteraja" Expression="[IsAlreadyLogin]" sap:VirtualizedContainerService.HintSize="1044,4404.666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+                    <Sequence x:Key="True" DisplayName="Case True IsAlreadyLogin - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1042,404" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <Assign DisplayName="Assign IsSuccessLogin - Case True IsAlreadyLogin - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1008,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_6">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Boolean">[IsSuccessLogin]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                      <ui:LogMessage DisplayName="Log Message - Case True IsAlreadyLogin - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1008,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Already login into bisnis anteraja&quot;]" />
+                    </Sequence>
+                    <Sequence x:Key="False" DisplayName="Case False IsAlreadyLogin - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1042,3727.3333333333335" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Login Screen - LoginAnteraja" HealingAgentBehavior="Job" sap:VirtualizedContainerService.HintSize="1008,3667.3333333333335" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" IsIncognito="True" OpenMode="Always" ScopeGuid="3aaee78d-0446-4c02-b332-d1c14e772600" Version="V2" WindowResize="Maximize">
+                        <uix:NApplicationCard.Body>
+                          <ActivityAction x:TypeArguments="x:Object">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Do Login Screen - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1006,3472.6666666666665" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke HandleRestorePages Workflow - LoginAnteraja" sap:VirtualizedContainerService.HintSize="972,177.33333333333334" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Utils\HandleRestorePages.xaml">
+                                <ui:InvokeWorkflowFile.Arguments>
+                                  <InArgument x:TypeArguments="x:Int32" x:Key="in_TimeoutExistsRestore">1</InArgument>
+                                </ui:InvokeWorkflowFile.Arguments>
+                              </ui:InvokeWorkflowFile>
+                              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke LoginProxy Workflow - LoginAnteraja" sap:VirtualizedContainerService.HintSize="972,177.33333333333334" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Proxy\LoginProxy.xaml">
+                                <ui:InvokeWorkflowFile.Arguments>
+                                  <InArgument x:TypeArguments="x:String" x:Key="Username">[ProxyUsername]</InArgument>
+                                  <InArgument x:TypeArguments="ss:SecureString" x:Key="Password">[ProxyPassword]</InArgument>
+                                  <InArgument x:TypeArguments="x:String" x:Key="BrowserTitle">[BrowserTitle]</InArgument>
+                                </ui:InvokeWorkflowFile.Arguments>
+                              </ui:InvokeWorkflowFile>
+                              <ui:RetryScope LogRetriedExceptions="{x:Null}" RetriedExceptionsLogLevel="{x:Null}" DisplayName="Retry Scope Type Into Username - LoginAnteraja" sap:VirtualizedContainerService.HintSize="972,1053.3333333333333" sap2010:WorkflowViewState.IdRef="RetryScope_2" NumberOfRetries="3" RetryInterval="00:00:05">
+                                <ui:RetryScope.ActivityBody>
+                                  <ActivityAction>
+                                    <Sequence DisplayName="Action Retry Scope Type Into Username - LoginAnteraja" sap:VirtualizedContainerService.HintSize="486,846" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                      <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Private: Type Into Username - LoginAnteraja" EmptyFieldMode="SingleLine" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="452,248" sap2010:WorkflowViewState.IdRef="NTypeInto_1" InteractionMode="HardwareEvents" ScopeIdentifier="3aaee78d-0446-4c02-b332-d1c14e772600" Text="[Username]" Version="V4">
+                                        <uix:NTypeInto.Target>
+                                          <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/login" ContentHash="cDDeiPkYy0miUp4Kx8-oMw" DesignTimeRectangle="519, 534, 336, 18" DesignTimeScaleFactor="1" ElementType="InputBox" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl id='mat-input-?' tag='INPUT' aaname='Email atau Username' type='text' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;webctrl id='mat-input-?' tag='INPUT' aaname='Email atau Username' type='text' /&gt;" Guid="9ac2243b-b3b9-443a-b90b-cea505708e83" ImageAccuracyArgument="0.9" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAVQAAAAWCAYAAACfdWRmAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAVQSURBVHhe7Zo/SCNZHMdTWKScMoWFdgoWF7DYhWtW2CZgoXDFBrYQ2WJZrlislrCdWEjYQpYtJFgcuMVCLIRsp42gheAWghaCTv6ZmETHGPfG04Tv/d7My2RmMpsx2YTluN8HAvPmzbz5zW/IZ96b9wL4paSQD8zj0tg+RXFiHMUTo8AwDPOfwyHUy5cBnAXaf+nlU3nEIPl5oTaO47j4KguDYDPqnQvaf/YyJQsMw/xfcQn1V/YQf1KoGvV2lQDym7I8CFioDMN0oCuh3i6PI79xhNJMyOy9BsM439bQyK4jPyx7tMOzKB3LE4hGeRfFmXGoQ7L+twVcabLSGPJHHz3k13fiyI0psuccRObtFu6MmgJKz2T78meKVcftl3lkQkFz/1AIudUjNIxzzPtxC9Jrn8UjhXq/v4hMUMZC+SjuWTeM7xsUT7NOMfPXxMjv2hbOx8z6vNHbphxNxFHdXmid58hhp7wQRsy7uHobNuubOdB2Ufhd5kU+Rzud4mQYxpuuhaqGIige6ka5kf2I7FAYmedRVMrGLugbUagjMdyYReAkhfJ2AXVZ1NciUF9vSal1J9TbzQSuCua18aChPK3QH90sCgwhOXqoOq4/J1GrNYu7OB95iousWRyMUE9xMTmK8z0zzvpJku7flFFj5w3UyUXcyHjqhSTyoSmUbPGoI1GUTuQ9GlCOggrSc0noD6Ks42aJ5Dizjnuj3icvFJuqiBchvfhEWSNhj4wi82TKeo71Q3oBDM2iIuPyi5NhGG8e8Q21KTz5h393IEsmlRcBZD/bBXCE4lgE5abE3DwkkaMe161R6E6obhokb7vg2oXaTm2pdczghNqStp3rP0m0theAQMSTXS0Y2175NXPkzie9GIKt5+LGkRcR23RLvgJxzfbnGEJh39z2i5NhGG+67qG6hSIk7JSYW4w07N7+iMKrCDLDIeotkaR7Fap+iutPMeSnw1BFW0POCTMvoTbKB6gsLyD3jCRC54iXxGCFCtxtzkMNjiO3nGr1jj0+SzR/zTa9r23PURORK9u+TnlxxSbo/Bz942QYxpsBC1XH5ZwC9XmMhr1H0AsF/KOTIHoRao2OVRRk36/j+rBAbWmouwQn4nPEchKnoewo8p9SqJ7ROWUdNdsxXvfjLTWJuN7SkSzYENKac0pLSO5yOYqMEkJ2TbSn01A8iPMds9oL72v7CNUvL10L1T9OhmG8GbBQTRlUjG9/kv0Y1F6E+nUeZy+S1oSSoPou5IhHxGeP5fuHsEuAQhatePXVqbb7uXodbNtnIb4tuobPAhFH5sMPztESyAbf4Jo2jXjfewhZ0pNQ/fLStVD942QYxpsBC1VstyZoGrUDFJ/Q8LGTUI+Bum7/Jiuh3mZ6ZAFVWXX/TUyktA/5cxtimE89NZJ4Q8hkOmFN5vz9JQqVhq5WvIcxpCcWcdOhTSciRgU56nFak2w7MTongrKcBL/7axbpPxLWUL++t0DXkPdr9JjDKH7TTQFSL7Y8E7a+XfYkVL+89CBUvzgZhvHmEZNS9JN/yO6FSlI7TiBnW1JV3Ev8YMhP7a88NY5TX6XaeoGC2irJimQhjknPxFFdcw75xcJ+IZOzUAQl4/paa7mQWE70Kokr26SUwNlmAhWqb5eaDU0sAxuVbVKsk/OoOGblNVRXaKhvWzZlX0Z2txdv5SMYRm5l11ri1JNQiY556UWoRKc4GYbxxiFUhmEYpndYqAzDMH2ChcowDNMnWKgMwzB9goXKMAzTJ1ioDMMwfYKFyjAM0ydYqAzDMH2ChcowDNMnWKgMwzB9goXKMAzTF4B/AfgWwS1T7tzMAAAAAElFTkSuQmCC" InformativeScreenshot="fe50676d5799949ab347b390180dd705.png" Reference="MjFDm_QtPECNZE8YAIPNTA/kCAD4pRMO0yVmos_pK1MtA" ScopeSelectorArgument="&lt;html app='msedge.exe' title='*bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                                        </uix:NTypeInto.Target>
+                                      </uix:NTypeInto>
+                                      <uix:NGetText DisplayName="Get Text Username - LoginAnteraja" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="452,143.33333333333334" sap2010:WorkflowViewState.IdRef="NGetText_1" ScopeIdentifier="3aaee78d-0446-4c02-b332-d1c14e772600" TextString="[GetUsername]" Version="V4">
+                                        <uix:NGetText.Target>
+                                          <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/login" ContentHash="cDDeiPkYy0miUp4Kx8-oMw" DesignTimeRectangle="519, 534, 336, 18" DesignTimeScaleFactor="1" ElementType="InputBox" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl id='mat-input-?' tag='INPUT' aaname='Email atau Username' type='text' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;webctrl id='mat-input-?' tag='INPUT' aaname='Email atau Username' type='text' /&gt;" Guid="9ac2243b-b3b9-443a-b90b-cea505708e83" ImageAccuracyArgument="0.9" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAVQAAAAWCAYAAACfdWRmAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAVQSURBVHhe7Zo/SCNZHMdTWKScMoWFdgoWF7DYhWtW2CZgoXDFBrYQ2WJZrlislrCdWEjYQpYtJFgcuMVCLIRsp42gheAWghaCTv6ZmETHGPfG04Tv/d7My2RmMpsx2YTluN8HAvPmzbz5zW/IZ96b9wL4paSQD8zj0tg+RXFiHMUTo8AwDPOfwyHUy5cBnAXaf+nlU3nEIPl5oTaO47j4KguDYDPqnQvaf/YyJQsMw/xfcQn1V/YQf1KoGvV2lQDym7I8CFioDMN0oCuh3i6PI79xhNJMyOy9BsM439bQyK4jPyx7tMOzKB3LE4hGeRfFmXGoQ7L+twVcabLSGPJHHz3k13fiyI0psuccRObtFu6MmgJKz2T78meKVcftl3lkQkFz/1AIudUjNIxzzPtxC9Jrn8UjhXq/v4hMUMZC+SjuWTeM7xsUT7NOMfPXxMjv2hbOx8z6vNHbphxNxFHdXmid58hhp7wQRsy7uHobNuubOdB2Ufhd5kU+Rzud4mQYxpuuhaqGIige6ka5kf2I7FAYmedRVMrGLugbUagjMdyYReAkhfJ2AXVZ1NciUF9vSal1J9TbzQSuCua18aChPK3QH90sCgwhOXqoOq4/J1GrNYu7OB95iousWRyMUE9xMTmK8z0zzvpJku7flFFj5w3UyUXcyHjqhSTyoSmUbPGoI1GUTuQ9GlCOggrSc0noD6Ks42aJ5Dizjnuj3icvFJuqiBchvfhEWSNhj4wi82TKeo71Q3oBDM2iIuPyi5NhGG8e8Q21KTz5h393IEsmlRcBZD/bBXCE4lgE5abE3DwkkaMe161R6E6obhokb7vg2oXaTm2pdczghNqStp3rP0m0theAQMSTXS0Y2175NXPkzie9GIKt5+LGkRcR23RLvgJxzfbnGEJh39z2i5NhGG+67qG6hSIk7JSYW4w07N7+iMKrCDLDIeotkaR7Fap+iutPMeSnw1BFW0POCTMvoTbKB6gsLyD3jCRC54iXxGCFCtxtzkMNjiO3nGr1jj0+SzR/zTa9r23PURORK9u+TnlxxSbo/Bz942QYxpsBC1XH5ZwC9XmMhr1H0AsF/KOTIHoRao2OVRRk36/j+rBAbWmouwQn4nPEchKnoewo8p9SqJ7ROWUdNdsxXvfjLTWJuN7SkSzYENKac0pLSO5yOYqMEkJ2TbSn01A8iPMds9oL72v7CNUvL10L1T9OhmG8GbBQTRlUjG9/kv0Y1F6E+nUeZy+S1oSSoPou5IhHxGeP5fuHsEuAQhatePXVqbb7uXodbNtnIb4tuobPAhFH5sMPztESyAbf4Jo2jXjfewhZ0pNQ/fLStVD942QYxpsBC1VstyZoGrUDFJ/Q8LGTUI+Bum7/Jiuh3mZ6ZAFVWXX/TUyktA/5cxtimE89NZJ4Q8hkOmFN5vz9JQqVhq5WvIcxpCcWcdOhTSciRgU56nFak2w7MTongrKcBL/7axbpPxLWUL++t0DXkPdr9JjDKH7TTQFSL7Y8E7a+XfYkVL+89CBUvzgZhvHmEZNS9JN/yO6FSlI7TiBnW1JV3Ev8YMhP7a88NY5TX6XaeoGC2irJimQhjknPxFFdcw75xcJ+IZOzUAQl4/paa7mQWE70Kokr26SUwNlmAhWqb5eaDU0sAxuVbVKsk/OoOGblNVRXaKhvWzZlX0Z2txdv5SMYRm5l11ri1JNQiY556UWoRKc4GYbxxiFUhmEYpndYqAzDMH2ChcowDNMnWKgMwzB9goXKMAzTJ1ioDMMwfYKFyjAM0ydYqAzDMH2ChcowDNMnWKgMwzB9goXKMAzTF4B/AfgWwS1T7tzMAAAAAElFTkSuQmCC" InformativeScreenshot="fe50676d5799949ab347b390180dd705.png" Reference="MjFDm_QtPECNZE8YAIPNTA/kCAD4pRMO0yVmos_pK1MtA" ScopeSelectorArgument="&lt;html app='msedge.exe' title='*bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                                        </uix:NGetText.Target>
+                                      </uix:NGetText>
+                                      <If Condition="[Not GetUsername.Equals(Username)]" DisplayName="If Invalid Username - LoginAnteraja" sap:VirtualizedContainerService.HintSize="452,394.6666666666667" sap2010:WorkflowViewState.IdRef="If_2">
+                                        <If.Then>
+                                          <Sequence DisplayName="Then Invalid Username - LoginAnteraja" sap:VirtualizedContainerService.HintSize="450,174.66666666666666" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                            <Throw DisplayName="Throw Exception Invalid Username - LoginAnteraja" Exception="[New SystemException(&quot;Input username is not completed&quot;)]" sap:VirtualizedContainerService.HintSize="416,114.66666666666667" sap2010:WorkflowViewState.IdRef="Throw_4" />
+                                          </Sequence>
+                                        </If.Then>
+                                        <If.Else>
+                                          <Sequence DisplayName="Else Valid Username - LoginAnteraja" sap:VirtualizedContainerService.HintSize="416,89" sap2010:WorkflowViewState.IdRef="Sequence_17">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                          </Sequence>
+                                        </If.Else>
+                                      </If>
+                                    </Sequence>
+                                  </ActivityAction>
+                                </ui:RetryScope.ActivityBody>
+                                <ui:RetryScope.Condition>
+                                  <ActivityFunc x:TypeArguments="x:Boolean" />
+                                </ui:RetryScope.Condition>
+                              </ui:RetryScope>
+                              <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Private: Type Into Password - LoginAnteraja" EmptyFieldMode="SingleLine" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="972,248" sap2010:WorkflowViewState.IdRef="NTypeInto_2" ScopeIdentifier="3aaee78d-0446-4c02-b332-d1c14e772600" SecureText="[Password]" Version="V4">
+                                <uix:NTypeInto.Target>
+                                  <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/login" ContentHash="Pp_0qpD8WUeEFPYlrwOQEw" DesignTimeRectangle="519, 496, 312, 18" DesignTimeScaleFactor="1" ElementType="InputBoxPassword" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl id='mat-input-1' tag='INPUT' type='password' aaname='Kata Sandi' /&gt;" FuzzyAccuracy="1" FuzzySelectorArgument="&lt;webctrl id='mat-input-1' tag='INPUT' type='password' aaname='Kata Sandi' /&gt;" Guid="8e4aff05-d5f0-422d-9185-8f5407dfddbf" ImageAccuracyArgument="0.9" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAATwAAAAWCAYAAABdRSDiAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOOSURBVHhe7ZrPa9tYFIX714qCNlqohJohDohQb+qCCXhRNcSEyWK8qGfh0KqLlKIuDEFD0EKGYiiB2hhDQARBEJgzV9ZT/COyFCjdSOcDYV9J70le+ONc6b0AIYTUBApPsfjchH2jihsb2pmvCkJIVdgSnn/ahDNXRcbMgWXa8CNVlyHnO7/rijsPvWMDmqbJpqPRdTC5V8f+EFvCI4RUj/8+lAhv5qJtWnBmqi4j8mEb2m+KY4rBawO2lxk2xuK6h/Y/gXz7c1B4hFQZDx9evSoQXiIvkd1gshPt7idwuk0YL5P0pUG3+ghWp4Rw36b7si0TSPTDQfdwndgskdf+wCjX1SRRqiqP4vlk/JEkwnEflp7ex/oeFcsQ3rkF/XG8j8nlTkt7ypaWkMow+4Q3e4W3nMI5NkUAOVqa+3DH4WPair53YPwdqCo/KS1uXAShGrGM4J4YuBin5VNCXLV02Nf7lVg8nwhPN9A88xAtkzrG9NKC1h093vPtxwaM0+y4/AbPRkOXa1J4hFSW+eWbPOFF8mlK8mli+JxWdumtEtVClc9qDUUwzc/ZiBzuffQPdUlmNq425LqXrfmShNjB6EGVKya40LPUmHzfPR5jdLLRilN4hFSQ+a7wTLTfNWDKnz30ezCOhpiqFLQmxmJ8hcF5B9aBCdOQtrBMePECwdcBeicWTBmTtMOFwlsRI/zpov/WhK63tlvrwvnyWuIFnCO172GEzqH8rtX+NVO2tIRUnh3hibxajpJcDP9MWsPLTTWk+4x3A4zGU4RhiChOn5ntFd6Dj55hoP3vCMGvUMZEiEUo5cJbE/8awnrZTVNZ6XwUHiEkn/0vLRJWb103W1uRjcjE20x9Pwcwi4QnSVF776ki5fajuV94dwuET1LlFMNDdW+l85UIjy0tIbWlWHhCJH9+8zhLfYk4GuhP1FO1h1sMWzktbeKje0l/yZi5g+brPrIh8e0Qrb0tbYzgPEmQDoK77MmdtLbXNgzjApNnzVcmvPyXFubGW2UKj5BqUio80QG89wasL0ooMxfdg3S5h3bQhTNxt1raZOFxIiDN7MBVc02/dWEm+2SMmSwi/l7U0ibr7vpo/6Wn15DNOO7Bu1OHheL5yoX3ZFnKuYeALS0hlWdLeIQQUmUoPEJIbaDwCCG1gcIjhNQGCo8QUhsoPEJIbaDwCCG1gcIjhNQGCo8QUhsoPEJITQD+B8ppCwtvBuu/AAAAAElFTkSuQmCC" InformativeScreenshot="35690afd3e563222599712aa85ff7559.png" Reference="MjFDm_QtPECNZE8YAIPNTA/VOkyWye3pUKVhGj7zREPag" ScopeSelectorArgument="&lt;html app='msedge.exe' title='*bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                                </uix:NTypeInto.Target>
+                              </uix:NTypeInto>
+                              <ui:LogMessage DisplayName="Log Message - Input Username and Password - LoginAnteraja" sap:VirtualizedContainerService.HintSize="972,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Input username and password&quot;]" />
+                              <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click Button Masuk - LoginAnteraja" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="972,195.33333333333334" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="3aaee78d-0446-4c02-b332-d1c14e772600" Version="V4">
+                                <uix:NClick.Target>
+                                  <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/login" ContentHash="0Pwc_oPSjkaQZjTtnu-h6w" DesignTimeRectangle="593, 514, 188, 44" DesignTimeScaleFactor="1" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl tag='BUTTON' type='submit' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;webctrl tag='BUTTON' type='submit' class='btn btn-anteraja' aaname=' Masuk ' check:text='Masuk' /&gt;" Guid="d61eb1dd-2820-4e6f-bdab-f602a4855a63" ImageAccuracyArgument="0.9" ImageBase64="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" InformativeScreenshot="e679e5b6b26c817fd95284a155aaf1c6.png" Reference="MjFDm_QtPECNZE8YAIPNTA/jEJaWpX_T0qHFqdTVdp5sQ" ScopeSelectorArgument="&lt;html app='msedge.exe' title='*bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                                </uix:NClick.Target>
+                              </uix:NClick>
+                              <ui:LogMessage DisplayName="Log Message - Click Button Login - LoginAnteraja" sap:VirtualizedContainerService.HintSize="972,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[&quot;Click button login&quot;]" />
+                              <uix:NCheckState DisplayName="Check App State Status Message - LoginAnteraja" EnableIfNotExists="False" HealingAgentBehavior="Disabled" sap:VirtualizedContainerService.HintSize="972,789" sap2010:WorkflowViewState.IdRef="NCheckState_3" Version="V4">
+                                <uix:NCheckState.IfExists>
+                                  <Sequence DisplayName="Target Appears State Status Message - LoginAnteraja" sap:VirtualizedContainerService.HintSize="450,540" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                                    <Sequence.Variables>
+                                      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Attribute to get status message in login screen bisnis anteraja." Name="GetAttributeStatusMessage" />
+                                    </Sequence.Variables>
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <uix:NGetAttributeGeneric x:TypeArguments="x:String" Attribute="innerText" DisplayName="Get Attribute Status Message - LoginAnteraja" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,239" sap2010:WorkflowViewState.IdRef="NGetAttributeGeneric`1_1" Result="[GetAttributeStatusMessage]" Version="V4">
+                                      <uix:NGetAttributeGeneric.Target>
+                                        <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/login" CVScreenId="45ad95b0-ab75-411e-a167-ef1416df047f" ContentHash="JvfFtbO4T0u8bMo7dtEimQ" DesignTimeRectangle="507, 370, 360, 20" DesignTimeScaleFactor="1" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl tag='I' /&gt;&lt;nav up='2' /&gt;&lt;webctrl isleaf='1' tag='SPAN' visibleinnertext='*' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;webctrl tag='I' /&gt;&lt;nav up='2' /&gt;&lt;webctrl isleaf='1' tag='SPAN' visibleinnertext='*' /&gt;" Guid="e3cdfa6a-7588-444b-a7ce-43ce6d1736b8" ImageBase64="" InformativeScreenshot="1a63ba0594f23c38e4c89d4baab3670d.png" Reference="MjFDm_QtPECNZE8YAIPNTA/mB9s1VyImEe7T5ZSDXyuOw" ScopeSelectorArgument="&lt;html app='msedge.exe' title='bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector" Version="V4" />
+                                      </uix:NGetAttributeGeneric.Target>
+                                    </uix:NGetAttributeGeneric>
+                                    <ui:LogMessage DisplayName="Log Message - Get Attribute Status Message - LoginAnteraja" sap:VirtualizedContainerService.HintSize="416,124" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[&quot;Status Message : &quot; + GetAttributeStatusMessage]" />
+                                    <Throw DisplayName="Throw Exception Status Message - LoginAnteraja" Exception="[New SystemException(GetAttributeStatusMessage)]" sap:VirtualizedContainerService.HintSize="416,115" sap2010:WorkflowViewState.IdRef="Throw_1" />
+                                  </Sequence>
+                                </uix:NCheckState.IfExists>
+                                <uix:NCheckState.Target>
+                                  <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/login" CVScreenId="45ad95b0-ab75-411e-a167-ef1416df047f" ContentHash="JvfFtbO4T0u8bMo7dtEimQ" DesignTimeRectangle="507, 370, 360, 20" DesignTimeScaleFactor="1" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl tag='I' /&gt;&lt;nav up='2' /&gt;&lt;webctrl isleaf='1' tag='SPAN' visibleinnertext='*' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;webctrl tag='I' /&gt;&lt;nav up='2' /&gt;&lt;webctrl isleaf='1' tag='SPAN' visibleinnertext='*' /&gt;" Guid="e3cdfa6a-7588-444b-a7ce-43ce6d1736b8" ImageBase64="" InformativeScreenshot="1a63ba0594f23c38e4c89d4baab3670d.png" Reference="MjFDm_QtPECNZE8YAIPNTA/mB9s1VyImEe7T5ZSDXyuOw" ScopeSelectorArgument="&lt;html app='msedge.exe' title='bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector" Version="V4" />
+                                </uix:NCheckState.Target>
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                              </uix:NCheckState>
+                              <uix:NCheckState DisplayName="Check App State Successfully Login - LoginAnteraja" HealingAgentBehavior="Disabled" sap:VirtualizedContainerService.HintSize="972,419" sap2010:WorkflowViewState.IdRef="NCheckState_4" ScopeIdentifier="3aaee78d-0446-4c02-b332-d1c14e772600" Timeout="30" Version="V4">
+                                <uix:NCheckState.IfExists>
+                                  <Sequence sap:VirtualizedContainerService.HintSize="468,169" sap2010:WorkflowViewState.IdRef="Sequence_19">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <Assign DisplayName="Assign IsSuccessLogin - LoginAnteraja" sap:VirtualizedContainerService.HintSize="434,107" sap2010:WorkflowViewState.IdRef="Assign_7">
+                                      <Assign.To>
+                                        <OutArgument x:TypeArguments="x:Boolean">[IsSuccessLogin]</OutArgument>
+                                      </Assign.To>
+                                      <Assign.Value>
+                                        <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                      </Assign.Value>
+                                    </Assign>
+                                  </Sequence>
+                                </uix:NCheckState.IfExists>
+                                <uix:NCheckState.IfNotExists>
+                                  <Sequence DisplayName="Target Does Not Appear Successfully Login - LoginAnteraja" sap:VirtualizedContainerService.HintSize="450,177" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <Throw DisplayName="Throw Exception Successfully Login Not Found - LoginAnteraja" Exception="[New SystemException(&quot;Failed to get element sucess&quot;)]" sap:VirtualizedContainerService.HintSize="416,115" sap2010:WorkflowViewState.IdRef="Throw_2" />
+                                  </Sequence>
+                                </uix:NCheckState.IfNotExists>
+                                <uix:NCheckState.Target>
+                                  <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/dashboard" CVScreenId="c0fa95b0-c6a7-46c1-b42f-97129a12fdea" ContentHash="TOEC9Id3G0eOE7YPm_gFXQ" DesignTimeRectangle="222, 175, 1140, 30" DesignTimeScaleFactor="1" ElementType="Text" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl tag='DIV' visibleinnertext='Dashboard' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;webctrl tag='DIV' visibleinnertext='Dashboard' type='' class='bold-20' /&gt;" Guid="75ada92e-df7d-4055-8885-e47b70639ab0" ImageAccuracyArgument="1" ImageBase64="iVBORw0KGgoAAAANSUhEUgAABHgAAAAiCAYAAAAkqG7BAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAkJSURBVHhe7d3fhxv7H8fx7x8UehFKLkooJ5TGXpwoDb3oKg1lYy+GQ0U50ouNw8reNEqlF43DEcshF5VSshzpxTJLpepIWWZZhl4My1wsr+98Zj5JJtm02vP99ivz9XzwoTvzzmc+M717+fz4lwAAAAAAAJBJHz9+jBsBDwAAAAAAQEYR8AAAAAAAAGQcAQ8AAAAAAEDGEfAAAAAAAABkHAEPAAAAAABAxhHwAAAAAAAAZBwBDwAAAAAAQMZtVsATeJqcuHKPU+2DJ//C3v9fCT31HxWUu76t7ofQXvyK763fVJeB3P2KcrmiGq99exEAAAAAAGy6DQp4Ao33ysrlcutboaTqbkv9d55+eIRyMVHnjnluSa3jwF78iu+t31SXvoaPi9F75LX9+/THf2cAAAAAAPBfsTkBz6UJeEo2zCmrcreqatQqWyUV8jbkiVtelb2hvB+ZPhDwEPAAAAAAAJAhGxnwlPbGCi7tdSs8HamzawMgE0C8nPy4AIKAh4AHAAAAAIAMyUzAEwt9DX+1Ic9PDY3O7fVI8H6g9uOaqreLKlxLQqDiVk2tw8lKX6H8475aO1WVCrO6bTVejDT9bEtSgU3jVS/ut3IzHz+3cKsq5+VYfjr9SNU3D4fqPq1H4yjE9fmbZW3/2tdk1nda6Gn8e0vOw0oylnxR5Xt1NQ4GmqxugRN9n+mbjhrRuMs/JX3nrhVUvt9Q79hPhTGhJodN1R411T3sqbWbvGf+tqPeySx8ir7Bu64a98sqmtlR16Ln3nfU+n2onkPAAwAAAABA1mQr4ImEn3ravm7ClKKaRzawOBuofsNcW98q++68v+B9R9WlJV+LVnCG8k3dPLD5cis/HSW1xjfU5+935KZDnoup+jsmTFlfn7vd0DAdYB01VVpXF7eSGm9tImRm4Tg2AFpp1RdJaOMftVSJQ7AvNQIeAAAAAACyJHMBjwlGuveSIGIWWJiZMMO9umq/tNV768rzAwVnEw32t5U3gUXRsWFJqMlzc0pUTvkHHY1Pozp/qvEfLTk7DXVny6uWApuSnBcjTc5Nn64GT6tJn9eqixOzVgKeypO+XNP3ZzNDp6GyDVMqz1zN5tB4g7oKcX1e1b2B3DM7llfOvL70dLT4DucjtZ2anL2ehsdT+UEg/8NInUdJSJR/2E/2JVoKeIqqPRvasXvJrCN/pOatpP/8naYGJ56CqK/pXz059joBDwAAAAAA2ZK9gCcVYJTNzBx7ea3PYxtmlNWOlyeFcveTk7pKT78WIi0Cm/JvK3Xm3t2VECRVn3/Q03TpWHcTKlXje7mtttx4GJ76D5MlX2Ym0PI4Qnl/Okn4c3N5Gdo64fuOKqbWLFkzk3ii7zOw36fgDJaXkkX8tw0VTf31mvqflm8GJ+2kLwIeAAAAAAAy5f8r4AkDTd8N1XvWUvOJo/rDahJmmL1x3iWV/hsbcOQKqj7uaPg+vX+NNQ9sinLerGyGkxpn+cBu9Dyvz6v2x9Vj3MO/u8myMBOqnEZ3/ZEaN019We11mzJH953Z/ZOV3gJP7pu+OvvROz52VLtXSmYU3agns5RSAU/15WpIE2ryIgmbCjsDeavfOHqP7mp4BQAAAAAANl72Ap51S7QuPA33ayp/YW+ddMBjZs+M9rdtyJO0/FZdnTfTxTPngU1Jrdnv5kK5B8ksoPKBa5+/CISaf60LbIZyitH92bKus4FqZh+hWeCzyvQXBy1FNew+Q+H5WB2nYpd1rWlXAp686ode/NuFQO5vdgbTum+c+i0BDwAAAAAA2ZG5gGexybINX6LfuQfJvjqmFbZqcp621XnWUWe/oWp8UlYq4LHCc1f9vVoq6Cmo9mp1Rs66Y8+/HvDMNztOM5tAx6dkVdX7O/rF+TDZFDq/fWWZVCyYqP2zfb4Ztwm1HiRLukz4Yk68au4n79j+1b5DOuDZNSFNQfU/VwOexdhLT1aXhkUuPfUfmecQ8AAAAAAAkCXZCnjSx6TfsfvZzGe75LX90gY0M/OlUFcDnpnQnyw2Tr5hN2P+xwGPWRa1MobIfG+bopPskxO4am2Z+vWBUHjaVy0OhLbjQCj+Ow61ri7pCo5bKsdj/7aAxzusxe+av7+6V1AkGlc7HhcBDwAAAAAAWZKZgCc8Hamza8MdE4y8tsHIfLbLYjlTzMzseW5P0ZoFPBdTDZ811Hw+kpcKN+YBig1U/pOAJ7fV0jh9HPqlr+GTZNyFndlJV+Zdkz7y97qapB8R1Y/svZy5F40znrVklp8V6hqc2Tojep/eTrLfzrcFPFFfH7qqxqd0ldVeCb3817P9iQh4AAAAAADIko0MeHKFsip3q6raVrllQwwbPlR+G8mfBUAmQPklOSo8d3Nbzed9DV/31XHKNtwxLQl4/KOmSrNrt2pqvohqD7tq3LP9/5yaFfRPA56o5X921DkcahSNo71rwxozhqPFbJ3wU181s0zL1N9p2PreUn1jtsHz57Fat5Pawt2o7z+Gybjvpr7LNwY8Zg+iwex75StqmO/1dqj+QV0lezw7AQ8AAAAAANmymQHPl9rNmjpv15xSdTpUwwYgS+1GWeU4RLEzeKJnTA6bqsT78qy0a2U139i+54FN+bsDnkJxtldOupXkvHJXZiWF8t627R5BV+vrL5fr/aOWKms2kc7frlzZgyc5ZewLAU8k3rD5kQ15llpBxXgp2PrTwAAAAAAAwGbanIAnEp5P5R67a9v0LFC4bl+emQtPo1ctNXZrqjlNdQ7H8oJQwelE7slUfnq/mdCX+7qr1uO6ajuOGvs9jc/ScUYo/5P93ZqUI/SjcZ5EY5rftPXvTX307/dDdfcc1Xcbar0cyl3qe0XgaXzYUfOXaCyz+vP19fHG0AdNOY9qqj9pq3c0VXARyPsQfaMP3jwQCs7M2CfR+yd/r3UZ/e7dYDHOV0NNPofJ/4H5bXqZGQAAAAAA2GgbFfAAAAAAAADg+xHwAAAAAAAAZBwBDwAAAAAAQMYR8AAAAAAAAGQcAQ8AAAAAAEDGEfAAAAAAAABkHAEPAAAAAABAxhHwAAAAAAAAZBwBDwAAAAAAQMYR8AAAAAAAAGRcEvB81L8BGRveLETulWcAAAAASUVORK5CYII=" InformativeScreenshot="6c2475d662784a5690b345f80772a4a2.png" Reference="MjFDm_QtPECNZE8YAIPNTA/MZwQrN7pGUCKGhqNOWbveQ" ScopeSelectorArgument="&lt;html app='msedge.exe' title='bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" />
+                                </uix:NCheckState.Target>
+                              </uix:NCheckState>
+                            </Sequence>
+                          </ActivityAction>
+                        </uix:NApplicationCard.Body>
+                        <uix:NApplicationCard.OCREngine>
+                          <ActivityFunc x:TypeArguments="sd:Image, scg:IEnumerable(scg:KeyValuePair(sd1:Rectangle, x:String))">
+                            <ActivityFunc.Argument>
+                              <DelegateInArgument x:TypeArguments="sd:Image" Name="Image" />
+                            </ActivityFunc.Argument>
+                          </ActivityFunc>
+                        </uix:NApplicationCard.OCREngine>
+                        <uix:NApplicationCard.TargetApp>
+                          <uix:TargetApp Area="-8, -8, 1382, 744" BrowserType="Edge" ContentHash="2PRVq7BZp0mAkgu-Po5LBw" IconBase64="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" InformativeScreenshot="57cfcc16d361809438a682ae23fe8592.jpg" Reference="MjFDm_QtPECNZE8YAIPNTA/8nb6T-mdRkW6gvBk_pST8g" Selector="&lt;html app='msedge.exe' title='*bisnis.aja - Login' /&gt;" Url="[UrlAnteraja]" Version="V1" />
+                        </uix:NApplicationCard.TargetApp>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </uix:NApplicationCard>
+                    </Sequence>
+                  </Switch>
+                </Sequence>
+              </TryCatch.Try>
+              <TryCatch.Catches>
+                <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="474,687" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ActivityAction x:TypeArguments="s:Exception">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Catches Exception LoginAnteraja" sap:VirtualizedContainerService.HintSize="1078,757.3333333333334" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:LogMessage DisplayName="Log Message - Exception LoginAnteraja " sap:VirtualizedContainerService.HintSize="1044,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Error" Message="[&quot;Error occurred in process login bisnis anteraja : &quot; + exception.Message]" />
+                      <Assign DisplayName="Assign IsErrorLogin False Catches Exception - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1044,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_1">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Boolean">[IsSuccessLogin]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                      <Assign DisplayName="Assign ErrorLoginMessage - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1044,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_2">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:String">[ErrorMessageLogin]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:String">["Error occurred in process login bisnis anteraja : " + exception.Message]</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                      <ui:KillProcess AppliesTo="{x:Null}" Process="{x:Null}" ContinueOnError="True" DisplayName="Kill Process Microsoft Edge Catches Exception - LoginAnteraja" sap:VirtualizedContainerService.HintSize="1044,167.33333333333334" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="msedge" />
+                    </Sequence>
+                  </ActivityAction>
+                </Catch>
+              </TryCatch.Catches>
+            </TryCatch>
+          </Sequence>
+        </ActivityAction>
+      </ui:RetryScope.ActivityBody>
+      <ui:RetryScope.Condition>
+        <ActivityFunc x:TypeArguments="x:Boolean">
+          <ui:CheckTrue DisplayName="Check Condition Retry Scope LoginAnteraja" ErrorMessage="[ErrorMessageLogin]" Expression="[IsSuccessLogin.Equals(True)]" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="CheckTrue_1" />
+        </ActivityFunc>
+      </ui:RetryScope.Condition>
+    </ui:RetryScope>
+    <ui:CommentOut DisplayName="Comment Out Validation LoginAnteraja" sap:VirtualizedContainerService.HintSize="1116,57.333333333333336" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="416,108" sap2010:WorkflowViewState.IdRef="Sequence_20">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If Condition="[IsSuccessLogin.Equals(False)]" DisplayName="If Not Success Login - LoginAnteraja" sap:VirtualizedContainerService.HintSize="382,48" sap2010:WorkflowViewState.IdRef="If_1">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <If.Then>
+              <Sequence DisplayName="Then Not Success Login - LoginAnteraja" sap:VirtualizedContainerService.HintSize="416,173" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Throw DisplayName="Throw Exception Login - LoginAnteraja" Exception="[New SystemException(&quot;Error occurred in process login bisnis anteraja : &quot; + ErrorMessageLogin)]" sap:VirtualizedContainerService.HintSize="382,113" sap2010:WorkflowViewState.IdRef="Throw_3" />
+              </Sequence>
+            </If.Then>
+            <If.Else>
+              <Sequence DisplayName="Else Not Success Login - LoginAnteraja" sap:VirtualizedContainerService.HintSize="416,89" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </Sequence>
+            </If.Else>
+          </If>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+    <ui:LogMessage DisplayName="Log Message - Duration LoginAnteraja" sap:VirtualizedContainerService.HintSize="584,173" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Duration of process login bisnis anteraja : &quot; + Split((DateTime.Now-StartProcess).ToString,&quot;.&quot;)(0)]" />
+    <ui:LogMessage DisplayName="Log Message - Finished LoginAnteraja" sap:VirtualizedContainerService.HintSize="584,164" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Finished process login bisnis anteraja&quot;]" />
+  </Sequence>
+</Activity>

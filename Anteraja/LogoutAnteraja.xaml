@@ -1,0 +1,269 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="LogoutAnteraja" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="LogoutAnteraja_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationNext.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models.CV</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Services.RuntimeAnalyze</x:String>
+      <x:String>System.Activities.Runtime.Collections</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Platform.SyncObjects</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>UiPath.UIAutomationNext.Models.ExtractData</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.CodeDom</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Forms</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Core</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>System.Private.Xml</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Process for logout from bisnis anteraja.&#xA;&#xA;Pre condition: Logged in bisnis anteraja.&#xA;Post action: Successfully to logout from bisnis anteraja." DisplayName="LogoutAnteraja" sap:VirtualizedContainerService.HintSize="617,1133" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="s:DateTime" sap2010:Annotation.AnnotationText="Start date time used for calculation duration of process logout from bisnis anteraja." Name="StartProcess" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message - Started LogoutAnteraja" sap:VirtualizedContainerService.HintSize="456,124" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started process logout bisnis anteraja&quot;]" />
+    <Assign DisplayName="Assign StartProcess - LogoutAnteraja" sap:VirtualizedContainerService.HintSize="456,114" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="s:DateTime">[StartProcess]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="s:DateTime">[DateTime.Now]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <TryCatch DisplayName="Try Catch LogoutAnteraja" sap:VirtualizedContainerService.HintSize="456,561" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <TryCatch.Try>
+        <Sequence DisplayName="Try LogoutAnteraja" sap:VirtualizedContainerService.HintSize="1134,1697" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <uix:NCheckState DisplayName="Check App State Icon Right Arrow - LogoutAnteraja" sap:VirtualizedContainerService.HintSize="1100,1637" sap2010:WorkflowViewState.IdRef="NCheckState_2" Version="V4">
+            <uix:NCheckState.IfExists>
+              <Sequence DisplayName="Target Appears State Icon Right Arrow - LogoutAnteraja" sap:VirtualizedContainerService.HintSize="596,1397" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Always" DisplayName="HomePageScreen - LogoutAnteraja" sap:VirtualizedContainerService.HintSize="562,1337" sap2010:WorkflowViewState.IdRef="NApplicationCard_2" InteractionMode="DebuggerApi" OpenMode="Never" ScopeGuid="5430cd0a-0d91-4cc2-972e-3bb672cce26f" Version="V2" WindowResize="Maximize">
+                  <uix:NApplicationCard.Body>
+                    <ActivityAction x:TypeArguments="x:Object">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="Do Home Page Screen - LogoutAnteraja" sap:VirtualizedContainerService.HintSize="528,1095" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click Icon Right Arrow - LogoutAnteraja" sap:VirtualizedContainerService.HintSize="494,225" sap2010:WorkflowViewState.IdRef="NClick_2" KeyModifiers="None" MouseButton="Left" Version="V4">
+                          <uix:NClick.Target>
+                            <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/dashboard" ContentHash="a44r1QxrW0GtyG8G-6j_VQ" DesignTimeRectangle="174, 679, 24, 24" DesignTimeScaleFactor="1" ElementType="Icon" FullSelectorArgument="&lt;webctrl aaname='keyboard_arrow_right' tag='MAT-ICON' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname='keyboard_arrow_right' tag='MAT-ICON' type='' class='icon-primary mat-icon material-icons mat-icon-no-color' check:innerText='keyboard_arrow_right' /&gt;" Guid="c869acca-e94e-47e9-a955-ef09bebfa509" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACBSURBVEhLY/j/9dd/euJRC6mORy2kOh7cFn5v7/n/vv3h/79Y5IjFRFv4e8fS/+/Yyv+/BeJ3FFhKkg9/rZ1LsaUkxyGllpKVaCixlCwLQZhcS6ljYcvd/3+wqMGGB3+Q0jXRUGoZCBNt4YBkfLoWbdTCoxZSHY9aSHVMZwt//QcALtTYruh73dsAAAAASUVORK5CYII=" InformativeScreenshot="d386d51c24d812cb5f39106b36d7ebf1.png" Reference="MjFDm_QtPECNZE8YAIPNTA/cggKE-E5s06D0rLcnKKr7A" ScopeSelectorArgument="&lt;html app='msedge.exe' title='bisnis.aja - Dashboard' /&gt;" SearchSteps="FuzzySelector" Version="V4" Visibility="Interactive" />
+                          </uix:NClick.Target>
+                          <uix:NClick.VerifyOptions>
+                            <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                              <uix:VerifyExecutionOptions.Retry>
+                                <InArgument x:TypeArguments="x:Boolean" />
+                              </uix:VerifyExecutionOptions.Retry>
+                              <uix:VerifyExecutionOptions.Timeout>
+                                <InArgument x:TypeArguments="x:Double" />
+                              </uix:VerifyExecutionOptions.Timeout>
+                            </uix:VerifyExecutionOptions>
+                          </uix:NClick.VerifyOptions>
+                        </uix:NClick>
+                        <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click Menu Keluar - LogoutAnteraja " sap:VirtualizedContainerService.HintSize="494,225" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="5430cd0a-0d91-4cc2-972e-3bb672cce26f" Version="V4">
+                          <uix:NClick.Target>
+                            <uix:TargetAnchorable Accuracy="1" BrowserURL="bisnis.anteraja.id/dashboard" CVScreenId="02352a06-1615-42c2-9bc1-b13a8e8418fb" ContentHash="5_eVpMEWfkqLr6I9FhkrUw" DesignTimeRectangle="174, 623, 149, 48" DesignTimeScaleFactor="1" ElementType="Button" FullSelectorArgument="&lt;webctrl aaname='Keluar' aria-role='menuitem' tag='BUTTON' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;webctrl aaname='Keluar' aria-role='menuitem' tag='BUTTON' type='' check:text='Keluar' /&gt;" Guid="581a6cdd-ad6c-43b2-803b-bff01a6f993b" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAJkAAAA0CAYAAACZ3pqKAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALlSURBVHhe7dtNS2JhGMbx+ap9gOhF2+RGJUjtxawwywxc6CI/gKsoqBDbNBPMhNoshLSFURIh0Yv3cN0dz6gNTAzezEGuH0jH4/Eh6M/9HAO/NBoNqVQqQjRq6Ap9MTIyw8jIHCMjc4yMzDEyMsfIyBwjI3OMjMwxMjLHyMgcIyNzjIzMMTIyx8jIHCMjc4yMzDEyMsfIyBwjI3OeiqxQKEipVHKe0bgYeWS3t7cSCoX0Z8/l5aWsrKzI4+Ojc+bPGNl4Mo/s5uZGotGo/vwbRjaeTCPD5MIEwyTrd3Z2JrOzszI9PS3hcFharZae748Mv8vOzo4eQ6fTkfX1dV335eVF8vm8vh+PxcVFub+/1+uwxtbWlq6/trYmT09Pep7+H7PIMLlSqZQcHh46r7xrNpuysLDgTrbj42PJZDLS7XY/HRmuvb6+lre3N33t4OBAisWiHmONjY0NDZG8wSSyYDAo6XRaY0okEgN/cEyx/f1955nIw8ODxtNutz8dWQ9iw/vwHkwvwBonJyd6TN5gEtnMzIwkk0ndqhDb0dGR86poEBMTEwMPn88nd3d3n44Mx7u7uzI1NaX3e7FYTDY3N/W6/jXIG9zIyuXyh63tX/QmWe8+C9tiJBJxnw9Psn79gdTrddnb29NjwMRbXl7W9bFGNpvVSQYXFxcDk4yReYtJZMP/wsA9U+++CxMLseCeCvDh4PT0VF5fX91AcIxtcGlpyV0H925+v/9DZJiWmGKYcsDIvMdkuxyODCHE43GdOFCr1WR+fl4/GQYCATk/P9dgqtWqfirc3t6W5+dnjW9yclKvw7nV1VVdF2HiXg/b5dzcnORyOXdrZWTeM/LIiIYxMjLHyMgcIyNzjIzMMTIyx8jIHCMjc4yMzDEyMsfIyBwjI3OMjMwxMjLHyMjc78iu6lL5+t05TTQ6jIzMMTIy50bW/MnIyAYiw/dtGRmZGYis+u2Hc5podPAFIUZGpt4ja8ovIQ7nZWTy+LQAAAAASUVORK5CYII=" InformativeScreenshot="2361f8f4b1ca29806df49e2954808abc.png" Reference="MjFDm_QtPECNZE8YAIPNTA/mgjcUDInUECgTHo5TkY_vQ" ScopeSelectorArgument="&lt;html app='msedge.exe' title='bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" Visibility="Interactive" />
+                          </uix:NClick.Target>
+                          <uix:NClick.VerifyOptions>
+                            <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                              <uix:VerifyExecutionOptions.Retry>
+                                <InArgument x:TypeArguments="x:Boolean" />
+                              </uix:VerifyExecutionOptions.Retry>
+                              <uix:VerifyExecutionOptions.Timeout>
+                                <InArgument x:TypeArguments="x:Double" />
+                              </uix:VerifyExecutionOptions.Timeout>
+                            </uix:VerifyExecutionOptions>
+                          </uix:NClick.VerifyOptions>
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </uix:NClick>
+                        <ui:LogMessage DisplayName="Log Message - Click Menu Keluar - LogoutAnteraja" sap:VirtualizedContainerService.HintSize="494,124" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Click keluar&quot;]" />
+                        <uix:NCheckState DisplayName="Check App State Successfuly Logout - LogoutAnteraja" EnableIfExists="False" sap:VirtualizedContainerService.HintSize="494,459" sap2010:WorkflowViewState.IdRef="NCheckState_3" Timeout="10" Version="V4">
+                          <uix:NCheckState.IfNotExists>
+                            <Sequence DisplayName="Target Does Not Appear State Successfully Logout - LogoutAnteraja" sap:VirtualizedContainerService.HintSize="450,177" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <Throw DisplayName="Throw Exception Failed Logout - LogoutAnteraja" Exception="[New SystemException(&quot;Failed to find element success logout&quot;)]" sap:VirtualizedContainerService.HintSize="416,115" sap2010:WorkflowViewState.IdRef="Throw_3" />
+                            </Sequence>
+                          </uix:NCheckState.IfNotExists>
+                          <uix:NCheckState.Target>
+                            <uix:TargetAnchorable Accuracy="0.9" BrowserURL="bisnis.anteraja.id/login" ContentHash="cDDeiPkYy0miUp4Kx8-oMw" DesignTimeRectangle="519, 534, 336, 18" DesignTimeScaleFactor="1" ElementType="InputBox" FullSelectorArgument="&lt;webctrl id='mat-input-?' tag='INPUT' aaname='Email atau Username' type='text' /&gt;" FuzzyAccuracy="0.9" FuzzySelectorArgument="&lt;webctrl id='mat-input-?' tag='INPUT' aaname='Email atau Username' type='text' /&gt;" Guid="9ac2243b-b3b9-443a-b90b-cea505708e83" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAVQAAAAWCAYAAACfdWRmAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAVQSURBVHhe7Zo/SCNZHMdTWKScMoWFdgoWF7DYhWtW2CZgoXDFBrYQ2WJZrlislrCdWEjYQpYtJFgcuMVCLIRsp42gheAWghaCTv6ZmETHGPfG04Tv/d7My2RmMpsx2YTluN8HAvPmzbz5zW/IZ96b9wL4paSQD8zj0tg+RXFiHMUTo8AwDPOfwyHUy5cBnAXaf+nlU3nEIPl5oTaO47j4KguDYDPqnQvaf/YyJQsMw/xfcQn1V/YQf1KoGvV2lQDym7I8CFioDMN0oCuh3i6PI79xhNJMyOy9BsM439bQyK4jPyx7tMOzKB3LE4hGeRfFmXGoQ7L+twVcabLSGPJHHz3k13fiyI0psuccRObtFu6MmgJKz2T78meKVcftl3lkQkFz/1AIudUjNIxzzPtxC9Jrn8UjhXq/v4hMUMZC+SjuWTeM7xsUT7NOMfPXxMjv2hbOx8z6vNHbphxNxFHdXmid58hhp7wQRsy7uHobNuubOdB2Ufhd5kU+Rzud4mQYxpuuhaqGIige6ka5kf2I7FAYmedRVMrGLugbUagjMdyYReAkhfJ2AXVZ1NciUF9vSal1J9TbzQSuCua18aChPK3QH90sCgwhOXqoOq4/J1GrNYu7OB95iousWRyMUE9xMTmK8z0zzvpJku7flFFj5w3UyUXcyHjqhSTyoSmUbPGoI1GUTuQ9GlCOggrSc0noD6Ks42aJ5Dizjnuj3icvFJuqiBchvfhEWSNhj4wi82TKeo71Q3oBDM2iIuPyi5NhGG8e8Q21KTz5h393IEsmlRcBZD/bBXCE4lgE5abE3DwkkaMe161R6E6obhokb7vg2oXaTm2pdczghNqStp3rP0m0theAQMSTXS0Y2175NXPkzie9GIKt5+LGkRcR23RLvgJxzfbnGEJh39z2i5NhGG+67qG6hSIk7JSYW4w07N7+iMKrCDLDIeotkaR7Fap+iutPMeSnw1BFW0POCTMvoTbKB6gsLyD3jCRC54iXxGCFCtxtzkMNjiO3nGr1jj0+SzR/zTa9r23PURORK9u+TnlxxSbo/Bz942QYxpsBC1XH5ZwC9XmMhr1H0AsF/KOTIHoRao2OVRRk36/j+rBAbWmouwQn4nPEchKnoewo8p9SqJ7ROWUdNdsxXvfjLTWJuN7SkSzYENKac0pLSO5yOYqMEkJ2TbSn01A8iPMds9oL72v7CNUvL10L1T9OhmG8GbBQTRlUjG9/kv0Y1F6E+nUeZy+S1oSSoPou5IhHxGeP5fuHsEuAQhatePXVqbb7uXodbNtnIb4tuobPAhFH5sMPztESyAbf4Jo2jXjfewhZ0pNQ/fLStVD942QYxpsBC1VstyZoGrUDFJ/Q8LGTUI+Bum7/Jiuh3mZ6ZAFVWXX/TUyktA/5cxtimE89NZJ4Q8hkOmFN5vz9JQqVhq5WvIcxpCcWcdOhTSciRgU56nFak2w7MTongrKcBL/7axbpPxLWUL++t0DXkPdr9JjDKH7TTQFSL7Y8E7a+XfYkVL+89CBUvzgZhvHmEZNS9JN/yO6FSlI7TiBnW1JV3Ev8YMhP7a88NY5TX6XaeoGC2irJimQhjknPxFFdcw75xcJ+IZOzUAQl4/paa7mQWE70Kokr26SUwNlmAhWqb5eaDU0sAxuVbVKsk/OoOGblNVRXaKhvWzZlX0Z2txdv5SMYRm5l11ri1JNQiY556UWoRKc4GYbxxiFUhmEYpndYqAzDMH2ChcowDNMnWKgMwzB9goXKMAzTJ1ioDMMwfYKFyjAM0ydYqAzDMH2ChcowDNMnWKgMwzB9goXKMAzTF4B/AfgWwS1T7tzMAAAAAElFTkSuQmCC" InformativeScreenshot="fe50676d5799949ab347b390180dd705.png" Reference="MjFDm_QtPECNZE8YAIPNTA/kCAD4pRMO0yVmos_pK1MtA" ScopeSelectorArgument="&lt;html app='msedge.exe' title='*bisnis.aja*' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V4" Visibility="Interactive" />
+                          </uix:NCheckState.Target>
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </uix:NCheckState>
+                      </Sequence>
+                    </ActivityAction>
+                  </uix:NApplicationCard.Body>
+                  <uix:NApplicationCard.TargetApp>
+                    <uix:TargetApp Area="1358, -108, 1382, 744" BrowserType="Edge" ContentHash="7mRwmdkXMkyeSDHfkBzQfw" IconBase64="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" InformativeScreenshot="1ec9fab23e313c5c656142d2c61f2e05.jpg" Reference="MjFDm_QtPECNZE8YAIPNTA/TsbCmF86OESaLSNHrOnXRg" Selector="&lt;html app='msedge.exe' title='bisnis.aja*' /&gt;" Title="bisnis.aja - Dashboard" Version="V1" />
+                  </uix:NApplicationCard.TargetApp>
+                </uix:NApplicationCard>
+              </Sequence>
+            </uix:NCheckState.IfExists>
+            <uix:NCheckState.IfNotExists>
+              <Sequence DisplayName="Target Not Appears State Icon Right Arrow - LogoutAnteraja" sap:VirtualizedContainerService.HintSize="450,175" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Throw DisplayName="Throw Exception Find Element Logout - LogoutAnteraja" Exception="[New SystemException(&quot;Failed find element to logout&quot;)]" sap:VirtualizedContainerService.HintSize="416,115" sap2010:WorkflowViewState.IdRef="Throw_4" />
+              </Sequence>
+            </uix:NCheckState.IfNotExists>
+            <uix:NCheckState.Target>
+              <uix:TargetAnchorable BrowserURL="bisnis.anteraja.id/dashboard" ContentHash="a44r1QxrW0GtyG8G-6j_VQ" DesignTimeRectangle="174, 679, 24, 24" DesignTimeScaleFactor="1" ElementType="Icon" FullSelectorArgument="&lt;webctrl aaname='keyboard_arrow_right' tag='MAT-ICON' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname='keyboard_arrow_right' tag='MAT-ICON' type='' class='icon-primary mat-icon material-icons mat-icon-no-color' check:innerText='keyboard_arrow_right' /&gt;" Guid="c869acca-e94e-47e9-a955-ef09bebfa509" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACBSURBVEhLY/j/9dd/euJRC6mORy2kOh7cFn5v7/n/vv3h/79Y5IjFRFv4e8fS/+/Yyv+/BeJ3FFhKkg9/rZ1LsaUkxyGllpKVaCixlCwLQZhcS6ljYcvd/3+wqMGGB3+Q0jXRUGoZCBNt4YBkfLoWbdTCoxZSHY9aSHVMZwt//QcALtTYruh73dsAAAAASUVORK5CYII=" InformativeScreenshot="d386d51c24d812cb5f39106b36d7ebf1.png" Reference="MjFDm_QtPECNZE8YAIPNTA/cggKE-E5s06D0rLcnKKr7A" ScopeSelectorArgument="&lt;html app='msedge.exe' title='bisnis.aja - Dashboard' /&gt;" SearchSteps="FuzzySelector" Version="V4" Visibility="Interactive" />
+            </uix:NCheckState.Target>
+          </uix:NCheckState>
+        </Sequence>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="422,367" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Catches Exception LogoutAnteraja" sap:VirtualizedContainerService.HintSize="416,297" sap2010:WorkflowViewState.IdRef="Sequence_3">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Message - Exception LogoutAnteraja" sap:VirtualizedContainerService.HintSize="382,124" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Error" Message="[&quot;Error occurred in process logout bisnis anteraja : &quot; + exception.Message]" />
+              <Throw DisplayName="Throw Exception LogoutAnteraja" Exception="[New SystemException(&quot;Error occurred in process logout bisnis anteraja : &quot; + exception.Message)]" sap:VirtualizedContainerService.HintSize="382,113" sap2010:WorkflowViewState.IdRef="Throw_1" />
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+    </TryCatch>
+    <ui:LogMessage DisplayName="Log Message - Duration LogoutAnteraja" sap:VirtualizedContainerService.HintSize="456,124" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Duration of process logout bisnis anteraja : &quot; + Split((DateTime.Now-StartProcess).ToString,&quot;.&quot;)(0)]" />
+    <ui:LogMessage DisplayName="Log Message - Finished LogoutAnteraja" sap:VirtualizedContainerService.HintSize="456,115" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Finished process logout bisnis anteraja&quot;]" />
+  </Sequence>
+</Activity>

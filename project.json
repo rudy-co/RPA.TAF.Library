@@ -1,0 +1,88 @@
+{
+  "name": "TAF.Library",
+  "projectId": "35fb1c0e-a1a7-4f24-8ea6-0aeecd8a7d89",
+  "description": "Library of process automation for TAF",
+  "main": "NewActivity.xaml",
+  "dependencies": {
+    "UiPath.Excel.Activities": "3.5.3",
+    "UiPath.IntegrationService.Activities": "1.30.0",
+    "UiPath.Mail.Activities": "2.9.10",
+    "UiPath.MicrosoftOffice365.Activities": "3.10.10",
+    "UiPath.System.Activities": "26.6.1",
+    "UiPath.Testing.Activities": "25.10.2",
+    "UiPath.UIAutomation.Activities": "26.10.0"
+  },
+  "webServices": [],
+  "entitiesStores": [],
+  "schemaVersion": "4.0",
+  "studioVersion": "24.10.9.0",
+  "projectVersion": "1.1.19",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": true,
+    "supportsPersistence": false,
+    "workflowSerialization": "DataContract",
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": true,
+    "pipType": "ChildSession",
+    "robotVersion": "26.0.193"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Library",
+    "libraryOptions": {
+      "privateWorkflows": [
+        "Outlook/GetOTP.xaml",
+        "Confins/Login_Logout_And_SelectRole/InputOTP.xaml",
+        "Utils/InitAllSettings.xaml",
+        "Confins/Login_Logout_And_SelectRole/InputOtpConfins.xaml",
+        "DataMining/InputOtpDataMining.xaml",
+        "NewConfins/Login_Logout_And_SelectRole/InputOtpNewConfins.xaml",
+        "NewConfins/Login_Logout_And_SelectRole/AlreadyLoginNewConfins.xaml",
+        "NewConfins/Login_Logout_And_SelectRole/ProcessLoginNewConfins.xaml",
+        "NewConfins/Login_Logout_And_SelectRole/NotYetLoginNewConfins.xaml",
+        "NewConfins/Modern/Login_Logout_And_SelectRole/AlreadyLoginNewConfins.xaml",
+        "NewConfins/Utils/AlreadyLoginNewConfins.xaml",
+        "NewConfins/Utils/InputOtpConfins.xaml",
+        "NewConfins/Utils/CheckAlreadyLoginKintocore_Classic.xaml",
+        "NewConfins/Utils/CheckAlreadyLoginNewConfins_Classic.xaml",
+        "Confins.R3/Utils/Classic/CheckAlreadyLoginNewConfins_Classic.xaml",
+        "Confins.R3/Utils/Classic/CheckAlreadyLoginConfinsR3.xaml",
+        "Confins.R3/Utils/Classic/CheckAlreadyLoginConfinsR3_Classic.xaml",
+        "Confins.R3/Classic/Login_Logout_And_SelectRole/InputOtpConfinsR3_Classic.xaml",
+        "Confins.R3/Modern/Login_Logout_And_SelectRole/InputOtpConfins.xaml",
+        "DataMining/Modern/InputOtpDataMining.xaml",
+        "DataMining/Utils/Classic/CheckAlreadyLoginDataMining_Classic.xaml",
+        "Confins.R3/Login_Logout_And_SelectRole/InputOtpConfinsR3.xaml",
+        "Sharepoint_Test.xaml",
+        "DataMining/Utils/Classic/CheckAlreadyLoginDataMining.xaml",
+        "Confins.R3/Utils/CheckAlreadyLoginConfinsR3.xaml",
+        "DataMining/Utils/CheckAlreadyLoginDataMining.xaml",
+        "Confins/Utils/InputOtpConfins.xaml",
+        "Test/Config_extended.xlsx",
+        "Test/Config.xlsx",
+        "NewConfins/Utils/CheckAlreadyLoginConfins.xaml",
+        "NewConfins/Utils/GetAlertMessageLoginConfins.xaml"
+      ]
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [],
+    "saveToCloud": false
+  },
+  "expressionLanguage": "VisualBasic",
+  "isTemplate": false,
+  "templateProjectData": {},
+  "publishData": {},
+  "targetFramework": "Windows"
+}

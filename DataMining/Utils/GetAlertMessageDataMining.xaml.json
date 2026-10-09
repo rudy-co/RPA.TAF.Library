@@ -1,0 +1,33 @@
+{
+  "DisplayName": "GetAlertMessageDataMining",
+  "Tooltip": "Retrieves the status message from alert dialog in data mining.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "GetStatusMessage",
+      "DisplayName": "GetStatusMessage",
+      "Category": "Output",
+      "Tooltip": "Attribute to get the status message dialog in data mining.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "TimeoutCheckAlertMessage",
+      "DisplayName": "TimeoutCheckAlertMessage",
+      "Category": "Optional",
+      "Tooltip": "Timeout in seconds of check app state alert to get the message in data mining. The default value is 5.",
+      "Placeholder": "5",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

@@ -1,0 +1,334 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="InputOTP" this:InputOTP.in_EnableUIFallback="True" this:InputOTP.in_TimeoutCheckPageOTP="30" this:InputOTP.in_OTP_Folder="Inbox" this:InputOTP.in_MaxIterationGetOTP="180" this:InputOTP.in_TimeoutCheckInvalidOTP="30" this:InputOTP.in_TopMailOTP="30" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Optional. Specifies the file system path to the Microsoft Outlook application executable used for UI automation when the UI fallback is enabled." Name="in_OutlookAppPath" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Enables get OTP code with Outlook UI automation as a fallback when the Outlook 365 API method is fails." Name="in_EnableUIFallback" Type="InArgument(x:Boolean)" />
+    <x:Property sap2010:Annotation.AnnotationText="Reference date and time used to validate the OTP email received timestamp. Only emails received within the configured validation criteria relative to this timestamp should be considered for OTP extraction." Name="in_OTP_RequestDateTime" Type="InArgument(s:DateTime)" />
+    <x:Property sap2010:Annotation.AnnotationText="Timeout in seconds of check element exists field input in page OTP confins R3. The default value is 30 seconds." Name="in_TimeoutCheckPageOTP" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Subject mail outlook for filter OTP mail." Name="in_OTP_Subject" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Folder in outlook for unread OTP message. The default value is 'Inbox'." Name="in_OTP_Folder" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Maximum iteration do while to get the OTP mail messages in seconds before thrown an exception. The default value is 180 seconds." Name="in_MaxIterationGetOTP" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Timeout in seconds of check element exists invalid input OTP code. The default value is 30 seconds." Name="in_TimeoutCheckInvalidOTP" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Account outlook for unread the OTP message. If empty/null then used the default account in outlook." Name="in_OTP_MailAccount" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The number of mail messages OTP to be retrieved. The default value is 30." Name="in_TopMailOTP" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="The regex pattern to get OTP." Name="in_OTP_RegexPattern" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The browser UI of confins R3." Name="in_UI_ConfinsR3" Type="InArgument(ui:Browser)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Specifies the name of the orchestrator credential asset used to retrieve authentication credential for microsoft 365. The asset must exist in the specified orchestrator folder." Name="in_ClientSecretAssetName" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Specifies the full orchestrator folder path where should access assets orchestrator resources for get the client secret used in microsoft outlook 365. Leave empty to used the current folder." Name="in_OrchestratorFolderPath" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="The Microsoft Entra Tenant ID for the Microsoft 365 application. Used together with the Client ID to authenticate and authorize access to Microsoft 365 resources." Name="in_TenantID" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Microsoft Entra Application (Client) ID required for Outlook 365 authentication. This value is obtained from the App Registration in Microsoft Entra ID and is used to establish a secure connection to Microsoft 365." Name="in_ClientID" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+  </x:Members>
+  <this:InputOTP.in_OutlookAppPath>
+    <InArgument x:TypeArguments="x:String" />
+  </this:InputOTP.in_OutlookAppPath>
+  <this:InputOTP.in_ClientID>
+    <InArgument x:TypeArguments="x:String" />
+  </this:InputOTP.in_ClientID>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:Annotation.AnnotationText>UPTF00000088eyI8SGVscExpbms+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8SW5pdGlhbFRvb2x0aXA+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8VmVyc2lvbj5rX19CYWNraW5nRmllbGQiOjF9</sap2010:Annotation.AnnotationText>
+  <sap2010:WorkflowViewState.IdRef>InputOTP_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Services.RuntimeAnalyze</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Platform.SyncObjects</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>System.Numerics</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Testing.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
+      <AssemblyReference>NPOI.Core</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <sap:WorkflowViewStateService.ViewState>
+    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+      <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
+    </scg:Dictionary>
+  </sap:WorkflowViewStateService.ViewState>
+  <Sequence DisplayName="InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="685,2225" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Check the input for OTP is exists or not." Name="IsExistsInputOTP" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="The OTP code." Name="OTP" />
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Check if the OTP code is invalid or not." Name="IsExistsInvalidCode" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" Browser="[in_UI_ConfinsR3]" BrowserType="Edge" DisplayName="Attach Confins - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="556,2202" sap2010:WorkflowViewState.IdRef="BrowserScope_1" InformativeScreenshot="99bf9f37bd3d8f3efaec0555b1b8dd04">
+      <ui:BrowserScope.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do Attach Confins - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="522,2032" sap2010:WorkflowViewState.IdRef="Sequence_9">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:UiElementExists DisplayName="Element Exists Field OTP - InputOtpConfinsR3" Exists="[IsExistsInputOTP]" sap:VirtualizedContainerService.HintSize="488,139" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
+              <ui:UiElementExists.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="05b2b658-682d-49d3-9efa-ffa2ca01143a" InformativeScreenshot="3ffcf9d025b22cd3480d7c64458b1edc" Selector="&lt;webctrl class='text-user' tag='P' aaname='Input OTP' /&gt;" TimeoutMS="[in_TimeoutCheckPageOTP * 1000]">
+                  <ui:Target.WaitForReady>
+                    <InArgument x:TypeArguments="ui:WaitForReady" />
+                  </ui:Target.WaitForReady>
+                </ui:Target>
+              </ui:UiElementExists.Target>
+            </ui:UiElementExists>
+            <ui:LogMessage DisplayName="Log Message - Exists Input Field OTP - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="488,175" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Exists input field OTP : &quot; + IsExistsInputOTP.ToString]" />
+            <If Condition="[IsExistsInputOTP.Equals(True)]" DisplayName="If Field OTP is Exists - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="488,1658" sap2010:WorkflowViewState.IdRef="If_1">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Sequence DisplayName="Then Field OTP is Exists - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="486,1438" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke GetOTP_365 Workflow - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="452,177" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Outlook\365\GetOTP_365.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:Boolean" x:Key="EnableUIFallback">[in_EnableUIFallback]</InArgument>
+                      <InArgument x:TypeArguments="s:DateTime" x:Key="OtpRequestDateTime">[in_OTP_RequestDateTime]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="ClientSecretAssetName">[in_ClientSecretAssetName]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="OrchestratorFolderPath">[in_OrchestratorFolderPath]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="OtpRegexPattern">[in_OTP_RegexPattern]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="OtpMailSubject">[in_OTP_Subject]</InArgument>
+                      <OutArgument x:TypeArguments="x:String" x:Key="OtpCode">[OTP]</OutArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="TopGetMail">[in_TopMailOTP]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="ImpersonatedUserEmail">[in_OTP_MailAccount]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="TenantID">[in_TenantID]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="ClientID">[in_ClientID]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="TimeoutMicrosoft365">[in_MaxIterationGetOTP]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="MailFolder">[in_OTP_Folder]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="OutlookAppPath">[in_OutlookAppPath]</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                  <ui:MaximizeWindow Window="{x:Null}" DisplayName="Maximize Window - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="452,57" sap2010:WorkflowViewState.IdRef="MaximizeWindow_1" />
+                  <ui:TypeInto AlterIfDisabled="{x:Null}" ClickBeforeTyping="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" EmptyField="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" DisplayName="Type Into Field OTP - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="452,188" sap2010:WorkflowViewState.IdRef="TypeInto_1" SimulateType="True" Text="[OTP]">
+                    <ui:TypeInto.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="7df97f08-b7b3-4a8c-adad-46c272b15e53" InformativeScreenshot="7294978e1486d182e9b27148d9c04957" Selector="&lt;webctrl id='inputOtp' tag='INPUT' /&gt;">
+                        <ui:Target.TimeoutMS>
+                          <InArgument x:TypeArguments="x:Int32" />
+                        </ui:Target.TimeoutMS>
+                        <ui:Target.WaitForReady>
+                          <InArgument x:TypeArguments="ui:WaitForReady" />
+                        </ui:Target.WaitForReady>
+                      </ui:Target>
+                    </ui:TypeInto.Target>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:TypeInto>
+                  <ui:LogMessage DisplayName="Log Message - InputOtpConfins - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="452,175" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Input OTP&quot;]" />
+                  <ui:Click AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Confirm - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="452,139" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="True">
+                    <ui:Click.CursorPosition>
+                      <ui:CursorPosition Position="Center">
+                        <ui:CursorPosition.OffsetX>
+                          <InArgument x:TypeArguments="x:Int32" />
+                        </ui:CursorPosition.OffsetX>
+                        <ui:CursorPosition.OffsetY>
+                          <InArgument x:TypeArguments="x:Int32" />
+                        </ui:CursorPosition.OffsetY>
+                      </ui:CursorPosition>
+                    </ui:Click.CursorPosition>
+                    <ui:Click.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="9c730110-bcd9-4cc7-99a4-22fa8d7a49d4" InformativeScreenshot="b6f8a7dc397c472572447d0b48435ec3" Selector="&lt;webctrl tag='BUTTON' aaname='CONFIRM' /&gt;">
+                        <ui:Target.TimeoutMS>
+                          <InArgument x:TypeArguments="x:Int32" />
+                        </ui:Target.TimeoutMS>
+                        <ui:Target.WaitForReady>
+                          <InArgument x:TypeArguments="ui:WaitForReady" />
+                        </ui:Target.WaitForReady>
+                      </ui:Target>
+                    </ui:Click.Target>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:Click>
+                  <ui:LogMessage DisplayName="Log Message - Click Confirm - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="452,175" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Click confirm&quot;]" />
+                  <ui:UiElementExists DisplayName="Element Exists Invalid Code - InputOtpConfinsR3" Exists="[IsExistsInvalidCode]" sap:VirtualizedContainerService.HintSize="452,139" sap2010:WorkflowViewState.IdRef="UiElementExists_2">
+                    <ui:UiElementExists.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="fe592e6f-f2be-4395-9d4b-7393cf9d4328" InformativeScreenshot="db5281754fd89cdd4b97c85a252a26cf" Selector="&lt;webctrl tag='LABEL' innertext='Invalid Code' /&gt;" TimeoutMS="[in_TimeoutCheckInvalidOTP * 1000]">
+                        <ui:Target.WaitForReady>
+                          <InArgument x:TypeArguments="ui:WaitForReady" />
+                        </ui:Target.WaitForReady>
+                      </ui:Target>
+                    </ui:UiElementExists.Target>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:UiElementExists>
+                  <If Condition="[IsExistsInvalidCode]" DisplayName="If OTP is Invalid - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="452,328" sap2010:WorkflowViewState.IdRef="If_2">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <If.Then>
+                      <Sequence DisplayName="Then OTP Is Invalid - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="450,108" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:RefreshBrowser Browser="{x:Null}" DisplayName="Refresh OTP Page - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="416,48" sap2010:WorkflowViewState.IdRef="RefreshBrowser_1" />
+                      </Sequence>
+                    </If.Then>
+                    <If.Else>
+                      <Sequence DisplayName="Else OTP Is Invalid - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="450,90" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </Sequence>
+                    </If.Else>
+                  </If>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence DisplayName="Else Field OTP is Exists - InputOtpConfinsR3" sap:VirtualizedContainerService.HintSize="486,90" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+        </ActivityAction>
+      </ui:BrowserScope.Body>
+    </ui:BrowserScope>
+  </Sequence>
+</Activity>

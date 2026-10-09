@@ -1,0 +1,81 @@
+{
+  "DisplayName": "CopyAgingConfins",
+  "Tooltip": "Copy of file aging confins from source folder into the destination folder.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "FileNameAgingConfins",
+      "DisplayName": "FileNameAgingConfins",
+      "Category": null,
+      "Tooltip": "File name of aging confins that want to be copied from source location into destination folder location. The paramater {{Date}} is the date from argument DateAgingConfins.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "DestinationFolderAgingConfins",
+      "DisplayName": "DestinationFolderAgingConfins",
+      "Category": null,
+      "Tooltip": "Path location destination folder of the process copy file aging confins.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "SourceFolderAgingConfins",
+      "DisplayName": "SourceFolderAgingConfins",
+      "Category": null,
+      "Tooltip": "Path location of source aging folder that contains aging confins file for process copy the file into destination folder path.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "DateAgingConfins",
+      "DisplayName": "DateAgingConfins",
+      "Category": "Optional",
+      "Tooltip": "The Date file aging confins that want to be copied into local folder. Date must be in format dd-MM-yyyy. \nExample: 01-01-2025\n\nIf it is empty the default value is the current date.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "OverwriteFileAgingConfins",
+      "DisplayName": "OverwriteFileAgingConfins",
+      "Category": "Optional",
+      "Tooltip": "Flag to overwrite the file aging confins if in destination folder is already exists. The default value is False.",
+      "Placeholder": "False",
+      "Widget": "Toggle",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "ResultCopyAgingConfins",
+      "DisplayName": "ResultCopyAgingConfins",
+      "Category": "Output",
+      "Tooltip": "Result of path location file aging confins that successfully to copied.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

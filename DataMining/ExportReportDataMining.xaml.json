@@ -1,0 +1,69 @@
+{
+  "DisplayName": "ExportReportDataMining",
+  "Tooltip": "Export the specified report from the data mining system, saves the resulting file to the default download folder.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "PageHeaderName",
+      "DisplayName": "PageHeaderName",
+      "Category": "Input",
+      "Tooltip": "The header name in page to identify is successfully to navigate export report or not.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "SearchReportName",
+      "DisplayName": "SearchReportName",
+      "Category": "Input",
+      "Tooltip": "Search report name for export in data mining system.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "MaxRetryExportReport",
+      "DisplayName": "MaxRetryExportReport",
+      "Category": "Optional",
+      "Tooltip": "Maximum number of retries process search report to export in data mining system. The default value is 3.",
+      "Placeholder": "3",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "IntervalRetryExportReport",
+      "DisplayName": "IntervalRetryExportReport",
+      "Category": "Optional",
+      "Tooltip": "Interval in seconds to retries process search report to export in data mining system. The default value is 10 seconds.",
+      "Placeholder": "10",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "TimeoutExportReport",
+      "DisplayName": "TimeoutExportReport",
+      "Category": "Optional",
+      "Tooltip": "Timeout in seconds to check element success navigation page to export report in data mining system. The default value is 30.",
+      "Placeholder": "30",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

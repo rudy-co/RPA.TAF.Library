@@ -1,0 +1,33 @@
+{
+  "DisplayName": "GetAlertMessageConfinsR3",
+  "Tooltip": "Retrieves the status message from alert dialog in confins R3.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "GetStatusMessage",
+      "DisplayName": "GetStatusMessage",
+      "Category": "Output",
+      "Tooltip": "Attribute to get the status message dialog in confins R3.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "TimeoutCheckStatusMessage",
+      "DisplayName": "TimeoutCheckStatusMessage",
+      "Category": "Optional",
+      "Tooltip": "Timeout in seconds of check status message to get the error status message in confins R3. The default value is 5 seconds.",
+      "Placeholder": "5",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

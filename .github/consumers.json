@@ -1,0 +1,13 @@
+{
+  "package": "TAF.Library",
+  "consumers": [
+    {
+      "repo": "rudy-co/RPA.ProcessA",
+      "projectPath": "project.json",
+      "branches": ["Development", "UAT", "Production"],
+      "enabled": false,
+      "owner": "RPA Team",
+      "notes": "Example entry - replace repo with a real consumer and set enabled to true."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+# UiPath Studio local / generated state (per developer machine)
+.local/
+.storage/.runtime/
+
+# Build output
+dist/
+*.nupkg
+*.pdb
+
+# OS / editor noise
+Thumbs.db
+.DS_Store
+.vs/
+.vscode/

@@ -1,0 +1,69 @@
+{
+  "DisplayName": "NavigationPageDataMining",
+  "Tooltip": "Process for navigates to specified page in data mining and verifies that the target page has been loaded successfully.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "UrlPage",
+      "DisplayName": "UrlPage",
+      "Category": "Input",
+      "Tooltip": "URL page to navigate in data mining system. ",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "PageHeaderName",
+      "DisplayName": "PageHeaderName",
+      "Category": "Input",
+      "Tooltip": "The header name in page to identify is successfully to navigate or not.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "MaxRetryNavigationPage",
+      "DisplayName": "MaxRetryNavigationPage",
+      "Category": "Optional",
+      "Tooltip": "Maximum number of retries process navigation page in data mining system. The default value is 3.",
+      "Placeholder": "3",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "IntervalRetryNavigationPage",
+      "DisplayName": "IntervalRetryNavigationPage",
+      "Category": "Optional",
+      "Tooltip": "Interval in seconds to retries process navigation page in data mining system. The default value is 10 seconds.",
+      "Placeholder": "10",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "TimeoutNavigationPage",
+      "DisplayName": "TimeoutNavigationPage",
+      "Category": "Optional",
+      "Tooltip": "Timeout in seconds to check element success navigation page in data mining system. The default value is 30.",
+      "Placeholder": "30",
+      "Widget": "Number",
+      "IsRequired": false,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

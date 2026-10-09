@@ -1,0 +1,492 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="SendOutlook_365" this:SendOutlook_365.EnableUIFallback="True" this:SendOutlook_365.EmailAttachmentCollection="[New List(Of String) From&#x9;{}]" this:SendOutlook_365.TimeoutMicrosoft365="60" this:SendOutlook_365.EmailCc="-" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ss="clr-namespace:System.Security;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uma="clr-namespace:UiPath.MicrosoftOffice365.Activities;assembly=UiPath.MicrosoftOffice365.Activities" xmlns:umafe="clr-namespace:UiPath.MicrosoftOffice365.Activities.Files.Enums;assembly=UiPath.MicrosoftOffice365.Activities" xmlns:umam="clr-namespace:UiPath.MicrosoftOffice365.Activities.Mail;assembly=UiPath.MicrosoftOffice365.Activities" xmlns:ume="clr-namespace:UiPath.MicrosoftOffice365.Enums;assembly=UiPath.MicrosoftOffice365" xmlns:umm="clr-namespace:UiPath.MicrosoftOffice365.Models;assembly=UiPath.MicrosoftOffice365" xmlns:usau="clr-namespace:UiPath.Shared.Activities.Utils;assembly=UiPath.MicrosoftOffice365.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Optional. Specifies the file system path to the Microsoft Outlook application executable used for UI automation when the UI fallback is enabled." Name="OutlookAppPath" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Enables send email with Outlook UI automation as a fallback when the Outlook 365 API method is fails." Name="EnableUIFallback" Type="InArgument(x:Boolean)" />
+    <x:Property sap2010:Annotation.AnnotationText="List collection of files that want to be attached in send email." Name="EmailAttachmentCollection" Type="InArgument(scg:IEnumerable(x:String))" />
+    <x:Property sap2010:Annotation.AnnotationText="Body message of the email that want to be sended." Name="EmailBodyMessage" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Subject of the email." Name="EmailSubject" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Specifies the full orchestrator folder path where should access assets orchestrator resources for get the client secret used in microsoft outlook 365. Leave empty to used the current folder." Name="OrchestratorFolderPath" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The email TO received. If there want  multiple TO received then make sure used ';'.&#xA;&#xA;For example: abc@gmail.com; xyz@gmail.com;" Name="EmailTo" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The maximum time, in seconds, that the Microsoft 365 scope waits for an authentication before timing out. Increase this value if network latency or service response times are higher than expected. The default value is 60 seconds." Name="TimeoutMicrosoft365" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Specifies the name of the orchestrator credential asset used to retrieve authentication credential for microsoft 365. The asset must exist in the specified orchestrator folder." Name="ClientSecretAssetName" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Specifies the email address of the target Microsoft 365 mailbox that the application will access during execution and which to interact." Name="EmailAccount" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The Microsoft Entra Tenant ID for the Microsoft 365 application. Used together with the Client ID to authenticate and authorize access to Microsoft 365 resources." Name="TenantID" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Microsoft Entra Application (Client) ID required for Outlook 365 authentication. This value is obtained from the App Registration in Microsoft Entra ID and is used to establish a secure connection to Microsoft 365." Name="ClientID" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The email CC. If there is no CC in email just leave it with the default value '-'. If there want  multiple to CC then make sure used ';'.&#xA;&#xA;For example: abc@gmail.com; xyz@gmail.com;" Name="EmailCc" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Exception message if send email is failed and thrown an exception." Name="ExceptionMessageSendEmail" Type="OutArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="The email name used just for logging purposed. Given it with meaning purposed of the email." Name="EmailName" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+  </x:Members>
+  <this:SendOutlook_365.OutlookAppPath>
+    <InArgument x:TypeArguments="x:String" />
+  </this:SendOutlook_365.OutlookAppPath>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:Annotation.AnnotationText>UPTF00000160eyI8SGVscExpbms+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8SW5pdGlhbFRvb2x0aXA+a19fQmFja2luZ0ZpZWxkIjoiU2VuZHMgYW4gZW1haWwgdXNpbmcgdGhlIHNwZWNpZmllZCBNaWNyb3NvZnQgb3Vsb29rIDM2NSBtYWlsYm94IHRvIHRoZSBjb25maWd1cmVkIHJlY2VpcGllbnRzLCB3aXRoIHRoZSBzcGVjaWZpZWQgc3ViamVjdCwgYm9keSwgYW5kIG9wdGlvbmFsIENDLCBhbmQgYXR0YWNobWVudHMuIiwiPFZlcnNpb24+a19fQmFja2luZ0ZpZWxkIjoxfQ==</sap2010:Annotation.AnnotationText>
+  <sap2010:WorkflowViewState.IdRef>SendOutlook_365_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models</x:String>
+      <x:String>UiPath.Mail</x:String>
+      <x:String>UiPath.Mail.Activities.Enums</x:String>
+      <x:String>UiPath.Shared.Activities.Utils</x:String>
+      <x:String>System.Activities.Runtime.Collections</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Platform.SyncObjects</x:String>
+      <x:String>UiPath.Mail.Outlook.Activities</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Models</x:String>
+      <x:String>UiPath.Shared.Services.Graph.Mail.Models</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Files.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Enums</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Mail</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities</x:String>
+      <x:String>UiPath.Shared.Activities.ConnectionService.Contracts</x:String>
+      <x:String>Microsoft.Graph</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>System.Numerics</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.MicrosoftOffice365.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Testing.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.MicrosoftOffice365</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>netstandard</AssemblyReference>
+      <AssemblyReference>Microsoft.Graph.Core</AssemblyReference>
+      <AssemblyReference>Microsoft.Graph</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>NPOI.Core</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>System.Linq.Async.Queryable</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.Linq.Parallel</AssemblyReference>
+      <AssemblyReference>System.Linq.Queryable</AssemblyReference>
+      <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Sends an email using the specified Microsoft oulook 365 mailbox to the configured receipients, with the specified subject, body, and optional CC, and attachments." DisplayName="SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="596.6666666666666,4449.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Microsoft Entra ID application client secret used to authenticate the application with Microsoft 365. This value store securely in Azure Key Vault. This secret must be rotated and updated before its configured expiration date." Name="ClientSecret" />
+      <Variable x:TypeArguments="ss:SecureString" sap2010:Annotation.AnnotationText="Secure string of the client secret that get from orchestrator asset credential." Name="SecureClientSecret" />
+      <Variable x:TypeArguments="s:String[]" sap2010:Annotation.AnnotationText="Convert string with characters ';' into a array of string, used to sended email to in outlook 365." Name="ListEmailTo" />
+      <Variable x:TypeArguments="s:String[]" sap2010:Annotation.AnnotationText="Convert string with characters ';' into a array of string, used to sended email CC in outlook 365." Name="ListEmailCc" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message - Started SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="586,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Started process send email &quot; + EmailName]" />
+    <TryCatch DisplayName="Try Catch SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="586,4038" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <TryCatch.Try>
+        <Sequence DisplayName="Try SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="584,2032.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:GetRobotCredential TimeoutMS="{x:Null}" Username="{x:Null}" AssetName="[ClientSecretAssetName]" CacheStrategy="None" DisplayName="Get Credential of Microsoft 365 - GetOTP_365" FolderPath="[OrchestratorFolderPath]" sap:VirtualizedContainerService.HintSize="550,176.66666666666666" sap2010:WorkflowViewState.IdRef="GetRobotCredential_2" Password="[SecureClientSecret]">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:GetRobotCredential>
+          <Assign DisplayName="Assign ClientSecret Microsoft 365 - GetOTP_365" sap:VirtualizedContainerService.HintSize="550,57.333333333333336" sap2010:WorkflowViewState.IdRef="Assign_6">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[ClientSecret]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String" xml:space="preserve">[New System.net.NetworkCredential("",  SecureClientSecret).Password]</InArgument>
+            </Assign.Value>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </Assign>
+          <Assign DisplayName="Assign ListEmailTo - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="550,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_7">
+            <Assign.To>
+              <OutArgument x:TypeArguments="s:String[]">[ListEmailTo]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="s:String[]">[EmailTo.Split(";"c).Select(Function(x) x.Trim()).ToArray()]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <If Condition="[EmailCC.Trim.Equals(&quot;-&quot;)]" DisplayName="If The Email CC is Empty - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="550,594.6666666666666" sap2010:WorkflowViewState.IdRef="If_1">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <If.Then>
+              <Sequence DisplayName="Then The Email CC is Empty - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="450,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign DisplayName="Assign EmailCC - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_1">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[EmailCC]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[EmailCC.Replace("-", "")]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </If.Then>
+            <If.Else>
+              <Sequence DisplayName="Else The Email CC is Empty - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="450,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign DisplayName="Assign ListEmailCc - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_8">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="s:String[]">[ListEmailCc]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="s:String[]">[EmailCc.Split(";"c).Select(Function(x) x.Trim()).ToArray()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </If.Else>
+          </If>
+          <uma:Office365ApplicationScope BrowserItemFriendlyName="{x:Null}" BrowserItemFullPath="{x:Null}" BrowserItemId="{x:Null}" BrowserParentItemId="{x:Null}" BrowserRuntimeItemFriendlyName="{x:Null}" BrowserRuntimeItemFullPath="{x:Null}" BrowserRuntimeItemId="{x:Null}" BrowserRuntimeParentItemId="{x:Null}" CertificateAsBase64="{x:Null}" CertificatePassword="{x:Null}" ConnectionAccountName="{x:Null}" ConnectionId="{x:Null}" Connector="{x:Null}" ContinueOnError="{x:Null}" EmailAddress="{x:Null}" Folder="{x:Null}" ManualRuntimeItemFullPath="{x:Null}" Password="{x:Null}" SecureApplicationSecret="{x:Null}" SecurePassword="{x:Null}" Username="{x:Null}" Account="Please select an account." ApplicationId="[ClientID]" ApplicationSecret="[ClientSecret]" AuthenticationType="ApplicationIdAndSecret" ConfigLocation="PropertiesPanel" DataStoreLocation="DISK" DisplayName="Microsoft 365 Scope - SendOutlookEmail_365" Environment="Global" sap:VirtualizedContainerService.HintSize="550,967.3333333333334" sap2010:WorkflowViewState.IdRef="Office365ApplicationScope_1" ImpersonatedUserEmailAddress="[EmailAccount]" OAuthApplication="UiPath" RuntimeItemInputMode="Browse" TenantId="[TenantID]" Timeout="[TimeoutMicrosoft365 * 1000]" UseConnectionService="False">
+            <uma:Office365ApplicationScope.AuthenticationScopes>
+              <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+            </uma:Office365ApplicationScope.AuthenticationScopes>
+            <uma:Office365ApplicationScope.AuthenticationTypeBackup>
+              <usau:BackupSlot x:TypeArguments="ume:AuthenticationType" StoredValue="ApplicationIdAndSecret">
+                <usau:BackupSlot.BackupValues>
+                  <scg:Dictionary x:TypeArguments="ume:AuthenticationType, scg:List(x:Object)" />
+                </usau:BackupSlot.BackupValues>
+              </usau:BackupSlot>
+            </uma:Office365ApplicationScope.AuthenticationTypeBackup>
+            <uma:Office365ApplicationScope.Body>
+              <ActivityAction x:TypeArguments="x:Object">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="x:Object" Name="ParentScope" />
+                </ActivityAction.Argument>
+                <Sequence DisplayName="Do Microsoft 365 Scope - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="468,739.3333333333334" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="umm:Office365Message[]" sap2010:Annotation.AnnotationText="Get all Microsoft 365 emails." Name="GetAllMails" />
+                    <Variable x:TypeArguments="scg:List(umm:Office365Message)" sap2010:Annotation.AnnotationText="Filter email based subject and received date time." Name="FilteredEmails" />
+                    <Variable x:TypeArguments="umm:Office365Message" sap2010:Annotation.AnnotationText="The OTP email after the filter is success and used this email to get the otp code." Name="FilteredOtpMail" />
+                  </Sequence.Variables>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Delay DisplayName="Delay 1 Seconds - SendOutlookEmail_365" Duration="[TimeSpan.FromSeconds(1)]" sap:VirtualizedContainerService.HintSize="434,124" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                  <umam:SendMail Bcc="{x:Null}" ContinueOnError="{x:Null}" From="{x:Null}" ReplyTo="{x:Null}" Account="[EmailAccount]" AttachmentsCollection="[EmailAttachmentCollection]" AuthScopesInvalid="False" Body="[EmailBodyMessage]" Cc="[ListEmailCc]" DisplayName="Send Mail - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="434,388" sap2010:WorkflowViewState.IdRef="SendMail_1" Importance="Normal" IsBodyHTML="True" IsDraft="False" Subject="[EmailSubject]" To="[ListEmailTo]">
+                    <umam:SendMail.Attachments>
+                      <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+                    </umam:SendMail.Attachments>
+                  </umam:SendMail>
+                  <ui:LogMessage DisplayName="Log Message - Successfully - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="434,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Successfully send email &quot; + EmailName]" />
+                </Sequence>
+              </ActivityAction>
+            </uma:Office365ApplicationScope.Body>
+            <uma:Office365ApplicationScope.RuntimeItemFullPathBackup>
+              <usau:BackupSlot x:TypeArguments="umafe:EDriveItemMode" StoredValue="{x:Null}">
+                <usau:BackupSlot.BackupValues>
+                  <scg:Dictionary x:TypeArguments="umafe:EDriveItemMode, scg:List(x:Object)" />
+                </usau:BackupSlot.BackupValues>
+              </usau:BackupSlot>
+            </uma:Office365ApplicationScope.RuntimeItemFullPathBackup>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </uma:Office365ApplicationScope>
+        </Sequence>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Catches Exception SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="584,1773.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Switch x:TypeArguments="x:Boolean" DisplayName="Switch EnableUiFallback - SendOutlookEmail_365" Expression="[EnableUIFallback.Equals(True)]" sap:VirtualizedContainerService.HintSize="550,1713.3333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+                <Switch.Default>
+                  <Sequence DisplayName="Default EnableUiFallback - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="548,90" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Sequence>
+                </Switch.Default>
+                <Sequence x:Key="True" DisplayName="Case True EnableUiFallback - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="548,1064" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:LogMessage DisplayName="Log Message - Exception EnableUIFallback True - GetOTP_365" sap:VirtualizedContainerService.HintSize="514,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Error" Message="[&quot;Error occurred in send email &quot; + EmailName + &quot; with outlook 365: &quot; + exception.Message]">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:LogMessage>
+                  <TryCatch DisplayName="Try Catch SendOutlookEmail_UI" sap:VirtualizedContainerService.HintSize="514,827.3333333333334" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <TryCatch.Try>
+                      <Sequence DisplayName="Try SendOutlookEmail_UI" sap:VirtualizedContainerService.HintSize="511.3333333333333,228" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="Invoke Workflow SendOutlookEmail_UI - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="477.3333333333333,168" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Outlook\Classic\SendOutlookEmail.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <OutArgument x:TypeArguments="x:String" x:Key="ExceptionMessageSendEmail">[ExceptionMessageSendEmail]</OutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="EmailName">[EmailName]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="EmailCC">[EmailCc]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="EmailTO">[EmailTo]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="OutlookAppPath">[OutlookAppPath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="EmailSubject">[EmailSubject]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="EmailBodyMessage">[EmailBodyMessage]</InArgument>
+                            <InArgument x:TypeArguments="scg:IEnumerable(x:String)" x:Key="EmailAttachmentCollection">[EmailAttachmentCollection]</InArgument>
+                            <InArgument x:TypeArguments="x:Int32" x:Key="TimeoutSendEmail">[TimeoutMicrosoft365]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="MailAccount">[EmailAccount]</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                      </Sequence>
+                    </TryCatch.Try>
+                    <TryCatch.Catches>
+                      <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+                        <ActivityAction x:TypeArguments="s:Exception">
+                          <ActivityAction.Argument>
+                            <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                          </ActivityAction.Argument>
+                          <Sequence DisplayName="Catch Exception SendOutlookEmail_UI" sap:VirtualizedContainerService.HintSize="511.3333333333333,376.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <ui:LogMessage DisplayName="Log Message - Exception - GetOTP_UI" sap:VirtualizedContainerService.HintSize="477.3333333333333,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[&quot;Error occurred in send email &quot; + EmailName + &quot; with outlook application: &quot; + exception.Message]" />
+                            <ui:MultipleAssign DisplayName="Multiple Assign Exception EnableUIFallback True - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="477.3333333333333,140" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+                              <ui:MultipleAssign.AssignOperations>
+                                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+                                    <ui:AssignOperation.To>
+                                      <OutArgument x:TypeArguments="x:String">[ExceptionMessageSendEmail]</OutArgument>
+                                    </ui:AssignOperation.To>
+                                    <ui:AssignOperation.Value>
+                                      <InArgument x:TypeArguments="x:String">["Error occurred in send email " + EmailName + " with outlook application: " + exception.Message]</InArgument>
+                                    </ui:AssignOperation.Value>
+                                  </ui:AssignOperation>
+                                </scg:List>
+                              </ui:MultipleAssign.AssignOperations>
+                            </ui:MultipleAssign>
+                          </Sequence>
+                        </ActivityAction>
+                      </Catch>
+                    </TryCatch.Catches>
+                    <TryCatch.Finally>
+                      <Sequence DisplayName="Finally SendOutlookEmail_UI" sap:VirtualizedContainerService.HintSize="511.3333333333333,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </Sequence>
+                    </TryCatch.Finally>
+                  </TryCatch>
+                </Sequence>
+                <Sequence x:Key="False" DisplayName="Case False EnableUiFallback - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="548,376.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:LogMessage DisplayName="Log Message - Exception EnableUIFallback False - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="514,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Error" Message="[&quot;Error occurred in send email &quot; + EmailName + &quot; with outlook 365: &quot; + exception.Message]" />
+                  <ui:MultipleAssign DisplayName="Multiple Assign Exception EnableUIFallback False - SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="514,140" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+                    <ui:MultipleAssign.AssignOperations>
+                      <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                        <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+                          <ui:AssignOperation.To>
+                            <OutArgument x:TypeArguments="x:String">[ExceptionMessageSendEmail]</OutArgument>
+                          </ui:AssignOperation.To>
+                          <ui:AssignOperation.Value>
+                            <InArgument x:TypeArguments="x:String">["Error occurred in send email " + EmailName + " with outlook 365: " + exception.Message]</InArgument>
+                          </ui:AssignOperation.Value>
+                        </ui:AssignOperation>
+                      </scg:List>
+                    </ui:MultipleAssign.AssignOperations>
+                  </ui:MultipleAssign>
+                </Sequence>
+              </Switch>
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+      <TryCatch.Finally>
+        <Sequence DisplayName="Finally SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="584,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </Sequence>
+      </TryCatch.Finally>
+    </TryCatch>
+    <ui:LogMessage DisplayName="Log Message - Finished SendOutlookEmail_365" sap:VirtualizedContainerService.HintSize="586,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Finished process send email &quot; + EmailName]" />
+  </Sequence>
+</Activity>

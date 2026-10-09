@@ -1,0 +1,21 @@
+{
+  "DisplayName": "KillProcesses",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "ProcessNameToBeKilled",
+      "DisplayName": "ProcessNameToBeKilled",
+      "Category": null,
+      "Tooltip": "Process name that want to be killed. The data type is array, for example {\"EXCEL\",\"OUTLOOK\"}",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

@@ -1,0 +1,354 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="CopyAgingConfins" this:CopyAgingConfins.OverwriteFileAgingConfins="False" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:si="clr-namespace:System.IO;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Result of path location file aging confins that successfully to copied." Name="ResultCopyAgingConfins" Type="OutArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Flag to overwrite the file aging confins if in destination folder is already exists. The default value is False." Name="OverwriteFileAgingConfins" Type="InArgument(x:Boolean)" />
+    <x:Property sap2010:Annotation.AnnotationText="Path location destination folder of the process copy file aging confins." Name="DestinationFolderAgingConfins" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Path location of source aging folder that contains aging confins file for process copy the file into destination folder path." Name="SourceFolderAgingConfins" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="File name of aging confins that want to be copied from source location into destination folder location. The paramater {{Date}} is the date from argument DateAgingConfins." Name="FileNameAgingConfins" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The Date file aging confins that want to be copied into local folder. Date must be in format dd-MM-yyyy. &#xA;Example: 01-01-2025&#xA;&#xA;If it is empty the default value is the current date." Name="DateAgingConfins" Type="InArgument(x:String)" />
+  </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:Annotation.AnnotationText>UPTF000000E8eyI8SGVscExpbms+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8SW5pdGlhbFRvb2x0aXA+a19fQmFja2luZ0ZpZWxkIjoiQ29weSBvZiBmaWxlIGFnaW5nIGNvbmZpbnMgZnJvbSBzb3VyY2UgZm9sZGVyIGludG8gdGhlIGRlc3RpbmF0aW9uIGZvbGRlci4iLCI8VmVyc2lvbj5rX19CYWNraW5nRmllbGQiOjF9</sap2010:Annotation.AnnotationText>
+  <sap2010:WorkflowViewState.IdRef>CopyAgingConfins_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Activities.Runtime.Collections</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>System.Globalization</x:String>
+      <x:String>System.Numerics</x:String>
+      <x:String>UiPath.Shared.Activities.Business</x:String>
+      <x:String>UiPath.Platform.ResourceHandling</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>NPOI.Core</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.Watcher</AssemblyReference>
+      <AssemblyReference>System.IO.Packaging</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.AccessControl</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.DriveInfo</AssemblyReference>
+      <AssemblyReference>System.Linq.Async.Queryable</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.Linq.Parallel</AssemblyReference>
+      <AssemblyReference>System.Linq.Queryable</AssemblyReference>
+      <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.Testing.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Copy of file aging confins from source folder into the destination folder." DisplayName="CopyAgingConfins" sap:VirtualizedContainerService.HintSize="620,4828" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="s:DateTime" sap2010:Annotation.AnnotationText="DateTime format from argument DateAgingConfins." Name="FormatDateAgingConfins" />
+      <Variable x:TypeArguments="s:DateTime" sap2010:Annotation.AnnotationText="DateTime used for count duration of the process copy aging confins." Name="StartDateTime" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="String from DateTime variable FormatDateAgingConfins with format yyyMMdd." Name="StrDateToProcess" />
+      <Variable x:TypeArguments="s:String[]" sap2010:Annotation.AnnotationText="List of file to proccess copy aging confins." Default="[New String() {}]" Name="ListFileToProcess" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message - Started CopyAgingConfins" sap:VirtualizedContainerService.HintSize="602,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started process copy aging confins file into local folder&quot;]" />
+    <Assign DisplayName="Assign StartDateTime - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="602,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="s:DateTime">[StartDateTime]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="s:DateTime">[Date.Now]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <TryCatch DisplayName="Try Catch CopyAgingConfins" sap:VirtualizedContainerService.HintSize="602,4080.6666666666665" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch.Try>
+        <Sequence DisplayName="Try CopyAgingConfins" sap:VirtualizedContainerService.HintSize="600,3484" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If Condition="[Not String.IsNullOrEmpty(DateAgingConfins)]" DisplayName="If Has Input Date Aging Confins - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="566,594.6666666666666" sap2010:WorkflowViewState.IdRef="If_1">
+            <If.Then>
+              <Sequence DisplayName="Then Has Input Date Aging Confins - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="450,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="s:String[]" sap2010:Annotation.AnnotationText="Date format used for convert the input argument DateAgingConfins with data type String into data type DateTime." Default="[{&quot;d-M-yyyy&quot;, &quot;dd-MM-yyyy&quot;, &quot;d-MM-yyyy&quot;, &quot;dd-M-yyyy&quot;}]" Name="FormatDate" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign DisplayName="Assign FormatDateAgingConfins - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_2">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="s:DateTime">[FormatDateAgingConfins]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="s:DateTime">[DateTime.ParseExact(DateAgingConfins, FormatDate, CultureInfo.InvariantCulture, DateTimeStyles.None)]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </If.Then>
+            <If.Else>
+              <Sequence DisplayName="Else Has Input Date Aging Confins - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="450,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign DisplayName="Assign FormatDateAgingConfins Into Current Date - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_3">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="s:DateTime">[FormatDateAgingConfins]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="s:DateTime">[Date.Now]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </If.Else>
+          </If>
+          <ui:MultipleAssign sap2010:Annotation.AnnotationText="File name to filter in source sharing folder aging." DisplayName="Multiple Assign Into File Name - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="566,210.66666666666666" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+            <ui:MultipleAssign.AssignOperations>
+              <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:String">[StrDateToProcess]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:String">[FormatDateAgingConfins.ToString("yyyyMMdd")]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:String">[FileNameAgingConfins]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:String">[FileNameAgingConfins.Replace("{{Date}}",StrDateToProcess)]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+              </scg:List>
+            </ui:MultipleAssign.AssignOperations>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:MultipleAssign>
+          <Assign DisplayName="Assign ListFileToProcess - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="566,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_4">
+            <Assign.To>
+              <OutArgument x:TypeArguments="s:String[]">[ListFileToProcess]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles(SourceFolderAgingConfins, FileNameAgingConfins)]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <If Condition="[Not ListFileToProcess.Count.Equals(0)]" DisplayName="If Has Data in List File to Process - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="566,2442" sap2010:WorkflowViewState.IdRef="If_2">
+            <If.Then>
+              <Sequence DisplayName="Then Has Data in List File to Process - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="564,2129" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Check file aging confins is exists or not in source folder aging confins." Name="IsExistsConfinsFile" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:ForEachFileX DisplayName="For Each File in Folder Aging - CopyAgingConfins" Filter="[FileNameAgingConfins]" Folder="[SourceFolderAgingConfins]" sap:VirtualizedContainerService.HintSize="530,2065" sap2010:WorkflowViewState.IdRef="ForEachFileX_1" IncludeSubDirectories="False" OrderBy="NameAscFirst" SkipFolderWithoutPermission="False">
+                  <ui:ForEachFileX.Body>
+                    <ActivityAction x:TypeArguments="si:FileInfo, x:Int32">
+                      <ActivityAction.Argument1>
+                        <DelegateInArgument x:TypeArguments="si:FileInfo" Name="CurrentFile" />
+                      </ActivityAction.Argument1>
+                      <ActivityAction.Argument2>
+                        <DelegateInArgument x:TypeArguments="x:Int32" Name="CurrentIndex" />
+                      </ActivityAction.Argument2>
+                      <Sequence DisplayName="Do For Each File in Folder Aging - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="496,1773" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:FileExistsX DisplayName="File Exists in Folder Aging - CopyAgingConfins" Exists="[IsExistsConfinsFile]" sap:VirtualizedContainerService.HintSize="462,171" sap2010:WorkflowViewState.IdRef="FileExistsX_1" Path="[DestinationFolderAgingConfins + &quot;\&quot; + FileNameAgingConfins]" />
+                        <If Condition="[IsExistsConfinsFile.Equals(False) Or (IsExistsConfinsFile.Equals(True) AndAlso OverwriteFileAgingConfins.Equals(True))]" DisplayName="If Validation File Aging Confins to Copied - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="462,1538" sap2010:WorkflowViewState.IdRef="If_3">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <If.Then>
+                            <Sequence DisplayName="Then Validation File Aging Confins to Copied - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="460,991" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                              <Sequence.Variables>
+                                <Variable x:TypeArguments="si:FileInfo" Name="FileInfo" />
+                              </Sequence.Variables>
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <ui:GetFileInfoX DisplayName="Get File Aging Confins Info - CopyAgingConfins" FilePath="[CurrentFile.FullName]" sap:VirtualizedContainerService.HintSize="426,171" sap2010:WorkflowViewState.IdRef="GetFileInfoX_1" Output="[FileInfo]" />
+                              <ui:LogMessage DisplayName="Log Message - File Name - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="426,179" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Copied file... : &quot; + FileNameAgingConfins]" />
+                              <ui:CopyFile ContinueOnError="{x:Null}" DestinationResource="{x:Null}" PathResource="{x:Null}" Destination="[DestinationFolderAgingConfins]" DisplayName="Copy File Into Destination Folder - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="426,228" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[CurrentFile.FullName]" />
+                              <Assign DisplayName="Assign ResultCopyAgingConfins - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="426,179" sap2010:WorkflowViewState.IdRef="Assign_5">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:String">[ResultCopyAgingConfins]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:String">[DestinationFolderAgingConfins + "\" + FileInfo.Name]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <ui:LogMessage DisplayName="Log Message - Success - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="426,170" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Successfuly to copied file &quot; + FileInfo.Name]" />
+                            </Sequence>
+                          </If.Then>
+                          <If.Else>
+                            <Sequence DisplayName="Else Validation File Aging Confins to Copied - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="460,413" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <Assign DisplayName="Assign ResultCopyAgingConfins Already Exits - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="426,179" sap2010:WorkflowViewState.IdRef="Assign_6">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:String">[ResultCopyAgingConfins]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:String">[DestinationFolderAgingConfins + "\" + FileNameAgingConfins]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <ui:LogMessage DisplayName="Log Message - Confins File Already Exists - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="426,170" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[FileNameAgingConfins + &quot; is already exists in &quot; + DestinationFolderAgingConfins]" />
+                            </Sequence>
+                          </If.Else>
+                        </If>
+                      </Sequence>
+                    </ActivityAction>
+                  </ui:ForEachFileX.Body>
+                </ui:ForEachFileX>
+              </Sequence>
+            </If.Then>
+            <If.Else>
+              <Sequence DisplayName="Else Has No Data in List File to Process - CopyAgingConfins" sap:VirtualizedContainerService.HintSize="564,182" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Throw DisplayName="Throw Exception File Not Found in Folder Aging - CopyAgingConfins" Exception="[New SystemException(&quot;File &quot; + FileNameAgingConfins + &quot; is not found.&quot;)]" sap:VirtualizedContainerService.HintSize="530,118" sap2010:WorkflowViewState.IdRef="Throw_2" />
+              </Sequence>
+            </If.Else>
+          </If>
+        </Sequence>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Catches Exception CopyAgingConfins" sap:VirtualizedContainerService.HintSize="600,361" sap2010:WorkflowViewState.IdRef="Sequence_3">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Message - Exception CopyAgingConfins" sap:VirtualizedContainerService.HintSize="566,179" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Error" Message="[&quot;Error occurred in process copy aging confins file into local folder: &quot; + exception.Message]" />
+              <Throw DisplayName="Throw Exception CopyAgingConfins" Exception="[New SystemException(&quot;Error occurred in process copy aging confins file into local folder: &quot; + exception.Message)]" sap:VirtualizedContainerService.HintSize="566,118" sap2010:WorkflowViewState.IdRef="Throw_1" />
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+      <TryCatch.Finally>
+        <Sequence DisplayName="Finally CopyAgingConfins" sap:VirtualizedContainerService.HintSize="600,94" sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </Sequence>
+      </TryCatch.Finally>
+    </TryCatch>
+    <ui:LogMessage DisplayName="Log Message - Duration CopyAgingConfins" sap:VirtualizedContainerService.HintSize="602,175" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Duration of process copy aging confins file into local folder: &quot; + Split((DateTime.Now-StartDateTime).ToString,&quot;.&quot;)(0)]" />
+    <ui:LogMessage DisplayName="Log Message - Finished CopyAgingConfins" sap:VirtualizedContainerService.HintSize="602,166" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Finished process copy aging confins file into local folder&quot;]" />
+  </Sequence>
+</Activity>

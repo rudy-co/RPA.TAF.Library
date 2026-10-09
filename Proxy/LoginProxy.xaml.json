@@ -1,0 +1,45 @@
+{
+  "DisplayName": "LoginProxy",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "Username",
+      "DisplayName": "Username",
+      "Category": null,
+      "Tooltip": "Username for login proxy.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "Password",
+      "DisplayName": "Password",
+      "Category": null,
+      "Tooltip": "Password for login proxy.",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": true,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": []
+    },
+    {
+      "Name": "BrowserTitle",
+      "DisplayName": "BrowserTitle",
+      "Category": null,
+      "Tooltip": "Title of the browser for login proxy",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}
