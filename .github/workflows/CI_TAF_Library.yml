@@ -51,8 +51,14 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/AppData/Local/npm-cache
+          key: npm-${{ runner.os }}-uipath-cli-${{ env.CLI_VERSION }}
+
       - name: Install UiPath CLI
-        run: npm install -g "@uipath/cli@${CLI_VERSION}" && uip --version
+        run: npm install -g --prefer-offline --no-audit --no-fund "@uipath/cli@${CLI_VERSION}" && uip --version
 
       - name: Determine version
         id: version
@@ -73,6 +79,21 @@ jobs:
 
           echo "Version: $VERSION"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      # Key on the dependency list only (not the whole project.json), so a
+      # projectVersion bump doesn't throw away the cache.
+      - name: Compute dependency hash
+        id: deps
+        run: echo "hash=$(jq -cS '.dependencies' project.json | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      # Activity packages (UIAutomation, System, Excel, ...) are hundreds of MB;
+      # without this every run re-downloads them all.
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ steps.deps.outputs.hash }}
+          restore-keys: nuget-${{ runner.os }}-
 
       - name: Restore
         run: uip rpa restore .
@@ -125,17 +146,16 @@ jobs:
           UIPATH_TENANT: ${{ vars.UIPATH_TENANT }}
           UIPATH_URL: ${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}
           UIPATH_SCOPE: ${{ vars.UIPATH_SCOPE || 'OR.Execution OR.Folders.Read' }}
+          UIPATH_LIBRARY_FEED_ID: ${{ vars.UIPATH_LIBRARY_FEED_ID }}
         run: |
           set -euo pipefail
 
-          # Fail fast with a clear message instead of an opaque 400
-          for v in UIPATH_CLIENT_ID UIPATH_CLIENT_SECRET UIPATH_ORG UIPATH_TENANT; do
+          for v in UIPATH_CLIENT_ID UIPATH_CLIENT_SECRET UIPATH_ORG UIPATH_TENANT UIPATH_LIBRARY_FEED_ID; do
             if [ -z "${!v:-}" ]; then
               echo "::error::$v is empty for environment '${{ github.ref_name }}'"
               exit 1
             fi
           done
-          echo "Login -> $UIPATH_URL / org=$UIPATH_ORG / tenant=$UIPATH_TENANT / scope=$UIPATH_SCOPE"
 
           uip login --authority "$UIPATH_URL" \
             --organization "$UIPATH_ORG" \
@@ -145,7 +165,11 @@ jobs:
             --scope "$UIPATH_SCOPE" \
             --output json
 
-          uip rpa publish "$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR"/*.nupkg
+          NUPKG=$(ls "$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR"/*.nupkg | head -1)
+          echo "Uploading $NUPKG -> feed $UIPATH_LIBRARY_FEED_ID"
+
+          uip or libraries upload --file "$NUPKG" --feed-id "$UIPATH_LIBRARY_FEED_ID" --output json
+
           echo "Published $PACKAGE_NAME ${{ needs.build.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
 
   # ---------------------------------------------------------
