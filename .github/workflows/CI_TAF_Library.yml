@@ -81,13 +81,17 @@ jobs:
         if: vars.ENABLE_ANALYZER == 'true'
         run: uip rpa analyze .
 
+      # Output must be OUTSIDE the project folder, so use the runner temp dir.
       - name: Pack
-        run: mkdir -p "$OUTPUT_DIR" && uip rpa pack . "$OUTPUT_DIR" --package-version "${{ steps.version.outputs.version }}" --skip-analyze
+        run: |
+          OUT="$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR"
+          mkdir -p "$OUT"
+          uip rpa pack . "$OUT" --package-version "${{ steps.version.outputs.version }}" --skip-analyze
 
       - uses: actions/upload-artifact@v4
         with:
           name: package
-          path: ${{ env.OUTPUT_DIR }}/*.nupkg
+          path: ${{ runner.temp }}/${{ env.OUTPUT_DIR }}/*.nupkg
           if-no-files-found: error
 
   # ---------------------------------------------------------
@@ -111,7 +115,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: package
-          path: ${{ env.OUTPUT_DIR }}
+          path: ${{ runner.temp }}/${{ env.OUTPUT_DIR }}
 
       - name: Login and publish
         env:
@@ -122,7 +126,7 @@ jobs:
           uip login --authority "${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}" \
             --client-id env.UIPATH_CLIENT_ID --client-secret env.UIPATH_CLIENT_SECRET \
             --tenant "${{ vars.UIPATH_TENANT }}"
-          uip rpa publish "$OUTPUT_DIR"/*.nupkg
+          uip rpa publish "$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR"/*.nupkg
           echo "Published $PACKAGE_NAME ${{ needs.build.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
 
   # ---------------------------------------------------------
