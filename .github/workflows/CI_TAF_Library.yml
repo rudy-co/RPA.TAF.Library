@@ -121,11 +121,30 @@ jobs:
         env:
           UIPATH_CLIENT_ID: ${{ secrets.UIPATH_CLIENT_ID }}
           UIPATH_CLIENT_SECRET: ${{ secrets.UIPATH_CLIENT_SECRET }}
+          UIPATH_ORG: ${{ vars.UIPATH_ORG }}
+          UIPATH_TENANT: ${{ vars.UIPATH_TENANT }}
+          UIPATH_URL: ${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}
+          UIPATH_SCOPE: ${{ vars.UIPATH_SCOPE || 'OR.Execution OR.Execution.Write OR.Folders.Read OR.Settings.Read OR.Execution.Read OR.Jobs OR.Assets.Read' }}
         run: |
           set -euo pipefail
-          uip login --authority "${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}" \
-            --client-id env.UIPATH_CLIENT_ID --client-secret env.UIPATH_CLIENT_SECRET \
-            --tenant "${{ vars.UIPATH_TENANT }}"
+
+          # Fail fast with a clear message instead of an opaque 400
+          for v in UIPATH_CLIENT_ID UIPATH_CLIENT_SECRET UIPATH_ORG UIPATH_TENANT; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::$v is empty for environment '${{ github.ref_name }}'"
+              exit 1
+            fi
+          done
+          echo "Login -> $UIPATH_URL / org=$UIPATH_ORG / tenant=$UIPATH_TENANT / scope=$UIPATH_SCOPE"
+
+          uip login --authority "$UIPATH_URL" \
+            --organization "$UIPATH_ORG" \
+            --tenant "$UIPATH_TENANT" \
+            --client-id "$UIPATH_CLIENT_ID" \
+            --client-secret "$UIPATH_CLIENT_SECRET" \
+            --scope "$UIPATH_SCOPE" \
+            --output json
+
           uip rpa publish "$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR"/*.nupkg
           echo "Published $PACKAGE_NAME ${{ needs.build.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
 
