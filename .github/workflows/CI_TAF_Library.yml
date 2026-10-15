@@ -124,7 +124,7 @@ jobs:
           UIPATH_ORG: ${{ vars.UIPATH_ORG }}
           UIPATH_TENANT: ${{ vars.UIPATH_TENANT }}
           UIPATH_URL: ${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}
-          UIPATH_SCOPE: ${{ vars.UIPATH_SCOPE || 'OR.Execution OR.Execution.Write OR.Folders.Read OR.Settings.Read OR.Execution.Read OR.Jobs OR.Assets.Read' }}
+          UIPATH_SCOPE: ${{ vars.UIPATH_SCOPE || 'OR.Execution OR.Folders.Read' }}
         run: |
           set -euo pipefail
 
