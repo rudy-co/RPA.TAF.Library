@@ -1,16 +1,16 @@
 name: TAF Library CI
 
 # Build -> Publish -> Notify consumers.
-# Versioning: MAJOR.MINOR from project.json, PATCH = run number + offset.
-#   Production = 1.1.x | UAT = 1.1.x-rc | Development = 1.1.x-dev | PR = build only
+# Versioning: MAJOR.MINOR from project.json, PATCH = last git tag vMAJOR.MINOR.* + 1.
+#   Production only = 1.1.x | PR = build only | Development & UAT = skipped
 # Full runbook: docs/CICD.md
 
 on:
   push:
-    branches: [Development, UAT, Production]
+    branches: [Production]
     paths-ignore: ["docs/**", "ci-templates/**", "**/*.md"]
   pull_request:
-    branches: [Development, UAT, Production]
+    branches: [Production]
   workflow_dispatch:
     inputs:
       version:
@@ -40,12 +40,15 @@ jobs:
   # ---------------------------------------------------------
   build:
     name: Build
+    if: github.ref_name == 'Production' || github.base_ref == 'Production'
     runs-on: windows-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -63,18 +66,20 @@ jobs:
       - name: Determine version
         id: version
         env:
-          BRANCH: ${{ github.base_ref || github.ref_name }}
-          OFFSET: ${{ vars.VERSION_PATCH_OFFSET || '100' }}
           EXPLICIT: ${{ inputs.version }}
         run: |
           set -euo pipefail
           BASE=$(jq -r '.projectVersion' project.json | cut -d. -f1,2)
-          VERSION="${BASE}.$(( ${{ github.run_number }} + OFFSET ))"
+          EXISTING=$(git tag --points-at HEAD --list "v${BASE}.*" --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)
+          LAST=$(git tag --list "v${BASE}.*" --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)
+
+          if [ -n "$EXISTING" ]; then VERSION="${EXISTING#v}"
+          elif [ -n "$LAST" ]; then VERSION="${BASE}.$(( ${LAST##*.} + 1 ))"
+          else VERSION="${BASE}.0"
+          fi
 
           if [ -n "$EXPLICIT" ]; then VERSION="$EXPLICIT"
           elif [ "${{ github.event_name }}" = "pull_request" ]; then VERSION="${VERSION}-pr.${{ github.event.number }}"
-          elif [ "$BRANCH" = "UAT" ]; then VERSION="${VERSION}-rc"
-          elif [ "$BRANCH" != "Production" ]; then VERSION="${VERSION}-dev"
           fi
 
           echo "Version: $VERSION"
@@ -123,7 +128,9 @@ jobs:
     needs: build
     if: github.event_name != 'pull_request'
     runs-on: windows-latest
-    environment: ${{ github.ref_name == 'Production' && 'uipath-prod' || github.ref_name == 'UAT' && 'uipath-uat' || 'uipath-dev' }}
+    environment: uipath-prod
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/setup-node@v4
@@ -147,6 +154,7 @@ jobs:
           UIPATH_URL: ${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}
           UIPATH_SCOPE: ${{ vars.UIPATH_SCOPE || 'OR.Execution OR.Folders.Read' }}
           UIPATH_LIBRARY_FEED_ID: ${{ vars.UIPATH_LIBRARY_FEED_ID }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
@@ -168,14 +176,30 @@ jobs:
           NUPKG=$(ls "$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR"/*.nupkg | head -1)
           echo "Uploading $NUPKG -> feed $UIPATH_LIBRARY_FEED_ID"
 
-          uip or libraries upload --file "$NUPKG" --feed-id "$UIPATH_LIBRARY_FEED_ID" --output json
+          TAG="v${{ needs.build.outputs.version }}"
+
+          if gh api "repos/${{ github.repository }}/git/ref/tags/$TAG" >/dev/null 2>&1; then
+            echo "::notice::$TAG sudah ada, upload di-skip"
+          else
+            RC=0
+            RESULT=$(uip or libraries upload --file "$NUPKG" --feed-id "$UIPATH_LIBRARY_FEED_ID" --output json 2>&1) || RC=$?
+            echo "$RESULT"
+            if [ "$RC" -ne 0 ]; then
+              echo "$RESULT" | grep -qiE "already exist|conflict" || exit "$RC"
+              echo "::warning::${{ needs.build.outputs.version }} sudah ada di feed, lanjut membuat tag"
+            fi
+
+            gh api "repos/${{ github.repository }}/git/refs" \
+              -f ref="refs/tags/$TAG" \
+              -f sha="${{ github.sha }}"
+          fi
 
           echo "Published $PACKAGE_NAME ${{ needs.build.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
 
   # ---------------------------------------------------------
   # NOTIFY: tell consumer repos (.github/consumers.json)
   # ---------------------------------------------------------
-  
+
   # notify-consumers:
   #   name: Notify consumers
   #   needs: [build, publish]

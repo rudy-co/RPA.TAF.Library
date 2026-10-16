@@ -1,0 +1,220 @@
+name: TAF Library CI
+
+# Build -> Publish -> Notify consumers.
+# Versioning: MAJOR.MINOR from project.json, PATCH = run number + offset.
+#   Production = 1.1.x | UAT = 1.1.x-rc | Development = 1.1.x-dev | PR = build only
+# Full runbook: docs/CICD.md
+
+on:
+  push:
+    branches: [Development, UAT, Production]
+    paths-ignore: ["docs/**", "ci-templates/**", "**/*.md"]
+  pull_request:
+    branches: [Development, UAT, Production]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Optional explicit version (e.g. 1.2.3)"
+        required: false
+
+concurrency:
+  group: taf-library-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  CLI_VERSION: "1.202.1"
+  PACKAGE_NAME: "TAF.Library"
+  OUTPUT_DIR: "dist"
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  # ---------------------------------------------------------
+  # BUILD: version, restore, analyze, pack
+  # ---------------------------------------------------------
+  build:
+    name: Build
+    runs-on: windows-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/AppData/Local/npm-cache
+          key: npm-${{ runner.os }}-uipath-cli-${{ env.CLI_VERSION }}
+
+      - name: Install UiPath CLI
+        run: npm install -g --prefer-offline --no-audit --no-fund "@uipath/cli@${CLI_VERSION}" && uip --version
+
+      - name: Determine version
+        id: version
+        env:
+          BRANCH: ${{ github.base_ref || github.ref_name }}
+          OFFSET: ${{ vars.VERSION_PATCH_OFFSET || '100' }}
+          EXPLICIT: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          BASE=$(jq -r '.projectVersion' project.json | cut -d. -f1,2)
+          VERSION="${BASE}.$(( ${{ github.run_number }} + OFFSET ))"
+
+          if [ -n "$EXPLICIT" ]; then VERSION="$EXPLICIT"
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then VERSION="${VERSION}-pr.${{ github.event.number }}"
+          elif [ "$BRANCH" = "UAT" ]; then VERSION="${VERSION}-rc"
+          elif [ "$BRANCH" != "Production" ]; then VERSION="${VERSION}-dev"
+          fi
+
+          echo "Version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      # Key on the dependency list only (not the whole project.json), so a
+      # projectVersion bump doesn't throw away the cache.
+      - name: Compute dependency hash
+        id: deps
+        run: echo "hash=$(jq -cS '.dependencies' project.json | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      # Activity packages (UIAutomation, System, Excel, ...) are hundreds of MB;
+      # without this every run re-downloads them all.
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ steps.deps.outputs.hash }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Restore
+        run: uip rpa restore .
+
+      - name: Analyze
+        if: vars.ENABLE_ANALYZER == 'true'
+        run: uip rpa analyze .
+
+      # Output must be OUTSIDE the project folder, so use the runner temp dir.
+      - name: Pack
+        run: |
+          OUT="$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR"
+          mkdir -p "$OUT"
+          uip rpa pack . "$OUT" --package-version "${{ steps.version.outputs.version }}" --skip-analyze
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: ${{ runner.temp }}/${{ env.OUTPUT_DIR }}/*.nupkg
+          if-no-files-found: error
+
+  # ---------------------------------------------------------
+  # PUBLISH: push package to Orchestrator (not for PRs)
+  # ---------------------------------------------------------
+  publish:
+    name: Publish
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: windows-latest
+    environment: ${{ github.ref_name == 'Production' && 'uipath-prod' || github.ref_name == 'UAT' && 'uipath-uat' || 'uipath-dev' }}
+
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install UiPath CLI
+        run: npm install -g "@uipath/cli@${CLI_VERSION}"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: package
+          path: ${{ runner.temp }}/${{ env.OUTPUT_DIR }}
+
+      - name: Login and publish
+        env:
+          UIPATH_CLIENT_ID: ${{ secrets.UIPATH_CLIENT_ID }}
+          UIPATH_CLIENT_SECRET: ${{ secrets.UIPATH_CLIENT_SECRET }}
+          UIPATH_ORG: ${{ vars.UIPATH_ORG }}
+          UIPATH_TENANT: ${{ vars.UIPATH_TENANT }}
+          UIPATH_URL: ${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}
+          UIPATH_SCOPE: ${{ vars.UIPATH_SCOPE || 'OR.Execution OR.Folders.Read' }}
+        run: |
+          set -euo pipefail
+
+          # Fail fast with a clear message instead of an opaque 400
+          for v in UIPATH_CLIENT_ID UIPATH_CLIENT_SECRET UIPATH_ORG UIPATH_TENANT; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::$v is empty for environment '${{ github.ref_name }}'"
+              exit 1
+            fi
+          done
+          echo "Login -> $UIPATH_URL / org=$UIPATH_ORG / tenant=$UIPATH_TENANT / scope=$UIPATH_SCOPE"
+
+          uip login --authority "$UIPATH_URL" \
+            --organization "$UIPATH_ORG" \
+            --tenant "$UIPATH_TENANT" \
+            --client-id "$UIPATH_CLIENT_ID" \
+            --client-secret "$UIPATH_CLIENT_SECRET" \
+            --scope "$UIPATH_SCOPE" \
+            --output json
+
+          uip rpa publish "$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR"/*.nupkg
+          echo "Published $PACKAGE_NAME ${{ needs.build.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+
+  # ---------------------------------------------------------
+  # NOTIFY: tell consumer repos (.github/consumers.json)
+  # ---------------------------------------------------------
+  
+  # notify-consumers:
+  #   name: Notify consumers
+  #   needs: [build, publish]
+  #   runs-on: windows-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         sparse-checkout: .github
+
+  #     - name: Create GitHub App token
+  #       id: app-token
+  #       uses: actions/create-github-app-token@v1
+  #       with:
+  #         app-id: ${{ secrets.BOT_APP_ID }}
+  #         private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+  #         owner: ${{ github.repository_owner }}
+
+  #     - name: Send repository_dispatch
+  #       env:
+  #         GH_TOKEN: ${{ steps.app-token.outputs.token }}
+  #         VERSION: ${{ needs.build.outputs.version }}
+  #         BRANCH: ${{ github.ref_name }}
+  #         RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+  #       run: |
+  #         set -uo pipefail
+  #         FAILED=0
+
+  #         for REPO in $(jq -r --arg b "$BRANCH" \
+  #           '.consumers[] | select((.enabled // true) and (.branches | index($b))) | .repo' \
+  #           .github/consumers.json | tr -d '\r'); do
+
+  #           if gh api "repos/$REPO/dispatches" \
+  #                -f event_type=taf-library-published \
+  #                -f "client_payload[version]=$VERSION" \
+  #                -f "client_payload[branch]=$BRANCH" \
+  #                -f "client_payload[runUrl]=$RUN_URL"; then
+  #             echo "- ✓ $REPO" >> "$GITHUB_STEP_SUMMARY"
+  #           else
+  #             echo "- ✗ $REPO" >> "$GITHUB_STEP_SUMMARY"
+  #             FAILED=1
+  #           fi
+  #         done
+
+  #         exit $FAILED
