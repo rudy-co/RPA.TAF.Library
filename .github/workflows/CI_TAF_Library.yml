@@ -1,7 +1,8 @@
 name: TAF Library CI
 
-# Build -> Publish -> Notify consumers.
+# Build -> Upload -> Verify -> Tag -> Notify consumers.
 # Versioning: MAJOR.MINOR from project.json, PATCH = last git tag vMAJOR.MINOR.* + 1.
+#   Version is always computed automatically (no manual version input).
 #   Production only = 1.1.x | PR = build only | Development & UAT = skipped
 # Full runbook: docs/CICD.md
 
@@ -12,10 +13,6 @@ on:
   pull_request:
     branches: [Production]
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Optional explicit version (e.g. 1.2.3)"
-        required: false
 
 concurrency:
   group: taf-library-${{ github.ref_name }}
@@ -63,10 +60,9 @@ jobs:
       - name: Install UiPath CLI
         run: npm install -g --prefer-offline --no-audit --no-fund "@uipath/cli@${CLI_VERSION}" && uip --version
 
+      # Version is always derived from project.json + git tags and cannot be overridden.
       - name: Determine version
         id: version
-        env:
-          EXPLICIT: ${{ inputs.version }}
         run: |
           set -euo pipefail
           BASE=$(jq -r '.projectVersion' project.json | cut -d. -f1,2)
@@ -78,8 +74,8 @@ jobs:
           else VERSION="${BASE}.0"
           fi
 
-          if [ -n "$EXPLICIT" ]; then VERSION="$EXPLICIT"
-          elif [ "${{ github.event_name }}" = "pull_request" ]; then VERSION="${VERSION}-pr.${{ github.event.number }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            VERSION="${VERSION}-pr.${{ github.event.number }}"
           fi
 
           echo "Version: $VERSION"
@@ -121,16 +117,14 @@ jobs:
           if-no-files-found: error
 
   # ---------------------------------------------------------
-  # PUBLISH: push package to Orchestrator (not for PRs)
+  # PUBLISH: upload package to the library feed (not for PRs)
   # ---------------------------------------------------------
   publish:
-    name: Publish
+    name: Upload package
     needs: build
     if: github.event_name != 'pull_request'
     runs-on: windows-latest
     environment: uipath-prod
-    permissions:
-      contents: write
 
     steps:
       - uses: actions/setup-node@v4
@@ -145,7 +139,7 @@ jobs:
           name: package
           path: ${{ runner.temp }}/${{ env.OUTPUT_DIR }}
 
-      - name: Login and publish
+      - name: Login and upload
         env:
           UIPATH_CLIENT_ID: ${{ secrets.UIPATH_CLIENT_ID }}
           UIPATH_CLIENT_SECRET: ${{ secrets.UIPATH_CLIENT_SECRET }}
@@ -154,7 +148,7 @@ jobs:
           UIPATH_URL: ${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}
           UIPATH_SCOPE: ${{ vars.UIPATH_SCOPE || 'OR.Execution OR.Folders.Read' }}
           UIPATH_LIBRARY_FEED_ID: ${{ vars.UIPATH_LIBRARY_FEED_ID }}
-          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
         run: |
           set -euo pipefail
 
@@ -173,28 +167,199 @@ jobs:
             --scope "$UIPATH_SCOPE" \
             --output json
 
-          NUPKG=$(ls "$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR"/*.nupkg | head -1)
-          echo "Uploading $NUPKG -> feed $UIPATH_LIBRARY_FEED_ID"
+          # Pick the file by its exact name, not "the first .nupkg found".
+          NUPKG="$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR/${PACKAGE_NAME}.${VERSION}.nupkg"
+          if [ ! -f "$NUPKG" ]; then
+            echo "::error::$(basename "$NUPKG") not found in the build artifact"
+            ls -la "$(dirname "$NUPKG")"
+            exit 1
+          fi
 
-          TAG="v${{ needs.build.outputs.version }}"
+          KEY="${PACKAGE_NAME}:${VERSION}"
 
-          if gh api "repos/${{ github.repository }}/git/ref/tags/$TAG" >/dev/null 2>&1; then
-            echo "::notice::$TAG sudah ada, upload di-skip"
+          if uip or libraries get "$KEY" --feed-id "$UIPATH_LIBRARY_FEED_ID" --output json >/dev/null 2>&1; then
+            echo "::notice::$KEY already exists in the feed, skipping upload (package content is checked in the verify job)"
           else
+            echo "Uploading $NUPKG -> feed $UIPATH_LIBRARY_FEED_ID"
             RC=0
             RESULT=$(uip or libraries upload --file "$NUPKG" --feed-id "$UIPATH_LIBRARY_FEED_ID" --output json 2>&1) || RC=$?
             echo "$RESULT"
             if [ "$RC" -ne 0 ]; then
               echo "$RESULT" | grep -qiE "already exist|conflict" || exit "$RC"
-              echo "::warning::${{ needs.build.outputs.version }} sudah ada di feed, lanjut membuat tag"
+              echo "::warning::$KEY already exists in the feed, continuing to verification"
             fi
-
-            gh api "repos/${{ github.repository }}/git/refs" \
-              -f ref="refs/tags/$TAG" \
-              -f sha="${{ github.sha }}"
           fi
 
-          echo "Published $PACKAGE_NAME ${{ needs.build.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Uploaded $KEY to feed $UIPATH_LIBRARY_FEED_ID" >> "$GITHUB_STEP_SUMMARY"
+
+  # ---------------------------------------------------------
+  # VERIFY: make sure the version is actually available in the target feed
+  # ---------------------------------------------------------
+  verify-published-package:
+    name: Verify published package
+    needs: [build, publish]
+    runs-on: windows-latest
+    environment: uipath-prod
+
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install UiPath CLI
+        run: npm install -g "@uipath/cli@${CLI_VERSION}"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: package
+          path: ${{ runner.temp }}/${{ env.OUTPUT_DIR }}
+
+      - name: Login and verify package in feed
+        env:
+          UIPATH_CLIENT_ID: ${{ secrets.UIPATH_CLIENT_ID }}
+          UIPATH_CLIENT_SECRET: ${{ secrets.UIPATH_CLIENT_SECRET }}
+          UIPATH_ORG: ${{ vars.UIPATH_ORG }}
+          UIPATH_TENANT: ${{ vars.UIPATH_TENANT }}
+          UIPATH_URL: ${{ vars.UIPATH_URL || 'https://cloud.uipath.com' }}
+          UIPATH_SCOPE: ${{ vars.UIPATH_SCOPE || 'OR.Execution OR.Folders.Read' }}
+          UIPATH_LIBRARY_FEED_ID: ${{ vars.UIPATH_LIBRARY_FEED_ID }}
+          VERSION: ${{ needs.build.outputs.version }}
+          VERIFY_CHECKSUM: ${{ vars.VERIFY_PACKAGE_CHECKSUM || 'true' }}
+        run: |
+          set -euo pipefail
+
+          for v in UIPATH_CLIENT_ID UIPATH_CLIENT_SECRET UIPATH_ORG UIPATH_TENANT UIPATH_LIBRARY_FEED_ID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::$v is empty for environment '${{ github.ref_name }}'"
+              exit 1
+            fi
+          done
+
+          uip login --authority "$UIPATH_URL" \
+            --organization "$UIPATH_ORG" \
+            --tenant "$UIPATH_TENANT" \
+            --client-id "$UIPATH_CLIENT_ID" \
+            --client-secret "$UIPATH_CLIENT_SECRET" \
+            --scope "$UIPATH_SCOPE" \
+            --output json
+
+          KEY="${PACKAGE_NAME}:${VERSION}"
+          ATTEMPTS=6
+
+          # 1) The version must be found in the feed. Retry because feed
+          #    indexing can take a few seconds after upload.
+          for i in $(seq 1 "$ATTEMPTS"); do
+            RC=0
+            RESULT=$(uip or libraries get "$KEY" --feed-id "$UIPATH_LIBRARY_FEED_ID" --output json) || RC=$?
+            if [ "$RC" -eq 0 ]; then break; fi
+
+            # Exit 2 = auth error, 3 = validation error: retrying won't help.
+            if [ "$RC" -ne 1 ]; then
+              echo "$RESULT"
+              echo "::error::uip or libraries get failed (exit $RC)"
+              exit "$RC"
+            fi
+
+            if [ "$i" -lt "$ATTEMPTS" ]; then
+              echo "Attempt $i/$ATTEMPTS: $KEY not found yet, retrying in 10 seconds..."
+              sleep 10
+            fi
+          done
+
+          if [ "$RC" -ne 0 ]; then
+            echo "$RESULT"
+            echo "::error::$KEY not found in feed $UIPATH_LIBRARY_FEED_ID"
+            exit 1
+          fi
+
+          echo "$RESULT"
+
+          # 2) The package ID and version returned by the feed must match exactly.
+          ITEM=$(jq -c '.Data | if type == "array" then .[0] else . end' <<<"$RESULT")
+          GOT_ID=$(jq -r '.Title // ((.Key // "") | split(":")[0])' <<<"$ITEM" | tr -d '\r')
+          GOT_VERSION=$(jq -r '.Version // empty' <<<"$ITEM" | tr -d '\r')
+
+          if [ "${GOT_ID,,}" != "${PACKAGE_NAME,,}" ] || [ "$GOT_VERSION" != "$VERSION" ]; then
+            echo "::error::Feed returned '${GOT_ID}:${GOT_VERSION}', expected '$KEY'"
+            exit 1
+          fi
+
+          # 3) The package content in the feed must be identical to this run's build output.
+          CHECKSUM_INFO="skipped"
+          if [ "$VERIFY_CHECKSUM" != "false" ]; then
+            LOCAL="$(cygpath -m "$RUNNER_TEMP")/$OUTPUT_DIR/${PACKAGE_NAME}.${VERSION}.nupkg"
+            REMOTE="$(cygpath -m "$RUNNER_TEMP")/feed-copy.nupkg"
+
+            uip or libraries download "$KEY" --feed-id "$UIPATH_LIBRARY_FEED_ID" \
+              --destination "$REMOTE" --output json >/dev/null
+
+            LOCAL_SHA=$(sha256sum "$LOCAL" | cut -d' ' -f1)
+            REMOTE_SHA=$(sha256sum "$REMOTE" | cut -d' ' -f1)
+
+            if [ "$LOCAL_SHA" != "$REMOTE_SHA" ]; then
+              echo "::error::Content of $KEY in the feed differs from this build (build $LOCAL_SHA, feed $REMOTE_SHA)."
+              echo "::error::If this is a re-run, use 'Re-run failed jobs' so the same build artifact is reused."
+              exit 1
+            fi
+            CHECKSUM_INFO="match (sha256 $LOCAL_SHA)"
+          fi
+
+          {
+            echo "### Package verified"
+            echo "- Package: \`$KEY\`"
+            echo "- Feed: \`$UIPATH_LIBRARY_FEED_ID\`"
+            echo "- Checksum: $CHECKSUM_INFO"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ---------------------------------------------------------
+  # TAG: create & confirm the release git tag (only after verification)
+  # ---------------------------------------------------------
+  tag-release:
+    name: Confirm release tag
+    needs: [build, verify-published-package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create and confirm tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ needs.build.outputs.version }}
+          SHA: ${{ github.sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          # Print the commit SHA the tag points to; empty if the tag doesn't exist.
+          resolve_tag() {
+            local REF TYPE OBJ
+            REF=$(gh api "repos/$REPO/git/ref/tags/$TAG" 2>/dev/null) || return 0
+            TYPE=$(jq -r '.object.type' <<<"$REF")
+            OBJ=$(jq -r '.object.sha' <<<"$REF")
+            # An annotated tag points to a tag object, not directly to a commit.
+            if [ "$TYPE" = "tag" ]; then
+              OBJ=$(gh api "repos/$REPO/git/tags/$OBJ" --jq '.object.sha')
+            fi
+            echo "$OBJ"
+          }
+
+          CURRENT=$(resolve_tag)
+
+          if [ -z "$CURRENT" ]; then
+            gh api "repos/$REPO/git/refs" -f ref="refs/tags/$TAG" -f sha="$SHA" >/dev/null
+            echo "Created tag $TAG at $SHA"
+            CURRENT=$(resolve_tag)
+          else
+            echo "::notice::Tag $TAG already exists"
+          fi
+
+          if [ "$CURRENT" != "$SHA" ]; then
+            echo "::error::Tag $TAG points to '${CURRENT:-<none>}', expected $SHA"
+            exit 1
+          fi
+
+          echo "Tag \`$TAG\` confirmed at \`$SHA\`" >> "$GITHUB_STEP_SUMMARY"
 
   # ---------------------------------------------------------
   # NOTIFY: tell consumer repos (.github/consumers.json)
@@ -202,7 +367,7 @@ jobs:
 
   # notify-consumers:
   #   name: Notify consumers
-  #   needs: [build, publish]
+  #   needs: [build, tag-release]
   #   runs-on: windows-latest
 
   #   steps:
