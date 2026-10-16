@@ -1,9 +1,10 @@
 name: TAF Library CI
 
 # Build -> Upload -> Verify -> Tag -> Notify consumers.
-# Versioning: MAJOR.MINOR from project.json, PATCH = last git tag vMAJOR.MINOR.* + 1.
-#   Version is always computed automatically (no manual version input).
-#   Production only = 1.1.x | PR = build only | Development & UAT = skipped
+# Versioning: version = projectVersion from project.json, used as-is
+#   (e.g. projectVersion 1.1.4 -> TAF.Library 1.1.4, git tag v1.1.4).
+#   Bump projectVersion for every release; the pipeline fails if that version was already released.
+#   Production = publish | PR = build only (version-pr.N) | Development & UAT = skipped
 # Full runbook: docs/CICD.md
 
 on:
@@ -60,18 +61,25 @@ jobs:
       - name: Install UiPath CLI
         run: npm install -g --prefer-offline --no-audit --no-fund "@uipath/cli@${CLI_VERSION}" && uip --version
 
-      # Version is always derived from project.json + git tags and cannot be overridden.
+      # Version is taken as-is from projectVersion in project.json.
+      # To release a new version, bump projectVersion before merging to Production.
       - name: Determine version
         id: version
         run: |
           set -euo pipefail
-          BASE=$(jq -r '.projectVersion' project.json | cut -d. -f1,2)
-          EXISTING=$(git tag --points-at HEAD --list "v${BASE}.*" --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)
-          LAST=$(git tag --list "v${BASE}.*" --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)
+          VERSION=$(jq -r '.projectVersion // empty' project.json | tr -d '\r')
 
-          if [ -n "$EXISTING" ]; then VERSION="${EXISTING#v}"
-          elif [ -n "$LAST" ]; then VERSION="${BASE}.$(( ${LAST##*.} + 1 ))"
-          else VERSION="${BASE}.0"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::projectVersion '$VERSION' in project.json is not a valid version (expected MAJOR.MINOR.PATCH)"
+            exit 1
+          fi
+
+          # A version can only be released from one commit. Re-running on the
+          # already-tagged commit is fine; any other commit must bump the version.
+          TAGGED_SHA=$(git rev-parse -q --verify "refs/tags/v${VERSION}^{commit}" || true)
+          if [ -n "$TAGGED_SHA" ] && [ "$TAGGED_SHA" != "$(git rev-parse HEAD)" ]; then
+            echo "::error::Version $VERSION was already released from commit $TAGGED_SHA. Bump projectVersion in project.json."
+            exit 1
           fi
 
           if [ "${{ github.event_name }}" = "pull_request" ]; then
@@ -298,7 +306,7 @@ jobs:
 
             if [ "$LOCAL_SHA" != "$REMOTE_SHA" ]; then
               echo "::error::Content of $KEY in the feed differs from this build (build $LOCAL_SHA, feed $REMOTE_SHA)."
-              echo "::error::If this is a re-run, use 'Re-run failed jobs' so the same build artifact is reused."
+              echo "::error::If this is a re-run, use 'Re-run failed jobs' so the same build artifact is reused. Otherwise bump projectVersion in project.json."
               exit 1
             fi
             CHECKSUM_INFO="match (sha256 $LOCAL_SHA)"
