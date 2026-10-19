@@ -410,7 +410,7 @@ jobs:
 
           # 2) File must be valid JSON with a consumers list
           if ! REPOS=$(jq -r --arg b "$BRANCH" \
-                '.consumers[] | select((.enabled // true) and ((.branches // []) | index($b))) | .repo' \
+                '.consumers[] | select((.enabled != false) and ((.branches // []) | index($b))) | .repo' \
                 "$FILE" | tr -d '\r'); then
             echo "::error file=$FILE::$FILE is invalid or has no 'consumers' list"
             exit 1

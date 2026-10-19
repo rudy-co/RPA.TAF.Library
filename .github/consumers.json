@@ -1,13 +1,11 @@
 {
-  "package": "TAF.Library",
+  "package": "TAFS.Library",
   "consumers": [
     {
-      "repo": "rudy-co/RPA.ProcessA",
+      "repo": "ru-co/Sync.Flex.Cust",
       "projectPath": "project.json",
-      "branches": ["Development", "UAT", "Production"],
-      "enabled": false,
-      "owner": "RPA Team",
-      "notes": "Example entry - replace repo with a real consumer and set enabled to true."
+      "branches": ["Production"],
+      "enabled": true
     }
   ]
 }
