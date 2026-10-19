@@ -1,5 +1,5 @@
 {
-  "package": "TAFS.Library",
+  "package": "TAF.Library",
   "consumers": [
     {
       "repo": "rudy-co/Sync.Flex.Cust",
