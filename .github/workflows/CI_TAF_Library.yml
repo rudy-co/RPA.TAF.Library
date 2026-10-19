@@ -373,48 +373,67 @@ jobs:
   # NOTIFY: tell consumer repos (.github/consumers.json)
   # ---------------------------------------------------------
 
-  # notify-consumers:
-  #   name: Notify consumers
-  #   needs: [build, tag-release]
-  #   runs-on: windows-latest
+  notify-consumers:
+    name: Notify consumers
+    needs: [build, tag-release]
+    runs-on: windows-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         sparse-checkout: .github
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout: .github
 
-  #     - name: Create GitHub App token
-  #       id: app-token
-  #       uses: actions/create-github-app-token@v1
-  #       with:
-  #         app-id: ${{ secrets.BOT_APP_ID }}
-  #         private-key: ${{ secrets.BOT_PRIVATE_KEY }}
-  #         owner: ${{ github.repository_owner }}
+    - name: Create GitHub App token
+      id: app-token
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ secrets.BOT_APP_ID }}
+        private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+        owner: ${{ github.repository_owner }}
 
-  #     - name: Send repository_dispatch
-  #       env:
-  #         GH_TOKEN: ${{ steps.app-token.outputs.token }}
-  #         VERSION: ${{ needs.build.outputs.version }}
-  #         BRANCH: ${{ github.ref_name }}
-  #         RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-  #       run: |
-  #         set -uo pipefail
-  #         FAILED=0
+    - name: Send repository_dispatch
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        VERSION: ${{ needs.build.outputs.version }}
+        BRANCH: ${{ github.ref_name }}
+        RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+          set -uo pipefail
+          FILE=.github/consumers.json
+          FAILED=0
 
-  #         for REPO in $(jq -r --arg b "$BRANCH" \
-  #           '.consumers[] | select((.enabled // true) and (.branches | index($b))) | .repo' \
-  #           .github/consumers.json | tr -d '\r'); do
+          # 1) File must exist
+          if [ ! -f "$FILE" ]; then
+            echo "::error file=$FILE::$FILE not found – no consumers notified"
+            exit 1
+          fi
 
-  #           if gh api "repos/$REPO/dispatches" \
-  #                -f event_type=taf-library-published \
-  #                -f "client_payload[version]=$VERSION" \
-  #                -f "client_payload[branch]=$BRANCH" \
-  #                -f "client_payload[runUrl]=$RUN_URL"; then
-  #             echo "- ✓ $REPO" >> "$GITHUB_STEP_SUMMARY"
-  #           else
-  #             echo "- ✗ $REPO" >> "$GITHUB_STEP_SUMMARY"
-  #             FAILED=1
-  #           fi
-  #         done
+          # 2) File must be valid JSON with a consumers list
+          if ! REPOS=$(jq -r --arg b "$BRANCH" \
+                '.consumers[] | select((.enabled // true) and ((.branches // []) | index($b))) | .repo' \
+                "$FILE" | tr -d '\r'); then
+            echo "::error file=$FILE::$FILE is invalid or has no 'consumers' list"
+            exit 1
+          fi
 
-  #         exit $FAILED
+          # 3) Nothing to notify for this branch → OK, but say so
+          if [ -z "$REPOS" ]; then
+            echo "No consumers subscribed to branch '$BRANCH'." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          # 4) Notify each repo (unchanged)
+          for REPO in $REPOS; do
+            if gh api "repos/$REPO/dispatches" \
+                 -f event_type=taf-library-published \
+                 -f "client_payload[version]=$VERSION" \
+                 -f "client_payload[branch]=$BRANCH" \
+                 -f "client_payload[runUrl]=$RUN_URL"; then
+              echo "- ✓ $REPO" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "- ✗ $REPO" >> "$GITHUB_STEP_SUMMARY"
+              FAILED=1
+            fi
+          done
+
+          exit $FAILED
