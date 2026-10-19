@@ -377,7 +377,8 @@ jobs:
     name: Notify consumers
     needs: [build, tag-release]
     runs-on: windows-latest
-
+    environment: uipath-prod
+    
     steps:
     - uses: actions/checkout@v4
       with:
