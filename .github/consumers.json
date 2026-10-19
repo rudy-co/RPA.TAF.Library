@@ -2,7 +2,7 @@
   "package": "TAFS.Library",
   "consumers": [
     {
-      "repo": "ru-co/Sync.Flex.Cust",
+      "repo": "rudy-co/Sync.Flex.Cust",
       "projectPath": "project.json",
       "branches": ["Production"],
       "enabled": true
