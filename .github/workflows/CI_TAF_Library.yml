@@ -433,11 +433,12 @@ jobs:
             exit 0
           fi
 
-          # 4) Notify each repo (unchanged)
+          # 4) Notify each repo
           for REPO in $REPOS; do
-            if gh api "repos/$REPO/dispatches" \
+            echo "Dispatching taf-library-published to $REPO ..."
+            if OUT=$(gh api "repos/$REPO/dispatches" \
                  -f event_type=taf-library-published \
-                -f "client_payload[package]=$PACKAGE_NAME" \
+                 -f "client_payload[package]=$PACKAGE_NAME" \
                  -f "client_payload[version]=$VERSION" \
                  -f "client_payload[ref]=$LIBRARY_REF" \
                  -f "client_payload[branch]=$BRANCH" \
@@ -447,7 +448,6 @@ jobs:
               echo "$OUT"
               echo "::error::Dispatch to $REPO failed. Check that the GitHub App is installed on $REPO and has 'Contents: Read and write' (accepted on the installation)."
               echo "- ✗ $REPO" >> "$GITHUB_STEP_SUMMARY"
-              FAILED=1
               FAILED=1
             fi
           done
