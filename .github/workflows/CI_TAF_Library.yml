@@ -378,7 +378,7 @@ jobs:
     needs: [build, tag-release]
     runs-on: windows-latest
     environment: uipath-prod
-    
+
     steps:
     - uses: actions/checkout@v4
       with:
@@ -391,11 +391,21 @@ jobs:
         app-id: ${{ secrets.BOT_APP_ID }}
         private-key: ${{ secrets.BOT_PRIVATE_KEY }}
         owner: ${{ github.repository_owner }}
+        permission-contents: write
+
+    # Diagnostic: which repos can this token actually reach?
+    - name: Show repos accessible to the app token
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+      run: |
+        echo "Repositories this installation token can access:"
+        gh api /installation/repositories --paginate --jq '.repositories[].full_name'
 
     - name: Send repository_dispatch
       env:
         GH_TOKEN: ${{ steps.app-token.outputs.token }}
         VERSION: ${{ needs.build.outputs.version }}
+        LIBRARY_REF: v${{ needs.build.outputs.version }} 
         BRANCH: ${{ github.ref_name }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       run: |
@@ -427,12 +437,17 @@ jobs:
           for REPO in $REPOS; do
             if gh api "repos/$REPO/dispatches" \
                  -f event_type=taf-library-published \
+                -f "client_payload[package]=$PACKAGE_NAME" \
                  -f "client_payload[version]=$VERSION" \
+                 -f "client_payload[ref]=$LIBRARY_REF" \
                  -f "client_payload[branch]=$BRANCH" \
-                 -f "client_payload[runUrl]=$RUN_URL"; then
+                 -f "client_payload[runUrl]=$RUN_URL" 2>&1); then
               echo "- ✓ $REPO" >> "$GITHUB_STEP_SUMMARY"
             else
+              echo "$OUT"
+              echo "::error::Dispatch to $REPO failed. Check that the GitHub App is installed on $REPO and has 'Contents: Read and write' (accepted on the installation)."
               echo "- ✗ $REPO" >> "$GITHUB_STEP_SUMMARY"
+              FAILED=1
               FAILED=1
             fi
           done

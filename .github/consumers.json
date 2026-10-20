@@ -3,7 +3,6 @@
   "consumers": [
     {
       "repo": "rudy-co/Sync.Flex.Cust",
-      "projectPath": "project.json",
       "branches": ["Production"],
       "enabled": true
     }
