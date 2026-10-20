@@ -399,7 +399,7 @@ jobs:
         GH_TOKEN: ${{ steps.app-token.outputs.token }}
       run: |
         echo "Repositories this installation token can access:"
-        gh api /installation/repositories --paginate --jq '.repositories[].full_name'
+        gh api installation/repositories --paginate --jq '.repositories[].full_name'
 
     - name: Send repository_dispatch
       env:
