@@ -132,7 +132,7 @@ jobs:
     needs: build
     if: github.event_name != 'pull_request'
     runs-on: windows-latest
-    # environment: uipath-prod
+    environment: uipath-prod
 
     steps:
       - uses: actions/setup-node@v4
@@ -207,7 +207,7 @@ jobs:
     name: Verify published package
     needs: [build, publish]
     runs-on: windows-latest
-    # environment: uipath-prod
+    environment: uipath-prod
 
     steps:
       - uses: actions/setup-node@v4
@@ -377,7 +377,7 @@ jobs:
     name: Notify consumers
     needs: [build, tag-release]
     runs-on: windows-latest
-    # environment: uipath-prod
+    environment: uipath-prod
 
     steps:
     - uses: actions/checkout@v4
